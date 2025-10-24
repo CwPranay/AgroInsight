@@ -27,9 +27,8 @@ export default function RootLayout({
     <html lang="en">
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
-      > <div className="max-w-7xl mx-auto px-4 py-2">
-          <AgroInsightNav />
-        </div>
+      >
+        <AgroInsightNav />
         {children}
       </body>
     </html>
