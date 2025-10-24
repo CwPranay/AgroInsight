@@ -65,7 +65,7 @@ const menuConfig: MenuItem[] = [
         ],
     },
     { id: "about", label: "About", href: "/about", icon: Leaf, type: "link" },
-    { id: "contact", label: "Contact", href: "/contact", icon: Phone, type: "link" },
+   
 ]
 
 export function AgroInsightNav() {
@@ -94,11 +94,11 @@ export function AgroInsightNav() {
     const closeMenus = () => { setMobileMenuOpen(false); setOpenDropdown(null) }
 
     return (
-        <nav className="relative bg-white" role="navigation" aria-label="Main navigation">
-            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <nav className="relative   bg-white" role="navigation" aria-label="Main navigation">
+            <div className="max-w-7xl  mx-auto px-4 sm:px-6 lg:px-8">
                 {/* Desktop Nav */}
-                <div className="hidden lg:flex items-center justify-between h-16">
-                    <div className="flex items-center gap-6">
+                <div className="hidden lg:flex items-center justify-center h-16">
+                    <div className="flex items-center gap-20">
                         <span className="text-lg font-semibold text-yellow-700 flex items-center gap-2">
                             <Leaf size={24} />
                             AgroInsight
