@@ -1,8 +1,8 @@
-import { HeroSection } from "../components/home/HeroSection"
-import { FeaturesGrid } from "../components/home/FeaturesGrid"
-import { LiveDataPreview } from "../components/home/LiveDataPreview"
-import { ValueSection } from "../components/home/ValueSection"
-import { FooterCTA } from "../components/home/FooterCTA"
+import { FeaturesGrid } from "./components/home/FeaturesGrid";
+import { FooterCTA } from "./components/home/FooterCTA";
+import { HeroSection } from "./components/home/HeroSection";
+import { LiveDataPreview } from "./components/home/LiveDataPreview";
+import { ValueSection } from "./components/home/ValueSection";
 
 export default function HomePage() {
   return (
