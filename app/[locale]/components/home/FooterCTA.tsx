@@ -1,9 +1,6 @@
-"use client"
-
-import { motion } from "framer-motion"
-import Link from "next/link"
-import { ArrowRight, Sparkles } from "lucide-react"
 import { useTranslations } from "next-intl"
+import { Sparkles } from "lucide-react"
+import { FooterCTAAnimation } from "./client/FooterCTAAnimation"
 
 export function FooterCTA() {
   const t = useTranslations("footerCTA")
@@ -18,23 +15,11 @@ export function FooterCTA() {
       </div>
 
       <div className="relative max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-        <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.8 }}
-          className="space-y-8"
-        >
+        <FooterCTAAnimation>
           {/* Icon */}
-          <motion.div
-            initial={{ scale: 0 }}
-            whileInView={{ scale: 1 }}
-            viewport={{ once: true }}
-            transition={{ delay: 0.2, type: "spring", stiffness: 200 }}
-            className="inline-flex items-center justify-center w-20 h-20 rounded-full bg-gradient-to-br from-amber-500 to-yellow-500 shadow-2xl"
-          >
+          <div className="inline-flex items-center justify-center w-20 h-20 rounded-full bg-gradient-to-br from-amber-500 to-yellow-500 shadow-2xl">
             <Sparkles className="text-white" size={36} />
-          </motion.div>
+          </div>
 
           {/* Headline */}
           <h2 className="text-4xl sm:text-5xl lg:text-6xl font-bold text-white leading-tight">
@@ -45,20 +30,6 @@ export function FooterCTA() {
           <p className="text-xl text-gray-300 max-w-2xl mx-auto">
             {t("subtext")}
           </p>
-
-          {/* CTA Button */}
-          <motion.div
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.95 }}
-          >
-            <Link
-              href="/crop-prices"
-              className="inline-flex items-center gap-3 px-10 py-5 bg-gradient-to-r from-amber-500 to-yellow-500 text-white text-lg font-bold rounded-xl shadow-2xl hover:shadow-amber-500/50 transition-all duration-300 group"
-            >
-              {t("cta")}
-              <ArrowRight size={24} className="group-hover:translate-x-2 transition-transform" />
-            </Link>
-          </motion.div>
 
           {/* Trust Indicators */}
           <div className="flex flex-wrap items-center justify-center gap-8 pt-8 text-gray-400">
@@ -81,7 +52,7 @@ export function FooterCTA() {
               <span>{t("trust.instant")}</span>
             </div>
           </div>
-        </motion.div>
+        </FooterCTAAnimation>
       </div>
     </section>
   )

@@ -1,3 +1,5 @@
+"use client"
+
 import { FeaturesGrid } from "./components/home/FeaturesGrid";
 import { FooterCTA } from "./components/home/FooterCTA";
 import { HeroSection } from "./components/home/HeroSection";
