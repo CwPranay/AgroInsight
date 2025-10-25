@@ -1,7 +1,27 @@
-
 {
   "Home": {
     "title": "Welcome to AgroInsight",
     "description": "Helping farmers with crop insights and market prices."
+  },
+  "Navigation": {
+    "appName": "AgroInsight",
+    "toggleMenu": "Toggle menu",
+    "closeMenu": "Close menu",
+    "home": "Home",
+    "dashboard": "Dashboard",
+    "weatherSoil": "Weather & Soil",
+    "about": "About",
+    "cropPrices": "Crop Prices",
+    "cropPricesDescription": "Live and historical market rates",
+    "marketTrends": "Market Trends",
+    "marketTrendsDescription": "Analyze crop demand & prices",
+    "nearbyMarkets": "Nearby Markets",
+    "nearbyMarketsDescription": "View local mandi data",
+    "weatherForecast": "Forecast",
+    "weatherForecastDescription": "Check 7-day rainfall & temperature",
+    "soilInsights": "Soil Insights",
+    "soilInsightsDescription": "Analyze soil quality",
+    "irrigationTips": "Irrigation Tips",
+    "irrigationTipsDescription": "Smart watering suggestions"
   }
 }

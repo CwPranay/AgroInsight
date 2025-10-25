@@ -3,5 +3,26 @@
   "Home": {
     "title": "AgroInsight में आपका स्वागत है",
     "description": "किसानों की मदद करें फसल की जानकारी और बाजार भाव के साथ।"
+  },
+  "Navigation": {
+    "appName": "एग्रोइनसाइट",
+    "toggleMenu": "मेन्यू टॉगल करें",
+    "closeMenu": "मेन्यू बंद करें",
+    "home": "होम",
+    "dashboard": "डैशबोर्ड",
+    "weatherSoil": "मौसम और मिट्टी",
+    "about": "हमारे बारे में",
+    "cropPrices": "फसल की कीमतें",
+    "cropPricesDescription": "लाइव और ऐतिहासिक बाजार दरें",
+    "marketTrends": "बाजार के रुझान",
+    "marketTrendsDescription": "फसल की मांग और कीमतों का विश्लेषण",
+    "nearbyMarkets": "आस-पास के बाजार",
+    "nearbyMarketsDescription": "स्थानीय मंडी डेटा देखें",
+    "weatherForecast": "पूर्वानुमान",
+    "weatherForecastDescription": "7-दिन की बारिश और तापमान जांचें",
+    "soilInsights": "मिट्टी का विश्लेषण",
+    "soilInsightsDescription": "मिट्टी की गुणवत्ता का विश्लेषण करें",
+    "irrigationTips": "सिंचाई सुझाव",
+    "irrigationTipsDescription": "स्मार्ट सिंचाई सुझाव"
   }
 }

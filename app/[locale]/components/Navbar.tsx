@@ -2,7 +2,7 @@
 
 import * as React from "react"
 import Link from "next/link"
-import { LanguageSwitcher } from "./LanguageSWitcher"
+import { LanguageSwitcher } from "@/app/[locale]/components/LanguageSWitcher"
 import {
   Leaf,
   CloudSun,
@@ -13,41 +13,77 @@ import {
   ChevronDown,
   Languages,
 } from "lucide-react"
-import { useLocale } from "next-intl"
+import { useLocale, useTranslations } from "next-intl"
 import { usePathname, useRouter } from "next/navigation"
 
-const menuConfig = [
-  { id: "home", label: "Home", href: "/", icon: Home, type: "link" as const },
+const menuConfig = (t: (key: string) => string) => [
+  { 
+    id: "home", 
+    label: t('home'), 
+    href: "/", 
+    icon: Home, 
+    type: "link" as const 
+  },
   {
     id: "dashboard",
-    label: "Dashboard",
+    label: t('dashboard'),
     icon: BarChart3,
     type: "dropdown" as const,
     items: [
-      { href: "/crop-prices", title: "Crop Prices", description: "Live and historical market rates" },
-      { href: "/market-trends", title: "Market Trends", description: "Analyze crop demand & prices" },
-      { href: "/nearby-markets", title: "Nearby Markets", description: "View local mandi data" },
+      { 
+        href: "/crop-prices", 
+        title: t('cropPrices'), 
+        description: t('cropPricesDescription') 
+      },
+      { 
+        href: "/market-trends", 
+        title: t('marketTrends'), 
+        description: t('marketTrendsDescription') 
+      },
+      { 
+        href: "/nearby-markets", 
+        title: t('nearbyMarkets'), 
+        description: t('nearbyMarketsDescription') 
+      },
     ],
   },
   {
     id: "weather",
-    label: "Weather & Soil",
+    label: t('weatherSoil'),
     icon: CloudSun,
     type: "dropdown" as const,
     items: [
-      { href: "/weather", title: "Forecast", description: "Check 7-day rainfall & temperature" },
-      { href: "/soil-insights", title: "Soil Insights", description: "Analyze soil quality" },
-      { href: "/irrigation-tips", title: "Irrigation Tips", description: "Smart watering suggestions" },
+      { 
+        href: "/weather", 
+        title: t('weatherForecast'), 
+        description: t('weatherForecastDescription') 
+      },
+      { 
+        href: "/soil-insights", 
+        title: t('soilInsights'), 
+        description: t('soilInsightsDescription') 
+      },
+      { 
+        href: "/irrigation-tips", 
+        title: t('irrigationTips'), 
+        description: t('irrigationTipsDescription') 
+      },
     ],
   },
-  { id: "about", label: "About", href: "/about", icon: Leaf, type: "link" as const },
+  { 
+    id: "about", 
+    label: t('about'), 
+    href: "/about", 
+    icon: Leaf, 
+    type: "link" as const 
+  },
 ]
-
-
 
 export function AgroInsightNav() {
   const [mobileMenuOpen, setMobileMenuOpen] = React.useState(false)
   const [openDropdown, setOpenDropdown] = React.useState<string | null>(null)
+  const t = useTranslations('Navigation')
+  const locale = useLocale()
 
   // Lock body scroll when mobile menu is open
   React.useEffect(() => {
@@ -59,6 +95,8 @@ export function AgroInsightNav() {
       document.body.style.paddingRight = ''
     }
   }, [mobileMenuOpen])
+
+  const menuItems = menuConfig(t)
 
   return (
     <>
@@ -148,7 +186,7 @@ export function AgroInsightNav() {
 
             {/* Desktop Menu Items */}
             <div className="flex items-center gap-1">
-              {menuConfig.map((item) => {
+              {menuItems.map((item) => {
                 const Icon = item.icon
                 const isOpen = openDropdown === item.id
 
@@ -169,19 +207,32 @@ export function AgroInsightNav() {
                   <div key={item.id} className="relative">
                     <button
                       onClick={() => setOpenDropdown(isOpen ? null : item.id)}
-                      className={`flex items-center gap-2 px-4 py-2.5 text-sm font-medium rounded-xl transition-all duration-200 ${isOpen
+                      className={`flex items-center gap-2 px-4 py-2.5 text-sm font-medium rounded-xl transition-all duration-200 ${
+                        isOpen
                           ? "text-amber-600 bg-amber-50/80"
                           : "text-gray-700 hover:text-amber-600 hover:bg-amber-50/80"
-                        }`}
+                      }`}
                     >
-                      <Icon size={16} className={`transition-colors duration-200 ${isOpen ? "text-amber-500" : "text-gray-400"}`} />
+                      <Icon 
+                        size={16} 
+                        className={`transition-colors duration-200 ${
+                          isOpen ? "text-amber-500" : "text-gray-400"
+                        }`} 
+                      />
                       <span>{item.label}</span>
-                      <ChevronDown className={`w-4 h-4 transition-transform duration-200 ${isOpen ? "rotate-180" : ""}`} />
+                      <ChevronDown 
+                        className={`w-4 h-4 transition-transform duration-200 ${
+                          isOpen ? "rotate-180" : ""
+                        }`} 
+                      />
                     </button>
 
                     {isOpen && (
                       <>
-                        <div className="fixed inset-0 z-[60]" onClick={() => setOpenDropdown(null)} />
+                        <div 
+                          className="fixed inset-0 z-[60]" 
+                          onClick={() => setOpenDropdown(null)} 
+                        />
                         <div className="absolute left-0 mt-2 w-72 bg-white rounded-xl shadow-xl border border-amber-200/50 py-2 z-[70] animate-fadeIn">
                           {item.items?.map((sub) => (
                             <Link
@@ -193,7 +244,9 @@ export function AgroInsightNav() {
                               <div className="font-semibold text-gray-900 text-sm group-hover:text-amber-600 transition-colors">
                                 {sub.title}
                               </div>
-                              <p className="text-gray-500 text-xs mt-1">{sub.description}</p>
+                              <p className="text-gray-500 text-xs mt-1">
+                                {sub.description}
+                              </p>
                             </Link>
                           ))}
                         </div>
@@ -215,7 +268,7 @@ export function AgroInsightNav() {
                 <Leaf className="text-white" size={18} />
               </div>
               <span className="text-base font-bold bg-gradient-to-r from-amber-600 to-yellow-600 bg-clip-text text-transparent">
-                AgroInsight
+                {t('appName')}
               </span>
             </Link>
 
@@ -224,7 +277,7 @@ export function AgroInsightNav() {
               <button
                 onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
                 className="p-2 rounded-lg text-gray-600 hover:bg-amber-50/80 transition-all duration-200"
-                aria-label="Toggle menu"
+                aria-label={t('toggleMenu')}
               >
                 {mobileMenuOpen ? <X size={22} /> : <Menu size={22} />}
               </button>
@@ -243,8 +296,9 @@ export function AgroInsightNav() {
 
       {/* Mobile Sidebar */}
       <aside
-        className={`fixed top-0 right-0 h-full w-[85vw] max-w-sm bg-white shadow-2xl z-[110] lg:hidden transform transition-transform duration-300 ease-out ${mobileMenuOpen ? 'translate-x-0' : 'translate-x-full'
-          }`}
+        className={`fixed top-0 right-0 h-full w-[85vw] max-w-sm bg-white shadow-2xl z-[110] lg:hidden transform transition-transform duration-300 ease-out ${
+          mobileMenuOpen ? 'translate-x-0' : 'translate-x-full'
+        }`}
       >
         <div className="flex flex-col h-full">
           {/* Sidebar Header */}
@@ -254,13 +308,13 @@ export function AgroInsightNav() {
                 <Leaf className="text-white" size={20} />
               </div>
               <span className="text-lg font-bold bg-gradient-to-r from-amber-600 to-yellow-600 bg-clip-text text-transparent">
-                AgroInsight
+                {t('appName')}
               </span>
             </div>
             <button
               onClick={() => setMobileMenuOpen(false)}
               className="p-2 rounded-lg hover:bg-white/80 transition-all duration-200"
-              aria-label="Close menu"
+              aria-label={t('closeMenu')}
             >
               <X size={20} className="text-gray-600" />
             </button>
@@ -268,7 +322,7 @@ export function AgroInsightNav() {
 
           {/* Sidebar Menu Items */}
           <div className="flex-1 overflow-y-auto p-5 space-y-2 sidebar-scroll">
-            {menuConfig.map((item, index) => {
+            {menuItems.map((item, index) => {
               const Icon = item.icon
               const isOpen = openDropdown === item.id
 
@@ -299,21 +353,27 @@ export function AgroInsightNav() {
                 >
                   <button
                     onClick={() => setOpenDropdown(isOpen ? null : item.id)}
-                    className={`flex items-center justify-between w-full px-4 py-3.5 text-base font-medium transition-all duration-200 ${isOpen
+                    className={`flex items-center justify-between w-full px-4 py-3.5 text-base font-medium transition-all duration-200 ${
+                      isOpen
                         ? "text-amber-600 bg-gradient-to-r from-amber-50 to-yellow-50/50"
                         : "text-gray-800 hover:bg-amber-50/30"
-                      }`}
+                    }`}
                   >
                     <div className="flex items-center gap-3">
                       <Icon size={20} className="text-amber-500" />
                       <span>{item.label}</span>
                     </div>
-                    <ChevronDown className={`w-4 h-4 transition-transform duration-200 ${isOpen ? "rotate-180" : ""}`} />
+                    <ChevronDown 
+                      className={`w-4 h-4 transition-transform duration-200 ${
+                        isOpen ? "rotate-180" : ""
+                      }`} 
+                    />
                   </button>
 
                   <div
-                    className={`grid transition-all duration-300 ease-in-out ${isOpen ? "grid-rows-[1fr] opacity-100" : "grid-rows-[0fr] opacity-0"
-                      }`}
+                    className={`grid transition-all duration-300 ease-in-out ${
+                      isOpen ? "grid-rows-[1fr] opacity-100" : "grid-rows-[0fr] opacity-0"
+                    }`}
                   >
                     <div className="overflow-hidden">
                       <div className="px-3 pb-2 space-y-1 bg-gradient-to-b from-amber-50/30 to-transparent">
@@ -328,7 +388,9 @@ export function AgroInsightNav() {
                             className="block py-3 px-3 text-gray-700 text-sm hover:text-amber-600 transition-all duration-200 rounded-lg hover:bg-white/80 hover:shadow-sm border-b border-amber-50 last:border-b-0"
                           >
                             <div className="font-medium">{sub.title}</div>
-                            <p className="text-gray-500 text-xs mt-1">{sub.description}</p>
+                            <p className="text-gray-500 text-xs mt-1">
+                              {sub.description}
+                            </p>
                           </Link>
                         ))}
                       </div>
