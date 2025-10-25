@@ -32,10 +32,12 @@ export default async function LocaleLayout({
 
   return (
     <html lang={locale} className={`${notoSans.variable} antialiased`}>
-      <body className={notoSans.className}>
+      <body className={`${notoSans.className} overflow-x-hidden`}>
         <NextIntlClientProvider locale={locale} messages={messages}>
-          <AgroInsightNav/>
-          {children}
+          <AgroInsightNav />
+          <div className="overflow-x-hidden w-full">
+            {children}
+          </div>
         </NextIntlClientProvider>
       </body>
     </html>
