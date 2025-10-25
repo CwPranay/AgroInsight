@@ -23,5 +23,91 @@
     "soilInsightsDescription": "Analyze soil quality",
     "irrigationTips": "Irrigation Tips",
     "irrigationTipsDescription": "Smart watering suggestions"
+  },
+  "hero": {
+    "badge": "Empowering Farmers with Data",
+    "headline": "Smarter Decisions for Every Farmer",
+    "subtext": "Track crop prices, monitor weather, and get real-time soil insights — all in one dashboard.",
+    "ctaPrimary": "View Dashboard",
+    "ctaSecondary": "Check Weather",
+    "stats": {
+      "farmers": "Active Farmers",
+      "markets": "Markets Tracked",
+      "updates": "Live Updates"
+    }
+  },
+  "features": {
+    "title": "Everything You Need in One Place",
+    "subtitle": "Comprehensive tools and insights to help you make informed farming decisions",
+    "cropPrices": {
+      "title": "Crop Prices",
+      "description": "Stay updated with real-time market rates and price trends for all major crops."
+    },
+    "weather": {
+      "title": "Weather Insights",
+      "description": "Get accurate 7-day forecasts with rainfall and temperature data for better planning."
+    },
+    "soilHealth": {
+      "title": "Soil Health",
+      "description": "Monitor your soil's nutrients, pH levels, and moisture content for optimal yields."
+    },
+    "markets": {
+      "title": "Nearby Markets",
+      "description": "Discover profitable selling locations and compare prices across local mandis."
+    },
+    "learnMore": "Learn more"
+  },
+  "liveData": {
+    "title": "Live Market Intelligence",
+    "subtitle": "Real-time data to help you make the right decisions",
+    "cropPrices": {
+      "title": "Today's Crop Prices",
+      "updated": "Updated 5 min ago",
+      "perQuintal": "per quintal",
+      "viewAll": "View All Prices"
+    },
+    "weather": {
+      "title": "Today's Weather",
+      "rainfall": "Rainfall",
+      "humidity": "Humidity",
+      "forecast": "7-Day Forecast",
+      "condition": "Partly Cloudy"
+    },
+    "trends": {
+      "title": "Price Trends (Last 7 Days)",
+      "days": ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"]
+    }
+  },
+  "value": {
+    "title": "Why Choose AgroInsight?",
+    "subtitle": "Built by farmers, for farmers — with the tools you need to succeed",
+    "dataInsights": {
+      "title": "Data-Backed Insights",
+      "description": "Make informed decisions with accurate, real-time agricultural data from trusted sources."
+    },
+    "realTime": {
+      "title": "Real-Time Updates",
+      "description": "Stay ahead with instant notifications on price changes, weather alerts, and market trends."
+    },
+    "multilingual": {
+      "title": "Multilingual Support",
+      "description": "Access all features in English and Hindi, making it easy for every farmer to use."
+    },
+    "stats": {
+      "users": "Active Users",
+      "markets": "Markets Covered",
+      "uptime": "Uptime",
+      "support": "Support"
+    }
+  },
+  "footerCTA": {
+    "headline": "Join AgroInsight and Make Data-Driven Farming Decisions Today",
+    "subtext": "Start your journey towards smarter farming with real-time insights and expert guidance",
+    "cta": "Go to Dashboard",
+    "trust": {
+      "free": "Free to use",
+      "noCard": "No credit card required",
+      "instant": "Instant access"
+    }
   }
 }

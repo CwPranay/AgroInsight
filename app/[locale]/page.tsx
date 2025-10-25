@@ -1,12 +1,17 @@
-import { useTranslations } from 'next-intl';
+import { HeroSection } from "../components/home/HeroSection"
+import { FeaturesGrid } from "../components/home/FeaturesGrid"
+import { LiveDataPreview } from "../components/home/LiveDataPreview"
+import { ValueSection } from "../components/home/ValueSection"
+import { FooterCTA } from "../components/home/FooterCTA"
 
 export default function HomePage() {
-  const t = useTranslations('Home');
-
   return (
-    <main className="p-8">
-      <h1 className="text-3xl font-bold">{t('title')}</h1>
-      <p className="text-lg mt-2">{t('description')}</p>
+    <main className="min-h-screen">
+      <HeroSection />
+      <FeaturesGrid />
+      <LiveDataPreview />
+      <ValueSection />
+      <FooterCTA />
     </main>
-  );
+  )
 }
