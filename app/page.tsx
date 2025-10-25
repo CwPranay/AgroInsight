@@ -1,9 +1,5 @@
-import Image from "next/image";
+import { redirect } from 'next/navigation';
 
-export default function Home() {
-  return (
-   <div className="flex  flex-col items-center justify-center py-2">
-    
-   </div>
-  );
+export default function RootPage() {
+  redirect('/en');
 }

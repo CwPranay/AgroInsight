@@ -2,6 +2,7 @@
 
 import * as React from "react"
 import Link from "next/link"
+import { LanguageSwitcher } from "./LanguageSWitcher"
 import {
   Leaf,
   CloudSun,
@@ -12,6 +13,8 @@ import {
   ChevronDown,
   Languages,
 } from "lucide-react"
+import { useLocale } from "next-intl"
+import { usePathname, useRouter } from "next/navigation"
 
 const menuConfig = [
   { id: "home", label: "Home", href: "/", icon: Home, type: "link" as const },
@@ -40,82 +43,7 @@ const menuConfig = [
   { id: "about", label: "About", href: "/about", icon: Leaf, type: "link" as const },
 ]
 
-const languages = [
-  { code: "en", name: "English", native: "English" },
-  { code: "hi", name: "Hindi", native: "हिन्दी" },
-]
 
-function LanguageSwitcher({ isMobile = false }: { isMobile?: boolean }) {
-  const [currentLang, setCurrentLang] = React.useState("en")
-  const [isOpen, setIsOpen] = React.useState(false)
-
-  if (isMobile) {
-    return (
-      <div className="w-full">
-        <div className="flex items-center gap-3 px-3 py-2 text-sm text-gray-600 mb-3">
-          <Languages size={18} className="text-amber-500" />
-          <span className="font-medium">Language / भाषा</span>
-        </div>
-        <div className="grid grid-cols-2 gap-2">
-          {languages.map((lang) => (
-            <button
-              key={lang.code}
-              onClick={() => setCurrentLang(lang.code)}
-              className={`px-4 py-3 text-sm font-medium border rounded-lg transition-all duration-200 ${
-                currentLang === lang.code
-                  ? "bg-amber-50 border-amber-300 text-amber-700 shadow-sm scale-105"
-                  : "border-amber-200 text-gray-700 hover:bg-amber-50/80 hover:border-amber-300"
-              }`}
-            >
-              {lang.native}
-            </button>
-          ))}
-        </div>
-      </div>
-    )
-  }
-
-  return (
-    <div className="relative">
-      <button
-        onClick={() => setIsOpen(!isOpen)}
-        className="flex items-center gap-2 px-3 py-2 text-sm font-medium text-gray-600 hover:text-amber-600 rounded-lg transition-all duration-200 hover:bg-amber-50/80 border border-amber-200/60 hover:border-amber-300"
-      >
-        <Languages size={16} className="text-amber-500" />
-        <span className="font-medium hidden sm:inline">{currentLang.toUpperCase()}</span>
-        <ChevronDown className={`w-4 h-4 transition-transform duration-200 ${isOpen ? "rotate-180" : ""}`} />
-      </button>
-
-      {isOpen && (
-        <>
-          <div className="fixed inset-0 z-[60]" onClick={() => setIsOpen(false)} />
-          <div className="absolute right-0 mt-2 w-48 bg-white rounded-xl shadow-xl border border-amber-200/50 py-2 z-[70] opacity-0 animate-fadeIn">
-            {languages.map((lang) => (
-              <button
-                key={lang.code}
-                onClick={() => {
-                  setCurrentLang(lang.code)
-                  setIsOpen(false)
-                }}
-                className={`flex items-center gap-3 w-full px-4 py-2.5 text-sm transition-all duration-200 ${
-                  currentLang === lang.code 
-                    ? "text-amber-600 bg-amber-50/50 font-medium" 
-                    : "text-gray-700 hover:bg-amber-50/80"
-                }`}
-              >
-                <span className="font-medium w-8">{lang.code.toUpperCase()}</span>
-                <span className="flex-1 text-left">{lang.native}</span>
-                {currentLang === lang.code && (
-                  <div className="w-2 h-2 bg-amber-500 rounded-full" />
-                )}
-              </button>
-            ))}
-          </div>
-        </>
-      )}
-    </div>
-  )
-}
 
 export function AgroInsightNav() {
   const [mobileMenuOpen, setMobileMenuOpen] = React.useState(false)
@@ -241,11 +169,10 @@ export function AgroInsightNav() {
                   <div key={item.id} className="relative">
                     <button
                       onClick={() => setOpenDropdown(isOpen ? null : item.id)}
-                      className={`flex items-center gap-2 px-4 py-2.5 text-sm font-medium rounded-xl transition-all duration-200 ${
-                        isOpen 
-                          ? "text-amber-600 bg-amber-50/80" 
+                      className={`flex items-center gap-2 px-4 py-2.5 text-sm font-medium rounded-xl transition-all duration-200 ${isOpen
+                          ? "text-amber-600 bg-amber-50/80"
                           : "text-gray-700 hover:text-amber-600 hover:bg-amber-50/80"
-                      }`}
+                        }`}
                     >
                       <Icon size={16} className={`transition-colors duration-200 ${isOpen ? "text-amber-500" : "text-gray-400"}`} />
                       <span>{item.label}</span>
@@ -316,9 +243,8 @@ export function AgroInsightNav() {
 
       {/* Mobile Sidebar */}
       <aside
-        className={`fixed top-0 right-0 h-full w-[85vw] max-w-sm bg-white shadow-2xl z-[110] lg:hidden transform transition-transform duration-300 ease-out ${
-          mobileMenuOpen ? 'translate-x-0' : 'translate-x-full'
-        }`}
+        className={`fixed top-0 right-0 h-full w-[85vw] max-w-sm bg-white shadow-2xl z-[110] lg:hidden transform transition-transform duration-300 ease-out ${mobileMenuOpen ? 'translate-x-0' : 'translate-x-full'
+          }`}
       >
         <div className="flex flex-col h-full">
           {/* Sidebar Header */}
@@ -353,7 +279,7 @@ export function AgroInsightNav() {
                     href={item.href!}
                     onClick={() => setMobileMenuOpen(false)}
                     className="flex items-center gap-3 px-4 py-3.5 text-base font-medium text-gray-800 hover:text-amber-600 rounded-xl transition-all duration-200 hover:bg-gradient-to-r hover:from-amber-50 hover:to-yellow-50/50 border border-amber-100 hover:border-amber-300 hover:shadow-sm"
-                    style={{ 
+                    style={{
                       animation: mobileMenuOpen ? `fadeInItem 0.3s ease-out ${index * 50}ms both` : 'none'
                     }}
                   >
@@ -364,20 +290,19 @@ export function AgroInsightNav() {
               }
 
               return (
-                <div 
-                  key={item.id} 
+                <div
+                  key={item.id}
                   className="border border-amber-100 rounded-xl overflow-hidden hover:border-amber-300 transition-all duration-200 hover:shadow-sm"
-                  style={{ 
+                  style={{
                     animation: mobileMenuOpen ? `fadeInItem 0.3s ease-out ${index * 50}ms both` : 'none'
                   }}
                 >
                   <button
                     onClick={() => setOpenDropdown(isOpen ? null : item.id)}
-                    className={`flex items-center justify-between w-full px-4 py-3.5 text-base font-medium transition-all duration-200 ${
-                      isOpen 
-                        ? "text-amber-600 bg-gradient-to-r from-amber-50 to-yellow-50/50" 
+                    className={`flex items-center justify-between w-full px-4 py-3.5 text-base font-medium transition-all duration-200 ${isOpen
+                        ? "text-amber-600 bg-gradient-to-r from-amber-50 to-yellow-50/50"
                         : "text-gray-800 hover:bg-amber-50/30"
-                    }`}
+                      }`}
                   >
                     <div className="flex items-center gap-3">
                       <Icon size={20} className="text-amber-500" />
@@ -386,10 +311,9 @@ export function AgroInsightNav() {
                     <ChevronDown className={`w-4 h-4 transition-transform duration-200 ${isOpen ? "rotate-180" : ""}`} />
                   </button>
 
-                  <div 
-                    className={`grid transition-all duration-300 ease-in-out ${
-                      isOpen ? "grid-rows-[1fr] opacity-100" : "grid-rows-[0fr] opacity-0"
-                    }`}
+                  <div
+                    className={`grid transition-all duration-300 ease-in-out ${isOpen ? "grid-rows-[1fr] opacity-100" : "grid-rows-[0fr] opacity-0"
+                      }`}
                   >
                     <div className="overflow-hidden">
                       <div className="px-3 pb-2 space-y-1 bg-gradient-to-b from-amber-50/30 to-transparent">
