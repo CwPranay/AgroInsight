@@ -109,5 +109,21 @@
       "noCard": "No credit card required",
       "instant": "Instant access"
     }
+  },
+  "dashboard": {
+    "filterBar": {
+      "cropLabel": "Select Crop",
+      "stateLabel": "Select Region / State",
+      "cropPlaceholder": "Search crop...",
+      "statePlaceholder": "Search state...",
+      "cropSearchPlaceholder": "Type to search crops...",
+      "stateSearchPlaceholder": "Type to search states...",
+      "noCropsFound": "No crops found.",
+      "noStatesFound": "No states found.",
+      "startTyping": "Start typing to see suggestions...",
+      "selected": "Selected",
+      "activeFilters": "Active Filters",
+      "clearAll": "Clear All"
+    }
   }
 }

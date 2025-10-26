@@ -31,17 +31,17 @@ const menuConfig = (t: (key: string) => string) => [
     type: "dropdown" as const,
     items: [
       { 
-        href: "/crop-prices", 
+        href: "/dashboard?section=crop-prices", 
         title: t('cropPrices'), 
         description: t('cropPricesDescription') 
       },
       { 
-        href: "/market-trends", 
+        href: "/dashboard?section=market-trends", 
         title: t('marketTrends'), 
         description: t('marketTrendsDescription') 
       },
       { 
-        href: "/nearby-markets", 
+        href: "/dashboard?section=nearby-markets", 
         title: t('nearbyMarkets'), 
         description: t('nearbyMarketsDescription') 
       },

@@ -6,7 +6,7 @@ export function FooterCTA() {
   const t = useTranslations("footerCTA")
 
   return (
-    <section className="py-20 bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900 relative overflow-hidden">
+    <section className="py-20 bg-linear-to-br from-gray-900 via-gray-800 to-gray-900 relative overflow-hidden">
       {/* Background Pattern */}
       <div className="absolute inset-0 opacity-10">
         <div className="absolute inset-0" style={{
@@ -17,7 +17,7 @@ export function FooterCTA() {
       <div className="relative max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
         <FooterCTAAnimation>
           {/* Icon */}
-          <div className="inline-flex items-center justify-center w-20 h-20 rounded-full bg-gradient-to-br from-amber-500 to-yellow-500 shadow-2xl">
+          <div className="inline-flex items-center justify-center w-20 h-20 rounded-full bg-linear-to-br from-amber-500 to-yellow-500 shadow-2xl">
             <Sparkles className="text-white" size={36} />
           </div>
 

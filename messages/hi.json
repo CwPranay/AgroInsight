@@ -117,5 +117,21 @@
       "noCard": "क्रेडिट कार्ड की आवश्यकता नहीं",
       "instant": "तत्काल पहुंच"
     }
+  },
+  "dashboard": {
+    "filterBar": {
+      "cropLabel": "फसल चुनें",
+      "stateLabel": "क्षेत्र / राज्य चुनें",
+      "cropPlaceholder": "फसल खोजें...",
+      "statePlaceholder": "राज्य खोजें...",
+      "cropSearchPlaceholder": "फसल खोजने के लिए टाइप करें...",
+      "stateSearchPlaceholder": "राज्य खोजने के लिए टाइप करें...",
+      "noCropsFound": "कोई फसल नहीं मिली।",
+      "noStatesFound": "कोई राज्य नहीं मिला।",
+      "startTyping": "सुझाव देखने के लिए टाइप करना शुरू करें...",
+      "selected": "चयनित",
+      "activeFilters": "सक्रिय फ़िल्टर",
+      "clearAll": "सभी साफ़ करें"
+    }
   }
 }
