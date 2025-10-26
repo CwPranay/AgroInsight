@@ -1,0 +1,42 @@
+export const crops = [
+  {
+    crop: "Wheat",
+    market: "Pune",
+    state: "Maharashtra",
+    price: 2450,
+    date: "2025-10-25",
+    trend: "up",
+  },
+  {
+    crop: "Rice",
+    market: "Nagpur",
+    state: "Maharashtra",
+    price: 3100,
+    date: "2025-10-25",
+    trend: "down",
+  },
+  {
+    crop: "Soybean",
+    market: "Indore",
+    state: "Madhya Pradesh",
+    price: 4850,
+    date: "2025-10-25",
+    trend: "up",
+  },
+  {
+    crop: "Bajra",
+    market: "Ahmedabad",
+    state: "Gujarat",
+    price: 2250,
+    date: "2025-10-25",
+    trend: "neutral",
+  },
+  {
+    crop: "Cotton",
+    market: "Surat",
+    state: "Gujarat",
+    price: 6700,
+    date: "2025-10-25",
+    trend: "down",
+  },
+]

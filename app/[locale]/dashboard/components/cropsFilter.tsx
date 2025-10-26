@@ -3,20 +3,14 @@
 import { useState, useMemo } from "react"
 import { Search, X, ChevronDown } from "lucide-react"
 import { useTranslations } from "next-intl"
+import { crops } from "@/mockData/crops"
 import { Command, CommandInput, CommandList, CommandItem, CommandEmpty } from "@/app/[locale]/components/ui/command"
 import { Popover, PopoverContent, PopoverTrigger } from "@/app/[locale]/components/ui/popover"
 
-const crops = [
-    "Wheat", "Corn", "Rice", "Soybeans", "Barley", "Oats",
-    "Sorghum", "Cotton", "Tobacco", "Potatoes", "Tomatoes",
-    "Onions", "Sugarcane", "Groundnut", "Mustard"
-]
 
-const states = [
-    "Maharashtra", "Punjab", "Haryana", "Uttar Pradesh", "Gujarat",
-    "Rajasthan", "Tamil Nadu", "Karnataka", "West Bengal", "Bihar",
-    "Madhya Pradesh", "Andhra Pradesh", "Telangana", "Kerala", "Odisha"
-]
+
+
+
 
 export default function FilterBar() {
     const t = useTranslations("dashboard.filterBar")
@@ -27,21 +21,33 @@ export default function FilterBar() {
     const [cropOpen, setCropOpen] = useState(false)
     const [stateOpen, setStateOpen] = useState(false)
 
+
+
+
     // Filter crops based on search
     const filteredCrops = useMemo(() => {
         if (!cropSearch) return []
         return crops.filter((item) =>
-            item.toLowerCase().includes(cropSearch.toLowerCase())
+            item.crop.toLowerCase().includes(cropSearch.toLowerCase())
         )
     }, [cropSearch])
 
     // Filter states based on search
     const filteredStates = useMemo(() => {
         if (!stateSearch) return []
-        return states.filter((item) =>
-            item.toLowerCase().includes(stateSearch.toLowerCase())
+        return crops.filter((item) =>
+            item.state.toLowerCase().includes(stateSearch.toLowerCase())
         )
     }, [stateSearch])
+    const uniqueStates = [...new Set(filteredStates.map((item) => item.state))];
+    const cropsToShow = useMemo(() => {
+        if (!crop && !state) return [] // don’t show anything until user selects
+        return crops.filter((item) => {
+            const cropMatch = crop ? item.crop === crop : true
+            const stateMatch = state ? item.state === state : true
+            return cropMatch && stateMatch
+        })
+    }, [crop, state])
 
     const handleCropSelect = (selectedCrop: string) => {
         setCrop(selectedCrop)
@@ -79,8 +85,8 @@ export default function FilterBar() {
                                 role="button"
                                 tabIndex={0}
                                 className={`w-full flex items-center justify-between px-4 py-3 bg-white border-2 rounded-xl transition-all duration-200 cursor-pointer ${crop
-                                        ? "border-amber-400 bg-amber-50/50"
-                                        : "border-gray-200 hover:border-amber-300"
+                                    ? "border-amber-400 bg-amber-50/50"
+                                    : "border-gray-200 hover:border-amber-300"
                                     } focus:outline-none focus:ring-2 focus:ring-amber-500/20`}
                                 onKeyDown={(e) => {
                                     if (e.key === 'Enter' || e.key === ' ') {
@@ -129,13 +135,13 @@ export default function FilterBar() {
                                         <>
                                             {filteredCrops.map((item) => (
                                                 <CommandItem
-                                                    key={item}
-                                                    onSelect={() => handleCropSelect(item)}
+                                                    key={item.crop}
+                                                    onSelect={() => handleCropSelect(item.crop)}
                                                     className="cursor-pointer"
                                                 >
                                                     <div className="flex items-center gap-2">
                                                         <div className="w-2 h-2 bg-green-500 rounded-full" />
-                                                        <span>{item}</span>
+                                                        <span>{item.crop}</span>
                                                     </div>
                                                 </CommandItem>
                                             ))}
@@ -169,8 +175,8 @@ export default function FilterBar() {
                                 role="button"
                                 tabIndex={0}
                                 className={`w-full flex items-center justify-between px-4 py-3 bg-white border-2 rounded-xl transition-all duration-200 cursor-pointer ${state
-                                        ? "border-amber-400 bg-amber-50/50"
-                                        : "border-gray-200 hover:border-amber-300"
+                                    ? "border-amber-400 bg-amber-50/50"
+                                    : "border-gray-200 hover:border-amber-300"
                                     } focus:outline-none focus:ring-2 focus:ring-amber-500/20`}
                                 onKeyDown={(e) => {
                                     if (e.key === 'Enter' || e.key === ' ') {
@@ -217,7 +223,7 @@ export default function FilterBar() {
                                     )}
                                     {stateSearch && filteredStates.length > 0 && (
                                         <>
-                                            {filteredStates.map((item) => (
+                                            {uniqueStates.map((item) => (
                                                 <CommandItem
                                                     key={item}
                                                     onSelect={() => handleStateSelect(item)}
@@ -290,6 +296,38 @@ export default function FilterBar() {
                     </div>
                 </div>
             )}
+            <div>
+                <table className="w-full mt-6 table-auto border-collapse border border-gray-200">
+                    <thead>
+                        <tr className="bg-gray-50">
+                            <th className="border border-gray-300 px-4 py-2 text-left text-sm font-semibold text-gray-700">Crop</th>
+                            <th className="border border-gray-300 px-4 py-2 text-left text-sm font-semibold text-gray-700">Market</th>
+                            <th className="border border-gray-300 px-4 py-2 text-left text-sm font-semibold text-gray-700">State</th>
+                            <th className="border border-gray-300 px-4 py-2 text-left text-sm font-semibold text-gray-700">Price</th>
+                            <th className="border border-gray-300 px-4 py-2 text-left text-sm font-semibold text-gray-700">Date</th>
+                            <th className="border border-gray-300 px-4 py-2 text-left text-sm font-semibold text-gray-700">Trend</th>
+
+                        </tr>
+                        </thead>
+                        <tbody>
+                              {cropsToShow.map((item)=>(
+                                <tr key={`${item.crop}-${item.market}`} className="hover:bg-gray-100">
+                                    <td className="border border-gray-300 px-4 py-2 text-sm text-gray-800">{item.crop}</td>
+                                    <td className="border border-gray-300 px-4 py-2 text-sm text-gray-800">{item.market}</td>
+                                    <td className="border border-gray-300 px-4 py-2 text-sm text-gray-800">{item.state}</td>
+                                    <td className="border border-gray-300 px-4 py-2 text-sm text-gray-800">{item.price}</td>
+                                    <td className="border border-gray-300 px-4 py-2 text-sm text-gray-800">{item.date}</td>
+                                    <td className="border border-gray-300 px-4 py-2 text-sm text-gray-800">{item.trend}</td>
+                                </tr>
+                              ))}
+                        </tbody>
+
+                    
+
+
+                </table>
+
+            </div>
         </div>
     )
 }

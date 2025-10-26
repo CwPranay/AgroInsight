@@ -2,7 +2,7 @@
 
 import { useEffect } from "react";
 import { useSearchParams } from "next/navigation";
-import FilterBar from "./components/filter-bar";
+import CropsPrice from "./components/cropsFilter";
 
 
 export default function DashboardPage() {
@@ -32,7 +32,7 @@ export default function DashboardPage() {
       <section id="crop-prices">
         <h2 className="text-2xl font-semibold mb-4">Crop Prices</h2>
         {/* crop price content */}
-        <FilterBar/>
+        <CropsPrice/>
         
     
       </section>
