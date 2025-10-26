@@ -2,6 +2,7 @@ import { useTranslations } from "next-intl"
 import { CropPriceCard } from "./client/CropPriceCard"
 import { WeatherCard } from "./client/WeatherCard"
 import { PriceTrendChart } from "./client/PriceTrendChart"
+import { useRouter } from "next/navigation"
 
 const cropPrices = [
   { name: "Wheat", price: "₹2,150", change: "+5.2%", trend: "up" as const, unit: "per quintal" },
@@ -11,6 +12,7 @@ const cropPrices = [
 
 export function LiveDataPreview() {
   const t = useTranslations("liveData")
+  const router = useRouter()
 
   return (
     <section className="py-20 bg-gradient-to-br from-gray-50 to-amber-50/30">
@@ -47,7 +49,7 @@ export function LiveDataPreview() {
               ))}
             </div>
 
-            <button className="w-full mt-6 py-3 bg-gradient-to-r from-amber-500 to-yellow-500 text-white font-semibold rounded-xl hover:shadow-lg hover:scale-105 transition-all duration-300">
+            <button onClick={()=>{router.push("/dashboard?section=crop-prices")}} className="w-full cursor-pointer mt-6 py-3 bg-gradient-to-r from-amber-500 to-yellow-500 text-white font-semibold rounded-xl hover:shadow-lg hover:scale-105 transition-all duration-300">
               {t("cropPrices.viewAll")}
             </button>
           </div>

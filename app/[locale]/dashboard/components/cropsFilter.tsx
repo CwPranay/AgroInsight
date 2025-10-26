@@ -6,6 +6,7 @@ import { useTranslations } from "next-intl"
 import { crops } from "@/mockData/crops"
 import { Command, CommandInput, CommandList, CommandItem, CommandEmpty } from "@/app/[locale]/components/ui/command"
 import { Popover, PopoverContent, PopoverTrigger } from "@/app/[locale]/components/ui/popover"
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/app/[locale]/components/ui/select"
 
 export default function FilterBar() {
   const t = useTranslations("dashboard.filterBar")
@@ -15,6 +16,8 @@ export default function FilterBar() {
   const [stateSearch, setStateSearch] = useState("")
   const [cropOpen, setCropOpen] = useState(false)
   const [stateOpen, setStateOpen] = useState(false)
+  const [sortOpen, setSortOpen] = useState(false)
+  const [priceSort, setPriceSort] = useState<"none" | "high-to-low" | "low-to-high">("none")
 
   // Filter crops based on search
   const filteredCrops = useMemo(() => {
@@ -33,15 +36,37 @@ export default function FilterBar() {
   }, [stateSearch])
 
   const uniqueStates = [...new Set(filteredStates.map((item) => item.state))]
+  const uniqueCrops = [...new Set(filteredCrops.map((item) => item.crop))]
 
   const cropsToShow = useMemo(() => {
     if (!crop && !state) return []
-    return crops.filter((item) => {
+    let filtered = crops.filter((item) => {
       const cropMatch = crop ? item.crop === crop : true
       const stateMatch = state ? item.state === state : true
       return cropMatch && stateMatch
     })
-  }, [crop, state])
+
+    // Sort by price if selected
+    if (priceSort !== "none") {
+      filtered = [...filtered].sort((a, b) => {
+        const priceA = Number(a.price)
+        const priceB = Number(b.price)
+        return priceSort === "high-to-low" ? priceB - priceA : priceA - priceB
+      })
+    }
+
+    return filtered
+  }, [crop, state, priceSort])
+
+  // Get highest price market
+  const highestPriceMarket = useMemo(() => {
+    if (cropsToShow.length === 0) return null
+    return cropsToShow.reduce((highest, current) => {
+      const currentPrice = Number(current.price)
+      const highestPrice = Number(highest.price)
+      return currentPrice > highestPrice ? current : highest
+    })
+  }, [cropsToShow])
 
   const handleCropSelect = (selectedCrop: string) => {
     setCrop(selectedCrop)
@@ -87,7 +112,7 @@ export default function FilterBar() {
     <div className="w-full space-y-6">
       {/* Filter Section */}
       <div className="bg-white rounded-2xl p-6 shadow-lg border border-amber-200/50">
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
           {/* Crop Filter */}
           <div className="space-y-2">
             <label className="block text-sm font-semibold text-gray-700">
@@ -98,11 +123,10 @@ export default function FilterBar() {
                 <div
                   role="button"
                   tabIndex={0}
-                  className={`w-full flex items-center justify-between px-4 py-3 bg-white border-2 rounded-xl transition-all duration-200 cursor-pointer ${
-                    crop
-                      ? "border-amber-400 bg-amber-50/50"
-                      : "border-gray-200 hover:border-amber-300"
-                  } focus:outline-none focus:ring-2 focus:ring-amber-500/20`}
+                  className={`w-full flex items-center justify-between px-4 py-3 bg-white border-2 rounded-xl transition-all duration-200 cursor-pointer ${crop
+                    ? "border-amber-400 bg-amber-50/50"
+                    : "border-gray-200 hover:border-amber-300"
+                    } focus:outline-none focus:ring-2 focus:ring-amber-500/20`}
                   onKeyDown={(e) => {
                     if (e.key === "Enter" || e.key === " ") {
                       setCropOpen(!cropOpen)
@@ -148,15 +172,15 @@ export default function FilterBar() {
                     )}
                     {cropSearch && filteredCrops.length > 0 && (
                       <>
-                        {filteredCrops.map((item) => (
+                        {uniqueCrops.map((item) => (
                           <CommandItem
-                            key={item.crop}
-                            onSelect={() => handleCropSelect(item.crop)}
+                            key={item}
+                            onSelect={() => handleCropSelect(item)}
                             className="cursor-pointer"
                           >
                             <div className="flex items-center gap-2">
                               <div className="w-2 h-2 bg-green-500 rounded-full" />
-                              <span>{item.crop}</span>
+                              <span>{item}</span>
                             </div>
                           </CommandItem>
                         ))}
@@ -189,11 +213,10 @@ export default function FilterBar() {
                 <div
                   role="button"
                   tabIndex={0}
-                  className={`w-full flex items-center justify-between px-4 py-3 bg-white border-2 rounded-xl transition-all duration-200 cursor-pointer ${
-                    state
-                      ? "border-amber-400 bg-amber-50/50"
-                      : "border-gray-200 hover:border-amber-300"
-                  } focus:outline-none focus:ring-2 focus:ring-amber-500/20`}
+                  className={`w-full flex items-center justify-between px-4 py-3 bg-white border-2 rounded-xl transition-all duration-200 cursor-pointer ${state
+                    ? "border-amber-400 bg-amber-50/50"
+                    : "border-gray-200 hover:border-amber-300"
+                    } focus:outline-none focus:ring-2 focus:ring-amber-500/20`}
                   onKeyDown={(e) => {
                     if (e.key === "Enter" || e.key === " ") {
                       setStateOpen(!stateOpen)
@@ -269,6 +292,72 @@ export default function FilterBar() {
               </div>
             )}
           </div>
+
+          {/* Price Sort Filter */}
+          <div className="space-y-2">
+            <label className="block text-sm font-semibold text-gray-700">
+              Sort by Price
+            </label>
+            <Popover open={sortOpen} onOpenChange={setSortOpen}>
+              <PopoverTrigger asChild>
+                <div
+                  role="button"
+                  tabIndex={0}
+                  className={`w-full flex items-center justify-between px-4 py-3 bg-white border-2 rounded-xl transition-all duration-200 cursor-pointer ${priceSort !== "none"
+                      ? "border-amber-400 bg-amber-50/50"
+                      : "border-gray-200 hover:border-amber-300"
+                    } focus:outline-none focus:ring-2 focus:ring-amber-500/20`}
+                  onKeyDown={(e) => {
+                    if (e.key === "Enter" || e.key === " ") {
+                      setSortOpen(!sortOpen)
+                    }
+                  }}
+                >
+                  <div className="flex items-center gap-2 flex-1 min-w-0">
+                    <Search size={18} className="text-amber-500 flex-shrink-0" />
+                    <span className={`truncate ${priceSort !== "none" ? "text-gray-900 font-medium" : "text-gray-500"}`}>
+                      {priceSort === "none" ? "No Sorting" : priceSort === "high-to-low" ? "Highest to Lowest" : "Lowest to Highest"}
+                    </span>
+                  </div>
+                  <ChevronDown
+                    size={18}
+                    className={`text-gray-400 transition-transform ${sortOpen ? "rotate-180" : ""}`}
+                  />
+                </div>
+              </PopoverTrigger>
+              <PopoverContent className="w-full p-0" align="start">
+                <div className="rounded-lg border-0 p-2 space-y-1">
+                  {[
+                    { value: "none", label: "No Sorting" },
+                    { value: "high-to-low", label: "Highest to Lowest" },
+                    { value: "low-to-high", label: "Lowest to Highest" },
+                  ].map((option) => (
+                    <button
+                      key={option.value}
+                      onClick={() => {
+                        setPriceSort(option.value as "none" | "high-to-low" | "low-to-high")
+                        setSortOpen(false)
+                      }}
+                      className={`w-full text-left px-3 py-2 rounded-md transition-colors ${priceSort === option.value
+                          ? "bg-amber-50 text-amber-900 font-medium"
+                          : "hover:bg-gray-100 text-gray-700"
+                        }`}
+                    >
+                      {option.label}
+                    </button>
+                  ))}
+                </div>
+              </PopoverContent>
+            </Popover>
+            {priceSort !== "none" && (
+              <div className="flex items-center gap-2 px-3 py-2 bg-purple-50 rounded-lg border border-purple-200">
+                <span className="text-xs font-medium text-purple-700">Sorted:</span>
+                <span className="text-sm font-semibold text-purple-900">
+                  {priceSort === "high-to-low" ? "High → Low" : "Low → High"}
+                </span>
+              </div>
+            )}
+          </div>
         </div>
 
         {/* Active Filters Summary */}
@@ -298,11 +387,23 @@ export default function FilterBar() {
                   </button>
                 </div>
               )}
-              {(crop || state) && (
+              {priceSort !== "none" && (
+                <div className="inline-flex items-center gap-2 px-3 py-1.5 bg-gradient-to-r from-purple-500 to-pink-500 text-white text-sm font-medium rounded-full">
+                  <span>{priceSort === "high-to-low" ? "High → Low" : "Low → High"}</span>
+                  <button
+                    onClick={() => setPriceSort("none")}
+                    className="hover:bg-white/20 rounded-full p-0.5 transition-colors"
+                  >
+                    <X size={14} />
+                  </button>
+                </div>
+              )}
+              {(crop || state || priceSort !== "none") && (
                 <button
                   onClick={() => {
                     clearCrop()
                     clearState()
+                    setPriceSort("none")
                   }}
                   className="text-sm text-gray-500 hover:text-amber-600 font-medium transition-colors ml-2"
                 >
@@ -340,6 +441,55 @@ export default function FilterBar() {
           </div>
         ) : (
           <>
+            {/* Highest Price Market Card */}
+            {highestPriceMarket && (
+              <div className="mb-6 bg-gradient-to-br from-amber-500 via-yellow-500 to-orange-500 rounded-2xl p-6 shadow-xl border-2 border-amber-300 relative overflow-hidden">
+                {/* Background Pattern */}
+                <div className="absolute inset-0 opacity-10">
+                  <div className="absolute inset-0" style={{
+                    backgroundImage: `url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='1'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E")`,
+                  }} />
+                </div>
+
+                <div className="relative">
+                  <div className="flex items-start justify-between mb-4">
+                    <div>
+                      <div className="inline-flex items-center gap-2 px-3 py-1 bg-white/20 backdrop-blur-sm rounded-full mb-2">
+                        <TrendingUp size={16} className="text-white" />
+                        <span className="text-xs font-bold text-white">HIGHEST PRICE</span>
+                      </div>
+                      <h3 className="text-3xl font-bold text-white mb-1">{highestPriceMarket.crop}</h3>
+                      <p className="text-amber-100 text-lg">{highestPriceMarket.market}, {highestPriceMarket.state}</p>
+                    </div>
+                    <div className="text-right">
+                      <div className="text-4xl font-black text-white mb-1">{highestPriceMarket.price}</div>
+                      <div className="text-sm text-amber-100">per quintal</div>
+                    </div>
+                  </div>
+
+                  <div className="flex items-center justify-between pt-4 border-t border-white/20">
+                    <div className="flex items-center gap-4">
+                      <div>
+                        <p className="text-xs text-amber-100">Date</p>
+                        <p className="text-sm font-semibold text-white">{highestPriceMarket.date}</p>
+                      </div>
+                      <div>
+                        <p className="text-xs text-amber-100">Trend</p>
+                        <div className="inline-flex items-center gap-1 px-2 py-1 bg-white/20 backdrop-blur-sm rounded-full">
+                          {getTrendIcon(highestPriceMarket.trend)}
+                          <span className="text-sm font-semibold text-white">{highestPriceMarket.trend}</span>
+                        </div>
+                      </div>
+                    </div>
+                    <div className="px-4 py-2 bg-white/20 backdrop-blur-sm rounded-lg">
+                      <p className="text-xs text-amber-100">Best Market</p>
+                      <p className="text-sm font-bold text-white">Top Price</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            )}
+
             {/* Desktop Table View */}
             <div className="hidden md:block overflow-x-auto">
               <table className="w-full">
@@ -393,7 +543,7 @@ export default function FilterBar() {
                       <span>{item.trend}</span>
                     </div>
                   </div>
-                  
+
                   <div className="grid grid-cols-2 gap-3">
                     <div>
                       <p className="text-xs text-gray-500 mb-1">State</p>

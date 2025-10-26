@@ -12,7 +12,7 @@ export function HeroCTAButtons({ primaryText, secondaryText }: HeroCTAButtonsPro
   return (
     <div className="flex flex-col sm:flex-row items-center justify-center gap-4 pt-4">
       <Link
-        href="/en/crop-prices"
+        href="/dashboard"
         className="group inline-flex items-center gap-2 px-8 py-4 bg-gradient-to-r from-amber-500 to-yellow-500 text-white font-semibold rounded-xl shadow-lg hover:shadow-xl hover:scale-105 transition-all duration-300"
       >
         {primaryText}
