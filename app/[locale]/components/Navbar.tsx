@@ -170,7 +170,7 @@ export function AgroInsightNav() {
         }
       `}</style>
 
-      <nav className="sticky top-0 z-50 bg-white/95 backdrop-blur-md border-b border-amber-200/60 shadow-sm">
+      <nav className="fixed w-full top-0 z-50 bg-white/95 backdrop-blur-md border-b border-amber-200/60 shadow-sm">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           {/* Desktop Navigation */}
           <div className="hidden lg:flex items-center justify-between h-16">

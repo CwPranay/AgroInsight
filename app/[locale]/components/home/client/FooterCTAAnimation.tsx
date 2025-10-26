@@ -40,7 +40,7 @@ export function FooterCTAAnimation({ children }: { children: ReactNode }) {
         whileTap={{ scale: 0.95 }}
       >
         <Link
-          href="/en/crop-prices"
+          href="/dashboard"
           className="inline-flex items-center gap-3 px-10 py-5 bg-gradient-to-r from-amber-500 to-yellow-500 text-white text-lg font-bold rounded-xl shadow-2xl hover:shadow-amber-500/50 transition-all duration-300 group"
         >
           {t("cta")}
