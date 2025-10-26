@@ -6,12 +6,22 @@ import { useTranslations } from "next-intl"
 import { crops } from "@/mockData/crops"
 import { Command, CommandInput, CommandList, CommandItem, CommandEmpty } from "@/app/[locale]/components/ui/command"
 import { Popover, PopoverContent, PopoverTrigger } from "@/app/[locale]/components/ui/popover"
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/app/[locale]/components/ui/select"
 
-export default function FilterBar() {
+import { Pagination, PaginationContent, PaginationItem, PaginationLink, PaginationNext, PaginationPrevious } from "@/app/[locale]/components/ui/pagination"
+
+const ITEMS_PER_PAGE = 5
+
+interface CropsFilterProps {
+  crop: string | undefined;
+  setCrop: (crop: string) => void;
+  state: string | undefined;
+  setState: (state: string) => void;
+}
+
+export default function CropsFilter({ crop, setCrop, state, setState }: CropsFilterProps) {
   const t = useTranslations("dashboard.filterBar")
-  const [crop, setCrop] = useState("")
-  const [state, setState] = useState("")
+  const [currentPage, setCurrentPage] = useState(1)
+
   const [cropSearch, setCropSearch] = useState("")
   const [stateSearch, setStateSearch] = useState("")
   const [cropOpen, setCropOpen] = useState(false)
@@ -56,6 +66,19 @@ export default function FilterBar() {
     }
 
     return filtered
+  }, [crop, state, priceSort])
+
+  // Pagination calculations
+  const totalPages = Math.ceil(cropsToShow.length / ITEMS_PER_PAGE)
+  const paginatedCrops = useMemo(() => {
+    const startIndex = (currentPage - 1) * ITEMS_PER_PAGE
+    const endIndex = startIndex + ITEMS_PER_PAGE
+    return cropsToShow.slice(startIndex, endIndex)
+  }, [cropsToShow, currentPage])
+
+  // Reset to page 1 when filters change
+  useMemo(() => {
+    setCurrentPage(1)
   }, [crop, state, priceSort])
 
   // Get highest price market
@@ -296,7 +319,7 @@ export default function FilterBar() {
           {/* Price Sort Filter */}
           <div className="space-y-2">
             <label className="block text-sm font-semibold text-gray-700">
-              Sort by Price
+              {t("sortLabel")}
             </label>
             <Popover open={sortOpen} onOpenChange={setSortOpen}>
               <PopoverTrigger asChild>
@@ -304,8 +327,8 @@ export default function FilterBar() {
                   role="button"
                   tabIndex={0}
                   className={`w-full flex items-center justify-between px-4 py-3 bg-white border-2 rounded-xl transition-all duration-200 cursor-pointer ${priceSort !== "none"
-                      ? "border-amber-400 bg-amber-50/50"
-                      : "border-gray-200 hover:border-amber-300"
+                    ? "border-amber-400 bg-amber-50/50"
+                    : "border-gray-200 hover:border-amber-300"
                     } focus:outline-none focus:ring-2 focus:ring-amber-500/20`}
                   onKeyDown={(e) => {
                     if (e.key === "Enter" || e.key === " ") {
@@ -316,7 +339,7 @@ export default function FilterBar() {
                   <div className="flex items-center gap-2 flex-1 min-w-0">
                     <Search size={18} className="text-amber-500 flex-shrink-0" />
                     <span className={`truncate ${priceSort !== "none" ? "text-gray-900 font-medium" : "text-gray-500"}`}>
-                      {priceSort === "none" ? "No Sorting" : priceSort === "high-to-low" ? "Highest to Lowest" : "Lowest to Highest"}
+                      {priceSort === "none" ? t("sortOptions.none") : priceSort === "high-to-low" ? t("sortOptions.highToLow") : t("sortOptions.lowToHigh")}
                     </span>
                   </div>
                   <ChevronDown
@@ -328,9 +351,9 @@ export default function FilterBar() {
               <PopoverContent className="w-full p-0" align="start">
                 <div className="rounded-lg border-0 p-2 space-y-1">
                   {[
-                    { value: "none", label: "No Sorting" },
-                    { value: "high-to-low", label: "Highest to Lowest" },
-                    { value: "low-to-high", label: "Lowest to Highest" },
+                    { value: "none", label: t("sortOptions.none") },
+                    { value: "high-to-low", label: t("sortOptions.highToLow") },
+                    { value: "low-to-high", label: t("sortOptions.lowToHigh") },
                   ].map((option) => (
                     <button
                       key={option.value}
@@ -339,8 +362,8 @@ export default function FilterBar() {
                         setSortOpen(false)
                       }}
                       className={`w-full text-left px-3 py-2 rounded-md transition-colors ${priceSort === option.value
-                          ? "bg-amber-50 text-amber-900 font-medium"
-                          : "hover:bg-gray-100 text-gray-700"
+                        ? "bg-amber-50 text-amber-900 font-medium"
+                        : "hover:bg-gray-100 text-gray-700"
                         }`}
                     >
                       {option.label}
@@ -351,9 +374,9 @@ export default function FilterBar() {
             </Popover>
             {priceSort !== "none" && (
               <div className="flex items-center gap-2 px-3 py-2 bg-purple-50 rounded-lg border border-purple-200">
-                <span className="text-xs font-medium text-purple-700">Sorted:</span>
+                <span className="text-xs font-medium text-purple-700">{t("sorted")}:</span>
                 <span className="text-sm font-semibold text-purple-900">
-                  {priceSort === "high-to-low" ? "High → Low" : "Low → High"}
+                  {priceSort === "high-to-low" ? t("sortedHighLow") : t("sortedLowHigh")}
                 </span>
               </div>
             )}
@@ -389,7 +412,7 @@ export default function FilterBar() {
               )}
               {priceSort !== "none" && (
                 <div className="inline-flex items-center gap-2 px-3 py-1.5 bg-gradient-to-r from-purple-500 to-pink-500 text-white text-sm font-medium rounded-full">
-                  <span>{priceSort === "high-to-low" ? "High → Low" : "Low → High"}</span>
+                  <span>{priceSort === "high-to-low" ? t("sortedHighLow") : t("sortedLowHigh")}</span>
                   <button
                     onClick={() => setPriceSort("none")}
                     className="hover:bg-white/20 rounded-full p-0.5 transition-colors"
@@ -423,9 +446,9 @@ export default function FilterBar() {
             <div className="w-20 h-20 bg-amber-100 rounded-full flex items-center justify-center mb-4">
               <Filter size={40} className="text-amber-500" />
             </div>
-            <h3 className="text-xl font-bold text-gray-900 mb-2">No Filters Selected</h3>
+            <h3 className="text-xl font-bold text-gray-900 mb-2">{t("noFiltersTitle")}</h3>
             <p className="text-gray-600 max-w-md">
-              Please select a crop or state from the filters above to view market data.
+              {t("noFiltersMessage")}
             </p>
           </div>
         ) : cropsToShow.length === 0 ? (
@@ -434,9 +457,9 @@ export default function FilterBar() {
             <div className="w-20 h-20 bg-red-100 rounded-full flex items-center justify-center mb-4">
               <X size={40} className="text-red-500" />
             </div>
-            <h3 className="text-xl font-bold text-gray-900 mb-2">No Data Found</h3>
+            <h3 className="text-xl font-bold text-gray-900 mb-2">{t("noDataTitle")}</h3>
             <p className="text-gray-600 max-w-md">
-              No market data available for the selected filters. Try different combinations.
+              {t("noDataMessage")}
             </p>
           </div>
         ) : (
@@ -456,25 +479,25 @@ export default function FilterBar() {
                     <div>
                       <div className="inline-flex items-center gap-2 px-3 py-1 bg-white/20 backdrop-blur-sm rounded-full mb-2">
                         <TrendingUp size={16} className="text-white" />
-                        <span className="text-xs font-bold text-white">HIGHEST PRICE</span>
+                        <span className="text-xs font-bold text-white">{t("highestPrice")}</span>
                       </div>
                       <h3 className="text-3xl font-bold text-white mb-1">{highestPriceMarket.crop}</h3>
                       <p className="text-amber-100 text-lg">{highestPriceMarket.market}, {highestPriceMarket.state}</p>
                     </div>
                     <div className="text-right">
                       <div className="text-4xl font-black text-white mb-1">{highestPriceMarket.price}</div>
-                      <div className="text-sm text-amber-100">per quintal</div>
+                      <div className="text-sm text-amber-100">{t("perQuintal")}</div>
                     </div>
                   </div>
 
                   <div className="flex items-center justify-between pt-4 border-t border-white/20">
                     <div className="flex items-center gap-4">
                       <div>
-                        <p className="text-xs text-amber-100">Date</p>
+                        <p className="text-xs text-amber-100">{t("date")}</p>
                         <p className="text-sm font-semibold text-white">{highestPriceMarket.date}</p>
                       </div>
                       <div>
-                        <p className="text-xs text-amber-100">Trend</p>
+                        <p className="text-xs text-amber-100">{t("trend")}</p>
                         <div className="inline-flex items-center gap-1 px-2 py-1 bg-white/20 backdrop-blur-sm rounded-full">
                           {getTrendIcon(highestPriceMarket.trend)}
                           <span className="text-sm font-semibold text-white">{highestPriceMarket.trend}</span>
@@ -482,8 +505,8 @@ export default function FilterBar() {
                       </div>
                     </div>
                     <div className="px-4 py-2 bg-white/20 backdrop-blur-sm rounded-lg">
-                      <p className="text-xs text-amber-100">Best Market</p>
-                      <p className="text-sm font-bold text-white">Top Price</p>
+                      <p className="text-xs text-amber-100">{t("bestMarket")}</p>
+                      <p className="text-sm font-bold text-white">{t("topPrice")}</p>
                     </div>
                   </div>
                 </div>
@@ -495,16 +518,16 @@ export default function FilterBar() {
               <table className="w-full">
                 <thead>
                   <tr className="border-b-2 border-gray-200">
-                    <th className="px-4 py-3 text-left text-sm font-semibold text-gray-700">Crop</th>
-                    <th className="px-4 py-3 text-left text-sm font-semibold text-gray-700">Market</th>
-                    <th className="px-4 py-3 text-left text-sm font-semibold text-gray-700">State</th>
-                    <th className="px-4 py-3 text-left text-sm font-semibold text-gray-700">Price</th>
-                    <th className="px-4 py-3 text-left text-sm font-semibold text-gray-700">Date</th>
-                    <th className="px-4 py-3 text-left text-sm font-semibold text-gray-700">Trend</th>
+                    <th className="px-4 py-3 text-left text-sm font-semibold text-gray-700">{t("tableHeaders.crop")}</th>
+                    <th className="px-4 py-3 text-left text-sm font-semibold text-gray-700">{t("tableHeaders.market")}</th>
+                    <th className="px-4 py-3 text-left text-sm font-semibold text-gray-700">{t("tableHeaders.state")}</th>
+                    <th className="px-4 py-3 text-left text-sm font-semibold text-gray-700">{t("tableHeaders.price")}</th>
+                    <th className="px-4 py-3 text-left text-sm font-semibold text-gray-700">{t("tableHeaders.date")}</th>
+                    <th className="px-4 py-3 text-left text-sm font-semibold text-gray-700">{t("tableHeaders.trend")}</th>
                   </tr>
                 </thead>
                 <tbody>
-                  {cropsToShow.map((item, index) => (
+                  {paginatedCrops.map((item, index) => (
                     <tr
                       key={`${item.crop}-${item.market}-${index}`}
                       className="border-b border-gray-100 hover:bg-amber-50/50 transition-colors"
@@ -512,7 +535,7 @@ export default function FilterBar() {
                       <td className="px-4 py-4 text-sm font-medium text-gray-900">{item.crop}</td>
                       <td className="px-4 py-4 text-sm text-gray-700">{item.market}</td>
                       <td className="px-4 py-4 text-sm text-gray-700">{item.state}</td>
-                      <td className="px-4 py-4 text-sm font-semibold text-gray-900">{item.price} / quintal</td>
+                      <td className="px-4 py-4 text-sm font-semibold text-gray-900">{item.price} / {t("perQuintal")}</td>
                       <td className="px-4 py-4 text-sm text-gray-600">{item.date}</td>
                       <td className="px-4 py-4">
                         <div className={`inline-flex items-center gap-1 px-2 py-1 rounded-full text-xs font-medium ${getTrendColor(item.trend)}`}>
@@ -528,7 +551,7 @@ export default function FilterBar() {
 
             {/* Mobile Card View */}
             <div className="md:hidden space-y-4">
-              {cropsToShow.map((item, index) => (
+              {paginatedCrops.map((item, index) => (
                 <div
                   key={`${item.crop}-${item.market}-${index}`}
                   className="bg-gradient-to-br from-white to-gray-50 rounded-xl p-4 border border-gray-200 hover:border-amber-300 hover:shadow-md transition-all"
@@ -546,15 +569,15 @@ export default function FilterBar() {
 
                   <div className="grid grid-cols-2 gap-3">
                     <div>
-                      <p className="text-xs text-gray-500 mb-1">State</p>
+                      <p className="text-xs text-gray-500 mb-1">{t("tableHeaders.state")}</p>
                       <p className="text-sm font-medium text-gray-900">{item.state}</p>
                     </div>
                     <div>
-                      <p className="text-xs text-gray-500 mb-1">Price</p>
+                      <p className="text-xs text-gray-500 mb-1">{t("tableHeaders.price")}</p>
                       <p className="text-sm font-bold text-amber-600">{item.price}</p>
                     </div>
                     <div className="col-span-2">
-                      <p className="text-xs text-gray-500 mb-1">Date</p>
+                      <p className="text-xs text-gray-500 mb-1">{t("tableHeaders.date")}</p>
                       <p className="text-sm text-gray-700">{item.date}</p>
                     </div>
                   </div>
@@ -562,10 +585,47 @@ export default function FilterBar() {
               ))}
             </div>
 
+            {/* Pagination */}
+            {totalPages > 1 && (
+              <div className="mt-6 pt-4 border-t border-gray-200">
+                <Pagination>
+                  <PaginationContent>
+                    <PaginationItem>
+                      <PaginationPrevious
+                        onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}
+                        disabled={currentPage === 1}
+                        className={currentPage === 1 ? "opacity-50 cursor-not-allowed" : "cursor-pointer"}
+                      />
+                    </PaginationItem>
+
+                    {Array.from({ length: totalPages }, (_, i) => i + 1).map((page) => (
+                      <PaginationItem key={page}>
+                        <PaginationLink
+                          onClick={() => setCurrentPage(page)}
+                          isActive={currentPage === page}
+                          className="cursor-pointer"
+                        >
+                          {page}
+                        </PaginationLink>
+                      </PaginationItem>
+                    ))}
+
+                    <PaginationItem>
+                      <PaginationNext
+                        onClick={() => setCurrentPage((prev) => Math.min(prev + 1, totalPages))}
+                        disabled={currentPage === totalPages}
+                        className={currentPage === totalPages ? "opacity-50 cursor-not-allowed" : "cursor-pointer"}
+                      />
+                    </PaginationItem>
+                  </PaginationContent>
+                </Pagination>
+              </div>
+            )}
+
             {/* Results Count */}
             <div className="mt-6 pt-4 border-t border-gray-200 text-center">
               <p className="text-sm text-gray-600">
-                Showing <span className="font-semibold text-gray-900">{cropsToShow.length}</span> result{cropsToShow.length !== 1 ? 's' : ''}
+                {t("showing")} <span className="font-semibold text-gray-900">{paginatedCrops.length}</span> {t("of")} <span className="font-semibold text-gray-900">{cropsToShow.length}</span> {cropsToShow.length !== 1 ? t("results") : t("result")}
               </p>
             </div>
           </>

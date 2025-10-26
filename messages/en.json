@@ -111,9 +111,51 @@
     }
   },
   "dashboard": {
+    "sections": {
+      "welcome": "Welcome Back",
+      "dashboardTitle": "Your Farming Dashboard",
+      "dashboardSubtitle": "Real-time market insights, price trends, and data-driven decisions at your fingertips.",
+      "overview": "Dashboard Overview",
+      "overviewDesc": "General insights, highlights, and quick info for farmers.",
+      "totalCrops": "Total Crops",
+      "tracked": "Tracked Daily",
+      "markets": "Markets",
+      "locations": "Locations",
+      "updates": "Updates",
+      "daily": "Daily",
+      "realTime": "Real-time Data",
+      "cropPrices": "Crop Prices",
+      "cropPricesDesc": "Live market rates and historical price data for informed selling decisions.",
+      "marketTrends": "Market Trends",
+      "marketTrendsDesc": "Analyze price movements and forecast future market conditions.",
+      "nearbyMarkets": "Nearby Markets",
+      "nearbyMarketsDesc": "Discover local mandis and compare prices in your region.",
+      "comingSoon": "Coming Soon",
+      "comingSoonMessage": "We're working on bringing you detailed information about nearby markets and mandis. Stay tuned!"
+    },
+    "marketTrends": {
+      "noData": "Loading Trend Data",
+      "noDataMessage": "Please wait while we load the market trend data...",
+      "sampleData": "Sample Data",
+      "priceChange": "Price Change",
+      "change": "change",
+      "avgPrice": "Avg Price",
+      "highest": "Highest",
+      "lowest": "Lowest",
+      "peak": "peak",
+      "bottom": "bottom",
+      "priceHistory": "Price History",
+      "last7Days": "Last 7 Days",
+      "perQuintal": "per quintal",
+      "marketPrice": "Market Price",
+      "dataPoints": "data points",
+      "note": "Note",
+      "noteMessage": "Prices shown are indicative and may vary by market location and quality grade."
+    },
     "filterBar": {
       "cropLabel": "Select Crop",
       "stateLabel": "Select Region / State",
+      "sortLabel": "Sort by Price",
       "cropPlaceholder": "Search crop...",
       "statePlaceholder": "Search state...",
       "cropSearchPlaceholder": "Type to search crops...",
@@ -123,7 +165,43 @@
       "startTyping": "Start typing to see suggestions...",
       "selected": "Selected",
       "activeFilters": "Active Filters",
-      "clearAll": "Clear All"
+      "clearAll": "Clear All",
+      "sortOptions": {
+        "none": "No Sorting",
+        "highToLow": "Highest to Lowest",
+        "lowToHigh": "Lowest to Highest"
+      },
+      "sorted": "Sorted",
+      "sortedHighLow": "High → Low",
+      "sortedLowHigh": "Low → High",
+      "noFiltersTitle": "No Filters Selected",
+      "noFiltersMessage": "Please select a crop or state from the filters above to view market data.",
+      "noDataTitle": "No Data Found",
+      "noDataMessage": "No market data available for the selected filters. Try different combinations.",
+      "highestPrice": "HIGHEST PRICE",
+      "perQuintal": "per quintal",
+      "date": "Date",
+      "trend": "Trend",
+      "bestMarket": "Best Market",
+      "topPrice": "Top Price",
+      "tableHeaders": {
+        "crop": "Crop",
+        "market": "Market",
+        "state": "State",
+        "price": "Price",
+        "date": "Date",
+        "trend": "Trend"
+      },
+      "showing": "Showing",
+      "of": "of",
+      "result": "result",
+      "results": "results",
+      "pagination": {
+        "previous": "Previous",
+        "next": "Next",
+        "page": "Page",
+        "of": "of"
+      }
     }
   }
 }
