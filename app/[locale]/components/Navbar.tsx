@@ -54,7 +54,7 @@ const menuConfig = (t: (key: string) => string) => [
     type: "dropdown" as const,
     items: [
       { 
-        href: "/weather", 
+        href: "/weatherDashboard?section=weather-forecast", 
         title: t('weatherForecast'), 
         description: t('weatherForecastDescription') 
       },
