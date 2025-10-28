@@ -19,8 +19,24 @@ interface LocaleLayoutProps {
 }
 
 export const metadata = {
-  title: "AgroInsight",
-  description: "Helping farmers with crop insights and weather data.",
+  title: "AgroInsight - Agricultural Market Intelligence Platform",
+  description: "Real-time crop prices, market trends, and agricultural insights for farmers across India. Track mandi rates, commodity prices, and make informed farming decisions.",
+  keywords: "agriculture, crop prices, mandi rates, farming, India, agricultural market, commodity prices",
+  authors: [{ name: "AgroInsight" }],
+  icons: {
+    icon: [
+      { url: '/icon.svg', type: 'image/svg+xml' },
+      { url: '/favicon.ico', sizes: '32x32' },
+    ],
+    shortcut: '/icon.svg',
+  },
+  manifest: '/manifest.json',
+  openGraph: {
+    title: "AgroInsight - Agricultural Market Intelligence",
+    description: "Real-time crop prices and market trends for Indian farmers",
+    type: "website",
+    locale: "en_IN",
+  },
 };
 
 export default async function LocaleLayout({

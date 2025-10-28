@@ -1,0 +1,57 @@
+<svg width="64" height="64" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- Background with gradient (matching navbar logo) -->
+  <rect width="64" height="64" rx="16" fill="url(#gradient)"/>
+  
+  <!-- Leaf icon (matching Lucide Leaf icon from navbar) -->
+  <path d="M32 14C24 14 18 20 18 28C18 36 24 42 32 50C40 42 46 36 46 28C46 20 40 14 32 14Z" 
+        fill="white" 
+        opacity="0.95"/>
+  
+  <!-- Leaf vein -->
+  <path d="M32 14L32 50" 
+        stroke="url(#gradient)" 
+        stroke-width="2" 
+        stroke-linecap="round"/>
+  
+  <!-- Left veins -->
+  <path d="M32 22Q28 24 26 28" 
+        stroke="url(#gradient)" 
+        stroke-width="1.5" 
+        stroke-linecap="round" 
+        fill="none"/>
+  <path d="M32 30Q28 32 26 36" 
+        stroke="url(#gradient)" 
+        stroke-width="1.5" 
+        stroke-linecap="round" 
+        fill="none"/>
+  <path d="M32 38Q28 40 26 44" 
+        stroke="url(#gradient)" 
+        stroke-width="1.5" 
+        stroke-linecap="round" 
+        fill="none"/>
+  
+  <!-- Right veins -->
+  <path d="M32 22Q36 24 38 28" 
+        stroke="url(#gradient)" 
+        stroke-width="1.5" 
+        stroke-linecap="round" 
+        fill="none"/>
+  <path d="M32 30Q36 32 38 36" 
+        stroke="url(#gradient)" 
+        stroke-width="1.5" 
+        stroke-linecap="round" 
+        fill="none"/>
+  <path d="M32 38Q36 40 38 44" 
+        stroke="url(#gradient)" 
+        stroke-width="1.5" 
+        stroke-linecap="round" 
+        fill="none"/>
+  
+  <!-- Gradient Definition (matching navbar: amber-500 to yellow-500) -->
+  <defs>
+    <linearGradient id="gradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#f59e0b;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#eab308;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+</svg>
