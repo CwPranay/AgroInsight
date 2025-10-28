@@ -1,6 +1,7 @@
 "use client"
 
 import { motion } from "framer-motion"
+import { useRouter } from "next/navigation"
 import { CloudRain, Droplets } from "lucide-react"
 
 interface WeatherCardProps {
@@ -12,6 +13,7 @@ interface WeatherCardProps {
 }
 
 export function WeatherCard({ title, condition, rainfallLabel, humidityLabel, forecastButton }: WeatherCardProps) {
+  const router= useRouter()
   return (
     <motion.div
       initial={{ opacity: 0, x: 30 }}
@@ -54,7 +56,7 @@ export function WeatherCard({ title, condition, rainfallLabel, humidityLabel, fo
         </motion.div>
       </div>
 
-      <button className="w-full mt-6 py-3 bg-white text-blue-600 font-semibold rounded-xl hover:shadow-lg hover:scale-105 transition-all duration-300">
+      <button onClick={()=>router.push("/weatherDashboard?=weather-forecast")} className="w-full mt-6 py-3 bg-white text-blue-600 font-semibold rounded-xl hover:shadow-lg hover:scale-105 transition-all duration-300">
         {forecastButton}
       </button>
     </motion.div>

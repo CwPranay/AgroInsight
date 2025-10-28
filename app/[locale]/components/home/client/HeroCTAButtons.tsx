@@ -19,7 +19,7 @@ export function HeroCTAButtons({ primaryText, secondaryText }: HeroCTAButtonsPro
         <ArrowRight size={20} className="group-hover:translate-x-1 transition-transform" />
       </Link>
       <Link
-        href="/en/weather"
+        href="/weatherDashboard?=weather-forecast"
         className="inline-flex items-center gap-2 px-8 py-4 bg-white text-amber-600 font-semibold rounded-xl border-2 border-amber-200 hover:border-amber-400 hover:bg-amber-50 transition-all duration-300"
       >
         {secondaryText}
