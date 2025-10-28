@@ -1,0 +1,42 @@
+[
+  {
+    "commodity_id": 1,
+    "commodity_name": "Wheat"
+  },
+  {
+    "commodity_id": 2,
+    "commodity_name": "Rice"
+  },
+  {
+    "commodity_id": 3,
+    "commodity_name": "Tomato"
+  },
+  {
+    "commodity_id": 4,
+    "commodity_name": "Onion"
+  },
+  {
+    "commodity_id": 5,
+    "commodity_name": "Potato"
+  },
+  {
+    "commodity_id": 6,
+    "commodity_name": "Cotton"
+  },
+  {
+    "commodity_id": 7,
+    "commodity_name": "Soybean"
+  },
+  {
+    "commodity_id": 8,
+    "commodity_name": "Bajra"
+  },
+  {
+    "commodity_id": 9,
+    "commodity_name": "Maize"
+  },
+  {
+    "commodity_id": 10,
+    "commodity_name": "Groundnut"
+  }
+]

@@ -1,0 +1,84 @@
+[
+  {
+    "state_id": 1,
+    "state_name": "Maharashtra",
+    "districts": [
+      {
+        "district_id": 101,
+        "district_name": "Pune"
+      },
+      {
+        "district_id": 102,
+        "district_name": "Mumbai"
+      },
+      {
+        "district_id": 103,
+        "district_name": "Nagpur"
+      }
+    ]
+  },
+  {
+    "state_id": 2,
+    "state_name": "Gujarat",
+    "districts": [
+      {
+        "district_id": 201,
+        "district_name": "Ahmedabad"
+      },
+      {
+        "district_id": 202,
+        "district_name": "Surat"
+      },
+      {
+        "district_id": 203,
+        "district_name": "Rajkot"
+      }
+    ]
+  },
+  {
+    "state_id": 3,
+    "state_name": "Madhya Pradesh",
+    "districts": [
+      {
+        "district_id": 301,
+        "district_name": "Indore"
+      },
+      {
+        "district_id": 302,
+        "district_name": "Bhopal"
+      }
+    ]
+  },
+  {
+    "state_id": 4,
+    "state_name": "Karnataka",
+    "districts": [
+      {
+        "district_id": 401,
+        "district_name": "Bangalore"
+      },
+      {
+        "district_id": 402,
+        "district_name": "Mysore"
+      },
+      {
+        "district_id": 403,
+        "district_name": "Hubli"
+      }
+    ]
+  },
+  {
+    "state_id": 5,
+    "state_name": "Punjab",
+    "districts": [
+      {
+        "district_id": 501,
+        "district_name": "Ludhiana"
+      },
+      {
+        "district_id": 502,
+        "district_name": "Amritsar"
+      }
+    ]
+  }
+]

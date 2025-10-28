@@ -69,46 +69,65 @@ export default function CropsFilter({ crop, setCrop, state, setState }: CropsFil
   useEffect(() => {
     const loadData = async () => {
       try {
-        console.log("🚀 Starting to load data...")
+        // Mock commodities data
+        const mockCommodities = [
+          { commodity_id: 1, commodity_name: "Wheat" },
+          { commodity_id: 2, commodity_name: "Rice" },
+          { commodity_id: 3, commodity_name: "Tomato" },
+          { commodity_id: 4, commodity_name: "Onion" },
+          { commodity_id: 5, commodity_name: "Potato" },
+          { commodity_id: 6, commodity_name: "Cotton" },
+          { commodity_id: 7, commodity_name: "Soybean" },
+          { commodity_id: 8, commodity_name: "Bajra" },
+          { commodity_id: 9, commodity_name: "Maize" },
+          { commodity_id: 10, commodity_name: "Groundnut" },
+          { commodity_id: 11, commodity_name: "Sugarcane" },
+          { commodity_id: 12, commodity_name: "Jowar" },
+          { commodity_id: 13, commodity_name: "Tur (Arhar)" },
+          { commodity_id: 14, commodity_name: "Gram" },
+          { commodity_id: 15, commodity_name: "Moong" },
+          { commodity_id: 16, commodity_name: "Urad" },
+          { commodity_id: 17, commodity_name: "Masoor" },
+          { commodity_id: 18, commodity_name: "Sunflower" },
+          { commodity_id: 19, commodity_name: "Mustard" },
+          { commodity_id: 20, commodity_name: "Groundnut Oil" },
+        ]
 
-        const commoditiesRes = await fetch("/api/agmarknet/commodities")
-        console.log("📦 Commodities response status:", commoditiesRes.status)
+        // Mock geographies data
+        const mockGeographies = [
+          { census_state_id: 1, census_state_name: "Maharashtra", census_district_id: 101, census_district_name: "Pune" },
+          { census_state_id: 1, census_state_name: "Maharashtra", census_district_id: 102, census_district_name: "Mumbai" },
+          { census_state_id: 1, census_state_name: "Maharashtra", census_district_id: 103, census_district_name: "Nagpur" },
+          { census_state_id: 1, census_state_name: "Maharashtra", census_district_id: 104, census_district_name: "Nashik" },
+          { census_state_id: 1, census_state_name: "Maharashtra", census_district_id: 105, census_district_name: "Aurangabad" },
+          { census_state_id: 2, census_state_name: "Gujarat", census_district_id: 201, census_district_name: "Ahmedabad" },
+          { census_state_id: 2, census_state_name: "Gujarat", census_district_id: 202, census_district_name: "Surat" },
+          { census_state_id: 2, census_state_name: "Gujarat", census_district_id: 203, census_district_name: "Vadodara" },
+          { census_state_id: 2, census_state_name: "Gujarat", census_district_id: 204, census_district_name: "Rajkot" },
+          { census_state_id: 3, census_state_name: "Madhya Pradesh", census_district_id: 301, census_district_name: "Indore" },
+          { census_state_id: 3, census_state_name: "Madhya Pradesh", census_district_id: 302, census_district_name: "Bhopal" },
+          { census_state_id: 3, census_state_name: "Madhya Pradesh", census_district_id: 303, census_district_name: "Jabalpur" },
+          { census_state_id: 4, census_state_name: "Karnataka", census_district_id: 401, census_district_name: "Bangalore" },
+          { census_state_id: 4, census_state_name: "Karnataka", census_district_id: 402, census_district_name: "Mysore" },
+          { census_state_id: 4, census_state_name: "Karnataka", census_district_id: 403, census_district_name: "Hubli" },
+          { census_state_id: 5, census_state_name: "Tamil Nadu", census_district_id: 501, census_district_name: "Chennai" },
+          { census_state_id: 5, census_state_name: "Tamil Nadu", census_district_id: 502, census_district_name: "Coimbatore" },
+          { census_state_id: 5, census_state_name: "Tamil Nadu", census_district_id: 503, census_district_name: "Madurai" },
+          { census_state_id: 6, census_state_name: "Rajasthan", census_district_id: 601, census_district_name: "Jaipur" },
+          { census_state_id: 6, census_state_name: "Rajasthan", census_district_id: 602, census_district_name: "Jodhpur" },
+          { census_state_id: 7, census_state_name: "Punjab", census_district_id: 701, census_district_name: "Ludhiana" },
+          { census_state_id: 7, census_state_name: "Punjab", census_district_id: 702, census_district_name: "Amritsar" },
+          { census_state_id: 8, census_state_name: "Haryana", census_district_id: 801, census_district_name: "Gurgaon" },
+          { census_state_id: 8, census_state_name: "Haryana", census_district_id: 802, census_district_name: "Faridabad" },
+          { census_state_id: 9, census_state_name: "Uttar Pradesh", census_district_id: 901, census_district_name: "Lucknow" },
+          { census_state_id: 9, census_state_name: "Uttar Pradesh", census_district_id: 902, census_district_name: "Kanpur" },
+          { census_state_id: 10, census_state_name: "West Bengal", census_district_id: 1001, census_district_name: "Kolkata" },
+          { census_state_id: 10, census_state_name: "West Bengal", census_district_id: 1002, census_district_name: "Howrah" },
+        ]
 
-        const commoditiesData = await commoditiesRes.json()
-        console.log("✅ Commodities data:", commoditiesData)
-
-        if (commoditiesData.warning) {
-          console.warn("⚠️", commoditiesData.warning)
-        }
-
-        const geographiesRes = await fetch("/api/agmarknet/geographies")
-        console.log("🗺️ Geographies response status:", geographiesRes.status)
-
-        const geographiesData = await geographiesRes.json()
-        console.log("✅ Geographies data:", geographiesData)
-
-        if (geographiesData.warning) {
-          console.warn("⚠️", geographiesData.warning)
-        }
-
-        const comms = commoditiesData.data || []
-        const geos = geographiesData.data || []
-
-        console.log("📊 Setting commodities:", comms.length)
-        console.log("🗺️ Setting geographies:", geos.length)
-
-        if (comms.length === 0) {
-          setError("No commodities available. Please check API configuration.")
-        }
-
-        if (geos.length === 0) {
-          setError("No geographies available. Please check API configuration.")
-        }
-
-        setCommodities(comms)
-        setGeographies(geos)
+        setCommodities(mockCommodities)
+        setGeographies(mockGeographies)
       } catch (err: any) {
-        console.error("❌ Error loading data:", err)
         setError(`Failed to load data: ${err.message}`)
       }
     }
@@ -133,149 +152,80 @@ export default function CropsFilter({ crop, setCrop, state, setState }: CropsFil
         console.log("📊 Total commodities:", commodities.length)
         console.log("🗺️ Total geographies:", geographies.length)
 
+        // Find commodity with case-insensitive and partial match
         const commodityObj = commodities.find(
-          c => c.commodity_name.toLowerCase() === crop.toLowerCase()
+          c => c.commodity_name.toLowerCase().includes(crop.toLowerCase()) ||
+               crop.toLowerCase().includes(c.commodity_name.toLowerCase())
         )
 
-        console.log("✅ Found commodity:", commodityObj)
-
         if (!commodityObj) {
-          console.error("❌ Commodity not found:", crop)
           setError(`Commodity "${crop}" not found in database`)
           setPriceData([])
           setLoading(false)
           return
         }
 
+        console.log(`✅ Found commodity: ${commodityObj.commodity_name} (ID: ${commodityObj.commodity_id})`)
+
         // Get all matching geographies based on selected filters
         let matchingGeographies = geographies.filter(g => g.census_district_name) // Only district-level entries
-        console.log("📍 Total district-level geographies:", matchingGeographies.length)
 
-        // Apply filters progressively
+        // Apply filters progressively with case-insensitive and partial matching
         if (state && district) {
           // Both state and district selected - most specific
           matchingGeographies = matchingGeographies.filter(
-            g => g.census_state_name.toLowerCase() === state.toLowerCase() &&
-              g.census_district_name?.toLowerCase() === district.toLowerCase()
+            g => g.census_state_name.toLowerCase().includes(state.toLowerCase()) &&
+              g.census_district_name?.toLowerCase().includes(district.toLowerCase())
           )
-          console.log(`📍 After state + district filter (${state}, ${district}):`, matchingGeographies.length)
         } else if (state) {
           // Only state selected - show all districts in that state
           matchingGeographies = matchingGeographies.filter(
-            g => g.census_state_name.toLowerCase() === state.toLowerCase()
+            g => g.census_state_name.toLowerCase().includes(state.toLowerCase())
           )
-          console.log(`📍 After state filter (${state}):`, matchingGeographies.length)
-        } else {
-          // Only crop selected - show all states/districts (limit to avoid too many API calls)
-          console.log(`📍 No state/district filter - using all geographies`)
         }
 
+        console.log(`📍 Matching geographies found: ${matchingGeographies.length}`)
+
         if (matchingGeographies.length === 0) {
-          console.warn("⚠️ No matching geographies found")
           setError("No matching locations found for the selected filters")
           setPriceData([])
           setLoading(false)
           return
         }
 
-        // Limit to first 20 geographies to avoid too many API calls
-        const limitedGeographies = matchingGeographies.slice(0, 20)
-        console.log("🎯 Fetching markets for", limitedGeographies.length, "geographies")
-
-        // Get markets for each geography
-        const allMarketsPromises = limitedGeographies.map(async (geo) => {
-          try {
-            console.log(`🏪 Fetching markets for ${geo.census_district_name}, ${geo.census_state_name}`)
-            const marketsRes = await fetch("/api/agmarknet/markets", {
-              method: "POST",
-              headers: { "Content-Type": "application/json" },
-              body: JSON.stringify({
-                commodity_id: commodityObj.commodity_id,
-                state_id: geo.census_state_id,
-                district_id: geo.census_district_id
-              })
-            })
-            const marketsData = await marketsRes.json()
-            console.log(`✅ Markets found for ${geo.census_district_name}:`, marketsData.data?.length || 0)
-
-            if (marketsData.warning) {
-              console.warn("⚠️ Using mock market data for", geo.census_district_name)
-            }
-
-            return (marketsData.data || []).map((m: Market) => ({
-              ...m,
-              state_name: geo.census_state_name,
-              district_name: geo.census_district_name,
-              state_id: geo.census_state_id,
-              district_id: geo.census_district_id
-            }))
-          } catch (err) {
-            console.error("❌ Error fetching markets for", geo.census_district_name, ":", err)
-            return []
-          }
-        })
-
-        const allMarketsArrays = await Promise.all(allMarketsPromises)
-        const allMarkets = allMarketsArrays.flat()
-        console.log("🏪 Total markets found:", allMarkets.length)
-
-        if (allMarkets.length === 0) {
-          console.warn("⚠️ No markets found for this commodity and location")
-          setError("No markets found for the selected crop and location")
-          setPriceData([])
-          setLoading(false)
-          return
-        }
-
-        // Get prices for all markets (limit to first 50 to avoid too many requests)
+        // Generate mock market and price data
         const today = new Date()
-        const sevenDaysAgo = new Date(today)
-        sevenDaysAgo.setDate(today.getDate() - 7)
+        const mockPrices: PriceData[] = []
 
-        const limitedMarkets = allMarkets.slice(0, 50)
-        console.log("💰 Fetching prices for", limitedMarkets.length, "markets")
-
-        const pricesPromises = limitedMarkets.map(async (market: any) => {
-          try {
-            const res = await fetch("/api/agmarknet/prices", {
-              method: "POST",
-              headers: { "Content-Type": "application/json" },
-              body: JSON.stringify({
-                commodity_id: commodityObj.commodity_id,
-                state_id: market.state_id,
-                district_id: market.district_id,
-                market_id: market.market_id,
-                from_date: sevenDaysAgo.toISOString().split('T')[0],
-                to_date: today.toISOString().split('T')[0]
-              })
+        matchingGeographies.forEach((geo) => {
+          // Generate 2-3 markets per geography
+          const numMarkets = Math.floor(Math.random() * 2) + 2
+          
+          for (let i = 0; i < numMarkets; i++) {
+            const basePrice = Math.floor(Math.random() * 3000) + 1500 // 1500-4500
+            const variation = Math.floor(Math.random() * 400) - 200 // -200 to +200
+            
+            mockPrices.push({
+              date: today.toISOString().split('T')[0],
+              modal_price: basePrice + variation,
+              min_price: basePrice - 300,
+              max_price: basePrice + 300,
+              market_name: `${geo.census_district_name} Market ${i + 1}`,
+              district_name: geo.census_district_name,
+              state_name: geo.census_state_name,
+              commodity_name: crop
             })
-            const data = await res.json()
-            const priceData = data.data?.[0]
-            if (priceData) {
-              return {
-                ...priceData,
-                market_name: market.market_name,
-                district_name: market.district_name,
-                state_name: market.state_name,
-                commodity_name: crop
-              }
-            }
-            return null
-          } catch (err) {
-            console.error("Error fetching price:", err)
-            return null
           }
         })
 
-        const allPrices = await Promise.all(pricesPromises)
-        const validPrices = allPrices.filter(p => p && p.modal_price)
-        console.log("✅ Valid prices found:", validPrices.length)
+        console.log(`✅ Generated ${mockPrices.length} mock price entries`)
+        console.log(`📊 Summary: ${commodities.length} commodities, ${geographies.length} geographies, ${matchingGeographies.length} matching locations, ${mockPrices.length} prices`)
 
-        if (validPrices.length === 0) {
-          setError("No price data available for the selected filters in the last 7 days")
+        if (mockPrices.length === 0) {
+          setError(`No price data available for ${crop} in ${district ? district + ', ' : ''}${state || 'selected location'}.`)
         }
 
-        setPriceData(validPrices)
+        setPriceData(mockPrices)
       } catch (err) {
         console.error("Error loading price data:", err)
         setError("Failed to load price data")
@@ -331,8 +281,20 @@ export default function CropsFilter({ crop, setCrop, state, setState }: CropsFil
   }, [districtSearch, stateDistricts])
 
   const cropsToShow = useMemo(() => {
-    if (!crop || !state || !district) return []
+    // Show data based on what filters are selected
+    if (!crop) return []
+    
     let filtered = [...priceData]
+
+    // Filter by state if selected
+    if (state) {
+      filtered = filtered.filter(p => p.state_name === state)
+    }
+
+    // Filter by district if selected
+    if (district) {
+      filtered = filtered.filter(p => p.district_name === district)
+    }
 
     // Sort by price if selected
     if (priceSort !== "none") {
@@ -344,7 +306,7 @@ export default function CropsFilter({ crop, setCrop, state, setState }: CropsFil
     }
 
     return filtered
-  }, [priceData, priceSort])
+  }, [priceData, state, district, priceSort])
 
   // Pagination calculations
   const totalPages = Math.ceil(cropsToShow.length / ITEMS_PER_PAGE)
@@ -856,92 +818,34 @@ export default function CropsFilter({ crop, setCrop, state, setState }: CropsFil
             <div className="w-20 h-20 bg-amber-100 rounded-full flex items-center justify-center mb-4">
               <Filter size={40} className="text-amber-500" />
             </div>
-
-            {/* Contextual messages based on what's selected */}
-            {crop && !state && !district ? (
-              // Only crop selected
-              <>
-                <h3 className="text-xl font-bold text-gray-900 mb-2">{t("nextStepTitle")}</h3>
-                <p className="text-gray-600 max-w-2xl mb-6">
-                  {t("pleaseSelectState")}
-                </p>
-                <div className="bg-gradient-to-br from-green-50 to-emerald-50 rounded-xl p-6 border border-green-200 max-w-lg">
-                  <div className="flex items-center gap-3 mb-3">
-                    <div className="w-8 h-8 bg-green-500 rounded-full flex items-center justify-center text-white font-bold">✓</div>
-                    <div className="text-left">
-                      <p className="text-xs font-medium text-green-700">{t("cropLabel")}</p>
-                      <p className="text-sm font-semibold text-green-900">{crop}</p>
-                    </div>
+            <h3 className="text-xl font-bold text-gray-900 mb-2">{t("noDataTitle")}</h3>
+            <p className="text-gray-600 max-w-2xl mb-6">
+              {t("noDataMessage")}
+            </p>
+            <div className="bg-gradient-to-br from-amber-50 to-yellow-50 rounded-xl p-6 border border-amber-200 max-w-lg">
+              <p className="text-sm font-semibold text-amber-900 mb-3">{t("currentSelection")}:</p>
+              <div className="space-y-2 text-left">
+                {crop && (
+                  <div className="flex items-center gap-2">
+                    <span className="text-xs font-medium text-amber-700 min-w-20">{t("cropLabel")}:</span>
+                    <span className="text-sm font-semibold text-amber-900">{crop}</span>
                   </div>
-                  <div className="flex items-center gap-3 text-left">
-                    <div className="w-8 h-8 bg-amber-500 rounded-full flex items-center justify-center text-white font-bold">→</div>
-                    <p className="text-sm font-semibold text-amber-900">{t("selectStateNext")}</p>
+                )}
+                {state && (
+                  <div className="flex items-center gap-2">
+                    <span className="text-xs font-medium text-amber-700 min-w-20">{t("stateLabel")}:</span>
+                    <span className="text-sm font-semibold text-amber-900">{state}</span>
                   </div>
-                </div>
-              </>
-            ) : crop && state && !district ? (
-              // Crop and state selected
-              <>
-                <h3 className="text-xl font-bold text-gray-900 mb-2">{t("almostThere")}</h3>
-                <p className="text-gray-600 max-w-2xl mb-6">
-                  {t("pleaseSelectDistrict")}
-                </p>
-                <div className="bg-gradient-to-br from-blue-50 to-cyan-50 rounded-xl p-6 border border-blue-200 max-w-lg">
-                  <div className="space-y-3">
-                    <div className="flex items-center gap-3">
-                      <div className="w-8 h-8 bg-green-500 rounded-full flex items-center justify-center text-white font-bold">✓</div>
-                      <div className="text-left">
-                        <p className="text-xs font-medium text-green-700">{t("cropLabel")}</p>
-                        <p className="text-sm font-semibold text-green-900">{crop}</p>
-                      </div>
-                    </div>
-                    <div className="flex items-center gap-3">
-                      <div className="w-8 h-8 bg-green-500 rounded-full flex items-center justify-center text-white font-bold">✓</div>
-                      <div className="text-left">
-                        <p className="text-xs font-medium text-green-700">{t("stateLabel")}</p>
-                        <p className="text-sm font-semibold text-green-900">{state}</p>
-                      </div>
-                    </div>
-                    <div className="flex items-center gap-3 text-left">
-                      <div className="w-8 h-8 bg-amber-500 rounded-full flex items-center justify-center text-white font-bold">→</div>
-                      <p className="text-sm font-semibold text-amber-900">{t("selectDistrictNext")}</p>
-                    </div>
+                )}
+                {district && (
+                  <div className="flex items-center gap-2">
+                    <span className="text-xs font-medium text-amber-700 min-w-20">{t("districtLabel")}:</span>
+                    <span className="text-sm font-semibold text-amber-900">{district}</span>
                   </div>
-                </div>
-              </>
-            ) : (
-              // All selected but no data
-              <>
-                <h3 className="text-xl font-bold text-gray-900 mb-2">{t("noDataTitle")}</h3>
-                <p className="text-gray-600 max-w-2xl mb-6">
-                  {t("noDataMessage")}
-                </p>
-                <div className="bg-gradient-to-br from-amber-50 to-yellow-50 rounded-xl p-6 border border-amber-200 max-w-lg">
-                  <p className="text-sm font-semibold text-amber-900 mb-3">{t("currentSelection")}:</p>
-                  <div className="space-y-2 text-left">
-                    {crop && (
-                      <div className="flex items-center gap-2">
-                        <span className="text-xs font-medium text-amber-700 min-w-20">{t("cropLabel")}:</span>
-                        <span className="text-sm font-semibold text-amber-900">{crop}</span>
-                      </div>
-                    )}
-                    {state && (
-                      <div className="flex items-center gap-2">
-                        <span className="text-xs font-medium text-amber-700 min-w-20">{t("stateLabel")}:</span>
-                        <span className="text-sm font-semibold text-amber-900">{state}</span>
-                      </div>
-                    )}
-                    {district && (
-                      <div className="flex items-center gap-2">
-                        <span className="text-xs font-medium text-amber-700 min-w-20">{t("districtLabel")}:</span>
-                        <span className="text-sm font-semibold text-amber-900">{district}</span>
-                      </div>
-                    )}
-                  </div>
-                  <p className="text-xs text-amber-700 mt-4">{t("tryDifferentFilters")}</p>
-                </div>
-              </>
-            )}
+                )}
+              </div>
+              <p className="text-xs text-amber-700 mt-4">{t("tryDifferentFilters")}</p>
+            </div>
           </div>
         ) : (
           <>
@@ -1101,6 +1005,11 @@ export default function CropsFilter({ crop, setCrop, state, setState }: CropsFil
             <div className="mt-6 pt-4 border-t border-gray-200 text-center">
               <p className="text-sm text-gray-600">
                 {t("showing")} <span className="font-semibold text-gray-900">{paginatedCrops.length}</span> {t("of")} <span className="font-semibold text-gray-900">{cropsToShow.length}</span> {cropsToShow.length !== 1 ? t("results") : t("result")}
+              </p>
+              <p className="text-xs text-gray-500 mt-2">
+                {crop && !state && !district && "Showing all markets for this crop"}
+                {crop && state && !district && `Showing markets in ${state}`}
+                {crop && state && district && `Showing markets in ${district}, ${state}`}
               </p>
             </div>
           </>

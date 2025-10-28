@@ -4,8 +4,33 @@ import NodeCache from "node-cache";
 const BASE_URL = "https://api.ceda.ashoka.edu.in/v1/agmarknet";
 const API_KEY = process.env.AGMARKNET_API_KEY;
 
-// Cache for 1 hour
-const cache = new NodeCache({ stdTTL: 3600 });
+// Cache for 10 minutes (600 seconds)
+const cache = new NodeCache({ stdTTL: 600 });
+
+async function getCachedData<T>(cacheKey: string, fetchFn: () => Promise<T>): Promise<T> {
+    // Check cache first
+    const cached = cache.get<T>(cacheKey);
+    if (cached) {
+        console.log(`✅ [CACHE HIT] ${cacheKey}`);
+        return cached;
+    }
+
+    try {
+        console.log(`🌐 [API CALL] ${cacheKey}`);
+        const data = await fetchFn();
+        cache.set(cacheKey, data);
+        console.log(`✅ [API SUCCESS] ${cacheKey}`);
+        return data;
+    } catch (error: any) {
+        // Handle rate limit errors
+        if (error.message?.includes('429') || error.message?.includes('Too Many Requests')) {
+            console.error(`⚠️ [RATE LIMIT] ${cacheKey} - API rate limit exceeded`);
+            throw new Error('AgMarkNet API rate limit exceeded. Please try again later.');
+        }
+        console.error(`❌ [API ERROR] ${cacheKey}:`, error.message);
+        throw error;
+    }
+}
 
 async function safeFetch(url: string, options?: RequestInit) {
     const headers = {
@@ -14,37 +39,49 @@ async function safeFetch(url: string, options?: RequestInit) {
         "Authorization": `Bearer ${API_KEY}`,
     };
 
-    const cacheKey = `${url}:${JSON.stringify(options?.body || {})}`;
-    const cached = cache.get(cacheKey);
-    if (cached) return cached;
-
     const res = await fetch(url, { ...options, headers });
     if (!res.ok) {
         const text = await res.text();
         throw new Error(`${res.status} ${res.statusText}: ${text}`);
     }
 
-    const data = await res.json();
-    cache.set(cacheKey, data);
-    return data;
+    return await res.json();
 }
 
 export async function getCommodities() {
-    const data = await safeFetch(`${BASE_URL}/commodities`);
+    const cacheKey = 'commodities';
+    
+    const data = await getCachedData(
+        cacheKey,
+        () => safeFetch(`${BASE_URL}/commodities`)
+    );
+    
     return data.output?.data || [];
 }
 
 export async function getGeographies() {
-    const data = await safeFetch(`${BASE_URL}/geographies`);
+    const cacheKey = 'geographies';
+    
+    const data = await getCachedData(
+        cacheKey,
+        () => safeFetch(`${BASE_URL}/geographies`)
+    );
+    
     return data.output?.data || [];
 }
 
 export async function getMarkets(commodity_id: number, state_id: number, district_id: number) {
+    const cacheKey = `markets:${commodity_id}:${state_id}:${district_id}`;
     const body = { commodity_id, state_id, district_id, indicator: "price" };
-    const data = await safeFetch(`${BASE_URL}/markets`, {
-        method: "POST",
-        body: JSON.stringify(body),
-    });
+    
+    const data = await getCachedData(
+        cacheKey,
+        () => safeFetch(`${BASE_URL}/markets`, {
+            method: "POST",
+            body: JSON.stringify(body),
+        })
+    );
+    
     return data.output?.data || [];
 }
 
@@ -63,6 +100,7 @@ export async function getPrices({
     from_date: string;
     to_date: string;
 }) {
+    const cacheKey = `prices:${commodity_id}:${state_id}:${district_id}:${market_id}:${from_date}:${to_date}`;
     const body = {
         commodity_id,
         state_id,
@@ -73,10 +111,13 @@ export async function getPrices({
         indicator: "price",
     };
 
-    const data = await safeFetch(`${BASE_URL}/prices`, {
-        method: "POST",
-        body: JSON.stringify(body),
-    });
+    const data = await getCachedData(
+        cacheKey,
+        () => safeFetch(`${BASE_URL}/prices`, {
+            method: "POST",
+            body: JSON.stringify(body),
+        })
+    );
 
     return data.output?.data || [];
 }

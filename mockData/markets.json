@@ -1,0 +1,62 @@
+[
+  {
+    "market_id": 1001,
+    "market_name": "Pune APMC Market",
+    "state_name": "Maharashtra",
+    "district_name": "Pune"
+  },
+  {
+    "market_id": 1002,
+    "market_name": "Vashi Agricultural Market",
+    "state_name": "Maharashtra",
+    "district_name": "Mumbai"
+  },
+  {
+    "market_id": 1003,
+    "market_name": "Nagpur Krishi Upaj Mandi",
+    "state_name": "Maharashtra",
+    "district_name": "Nagpur"
+  },
+  {
+    "market_id": 2001,
+    "market_name": "Ahmedabad Grain Market",
+    "state_name": "Gujarat",
+    "district_name": "Ahmedabad"
+  },
+  {
+    "market_id": 2002,
+    "market_name": "Surat Vegetable Market",
+    "state_name": "Gujarat",
+    "district_name": "Surat"
+  },
+  {
+    "market_id": 2003,
+    "market_name": "Rajkot Mandi",
+    "state_name": "Gujarat",
+    "district_name": "Rajkot"
+  },
+  {
+    "market_id": 3001,
+    "market_name": "Indore Krishi Upaj Mandi",
+    "state_name": "Madhya Pradesh",
+    "district_name": "Indore"
+  },
+  {
+    "market_id": 3002,
+    "market_name": "Bhopal Agricultural Market",
+    "state_name": "Madhya Pradesh",
+    "district_name": "Bhopal"
+  },
+  {
+    "market_id": 4001,
+    "market_name": "Bangalore APMC Yeshwanthpur",
+    "state_name": "Karnataka",
+    "district_name": "Bangalore"
+  },
+  {
+    "market_id": 5001,
+    "market_name": "Ludhiana Grain Market",
+    "state_name": "Punjab",
+    "district_name": "Ludhiana"
+  }
+]

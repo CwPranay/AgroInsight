@@ -1,13 +1,6 @@
 import { NextResponse } from "next/server";
 import { getMarkets } from "@/lib/agmarknet";
 
-// Mock markets data
-const MOCK_MARKETS = [
-    { market_id: 1, market_name: "Pune Market" },
-    { market_id: 2, market_name: "Mumbai Market" },
-    { market_id: 3, market_name: "Nagpur Market" },
-];
-
 export async function POST(req: Request) {
     try {
         const body = await req.json();
@@ -21,11 +14,17 @@ export async function POST(req: Request) {
         }
 
         const markets = await getMarkets(commodity_id, state_id, district_id);
-        return NextResponse.json({ data: markets });
-    } catch (err: any) {
+        
         return NextResponse.json({ 
-            data: MOCK_MARKETS,
-            warning: "Using mock data - API unavailable"
+            data: markets || [],
+            count: markets?.length || 0
         });
+    } catch (err: any) {
+        console.error("Markets API error:", err);
+        return NextResponse.json({ 
+            error: err.message,
+            data: [],
+            count: 0
+        }, { status: 500 });
     }
 }
