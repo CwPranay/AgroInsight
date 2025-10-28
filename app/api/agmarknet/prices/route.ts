@@ -27,7 +27,6 @@ export async function POST(req: Request) {
             count: prices?.length || 0
         });
     } catch (err: any) {
-        console.error("Prices API error:", err);
         return NextResponse.json({ 
             error: err.message,
             data: [],

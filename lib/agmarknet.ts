@@ -8,26 +8,19 @@ const API_KEY = process.env.AGMARKNET_API_KEY;
 const cache = new NodeCache({ stdTTL: 600 });
 
 async function getCachedData<T>(cacheKey: string, fetchFn: () => Promise<T>): Promise<T> {
-    // Check cache first
     const cached = cache.get<T>(cacheKey);
     if (cached) {
-        console.log(`✅ [CACHE HIT] ${cacheKey}`);
         return cached;
     }
 
     try {
-        console.log(`🌐 [API CALL] ${cacheKey}`);
         const data = await fetchFn();
         cache.set(cacheKey, data);
-        console.log(`✅ [API SUCCESS] ${cacheKey}`);
         return data;
     } catch (error: any) {
-        // Handle rate limit errors
         if (error.message?.includes('429') || error.message?.includes('Too Many Requests')) {
-            console.error(`⚠️ [RATE LIMIT] ${cacheKey} - API rate limit exceeded`);
             throw new Error('AgMarkNet API rate limit exceeded. Please try again later.');
         }
-        console.error(`❌ [API ERROR] ${cacheKey}:`, error.message);
         throw error;
     }
 }
@@ -50,30 +43,30 @@ async function safeFetch(url: string, options?: RequestInit) {
 
 export async function getCommodities() {
     const cacheKey = 'commodities';
-    
+
     const data = await getCachedData(
         cacheKey,
         () => safeFetch(`${BASE_URL}/commodities`)
     );
-    
+
     return data.output?.data || [];
 }
 
 export async function getGeographies() {
     const cacheKey = 'geographies';
-    
+
     const data = await getCachedData(
         cacheKey,
         () => safeFetch(`${BASE_URL}/geographies`)
     );
-    
+
     return data.output?.data || [];
 }
 
 export async function getMarkets(commodity_id: number, state_id: number, district_id: number) {
     const cacheKey = `markets:${commodity_id}:${state_id}:${district_id}`;
     const body = { commodity_id, state_id, district_id, indicator: "price" };
-    
+
     const data = await getCachedData(
         cacheKey,
         () => safeFetch(`${BASE_URL}/markets`, {
@@ -81,7 +74,7 @@ export async function getMarkets(commodity_id: number, state_id: number, distric
             body: JSON.stringify(body),
         })
     );
-    
+
     return data.output?.data || [];
 }
 

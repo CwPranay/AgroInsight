@@ -9,7 +9,6 @@ export async function GET() {
             count: commodities.length 
         });
     } catch (err: any) {
-        console.error("Commodities API error:", err);
         return NextResponse.json({ 
             error: err.message,
             data: [],

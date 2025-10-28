@@ -9,7 +9,6 @@ export async function GET() {
             count: geographies.length 
         });
     } catch (err: any) {
-        console.error("Geographies API error:", err);
         return NextResponse.json({ 
             error: err.message,
             data: [],

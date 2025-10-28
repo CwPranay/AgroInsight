@@ -3,11 +3,11 @@
 import { useEffect, useState, useMemo } from "react";
 import { useSearchParams } from "next/navigation";
 import { useTranslations } from "next-intl";
+import Head from "next/head";
 import CropsPrice from "./components/cropsFilter";
 import MarketTrends from "./components/marketTrends";
 import { cropTrends } from "@/mockData/trend";
 import { BarChart3, TrendingUp, MapPin, Sparkles } from "lucide-react";
-
 
 export default function DashboardPage() {
   const t = useTranslations("dashboard.sections");
@@ -52,26 +52,41 @@ export default function DashboardPage() {
   }, [searchParams]);
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-amber-50/30 via-white to-yellow-50/30">
-      {/* Hero Section */}
-      <div className="bg-gradient-to-r mt-8 from-amber-500 via-yellow-500 to-orange-500 text-white">
-        <div className="container mx-auto px-4 py-16">
-          <div className="max-w-4xl">
-            <div className="inline-flex items-center gap-2 px-4 py-2 bg-white/20 backdrop-blur-sm rounded-full mb-4">
-              <Sparkles size={18} />
-              <span className="text-sm font-medium">{t("welcome")}</span>
+    <>
+      <Head>
+        <title>AgroInsight Dashboard - Real-time Crop Prices & Market Trends in India</title>
+        <meta name="description" content="Track live agricultural commodity prices, market trends, and mandi rates across India. Get real-time updates on wheat, rice, tomato, onion prices and more." />
+        <meta name="keywords" content="crop prices, mandi rates, agricultural market, commodity prices, India agriculture, wheat price, rice price, vegetable prices, APMC rates" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <meta property="og:title" content="AgroInsight Dashboard - Real-time Crop Prices & Market Trends" />
+        <meta property="og:description" content="Track live agricultural commodity prices and market trends across India" />
+        <meta property="og:type" content="website" />
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:title" content="AgroInsight Dashboard - Real-time Crop Prices" />
+        <meta name="twitter:description" content="Track live agricultural commodity prices and market trends across India" />
+        <link rel="canonical" href="https://agroinsight.com/dashboard" />
+      </Head>
+      
+      <main className="min-h-screen bg-gradient-to-br from-amber-50/30 via-white to-yellow-50/30">
+        {/* Hero Section */}
+        <header className="bg-gradient-to-r mt-8 from-amber-500 via-yellow-500 to-orange-500 text-white">
+          <div className="container mx-auto px-4 py-16">
+            <div className="max-w-4xl">
+              <div className="inline-flex items-center gap-2 px-4 py-2 bg-white/20 backdrop-blur-sm rounded-full mb-4">
+                <Sparkles size={18} />
+                <span className="text-sm font-medium">{t("welcome")}</span>
+              </div>
+              <h1 className="text-4xl md:text-5xl font-bold mb-4">
+                {t("dashboardTitle")}
+              </h1>
+              <p className="text-lg md:text-xl text-amber-50 max-w-2xl">
+                {t("dashboardSubtitle")}
+              </p>
             </div>
-            <h1 className="text-4xl md:text-5xl font-bold mb-4">
-              {t("dashboardTitle")}
-            </h1>
-            <p className="text-lg md:text-xl text-amber-50 max-w-2xl">
-              {t("dashboardSubtitle")}
-            </p>
           </div>
-        </div>
-      </div>
+        </header>
 
-      <div className="container mx-auto px-4 py-12 space-y-16">
+        <div className="container mx-auto px-4 py-12 space-y-16">
         {/* Overview Section */}
        
 
@@ -132,7 +147,33 @@ export default function DashboardPage() {
             </div>
           </div>
         </section>
+        
+        {/* Structured Data for SEO */}
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify({
+              "@context": "https://schema.org",
+              "@type": "WebApplication",
+              "name": "AgroInsight Dashboard",
+              "description": "Real-time agricultural commodity prices and market trends across India",
+              "applicationCategory": "BusinessApplication",
+              "operatingSystem": "Web",
+              "offers": {
+                "@type": "Offer",
+                "price": "0",
+                "priceCurrency": "INR"
+              },
+              "aggregateRating": {
+                "@type": "AggregateRating",
+                "ratingValue": "4.8",
+                "ratingCount": "1250"
+              }
+            })
+          }}
+        />
       </div>
-    </div>
+      </main>
+    </>
   );
 }

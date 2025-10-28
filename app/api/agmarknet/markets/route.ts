@@ -20,7 +20,6 @@ export async function POST(req: Request) {
             count: markets?.length || 0
         });
     } catch (err: any) {
-        console.error("Markets API error:", err);
         return NextResponse.json({ 
             error: err.message,
             data: [],

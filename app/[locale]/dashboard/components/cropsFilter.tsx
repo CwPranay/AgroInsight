@@ -148,10 +148,6 @@ export default function CropsFilter({ crop, setCrop, state, setState }: CropsFil
       setError("")
 
       try {
-        console.log("🔍 Searching for crop:", crop)
-        console.log("📊 Total commodities:", commodities.length)
-        console.log("🗺️ Total geographies:", geographies.length)
-
         // Find commodity with case-insensitive and partial match
         const commodityObj = commodities.find(
           c => c.commodity_name.toLowerCase().includes(crop.toLowerCase()) ||
@@ -165,26 +161,20 @@ export default function CropsFilter({ crop, setCrop, state, setState }: CropsFil
           return
         }
 
-        console.log(`✅ Found commodity: ${commodityObj.commodity_name} (ID: ${commodityObj.commodity_id})`)
-
         // Get all matching geographies based on selected filters
-        let matchingGeographies = geographies.filter(g => g.census_district_name) // Only district-level entries
+        let matchingGeographies = geographies.filter(g => g.census_district_name)
 
         // Apply filters progressively with case-insensitive and partial matching
         if (state && district) {
-          // Both state and district selected - most specific
           matchingGeographies = matchingGeographies.filter(
             g => g.census_state_name.toLowerCase().includes(state.toLowerCase()) &&
               g.census_district_name?.toLowerCase().includes(district.toLowerCase())
           )
         } else if (state) {
-          // Only state selected - show all districts in that state
           matchingGeographies = matchingGeographies.filter(
             g => g.census_state_name.toLowerCase().includes(state.toLowerCase())
           )
         }
-
-        console.log(`📍 Matching geographies found: ${matchingGeographies.length}`)
 
         if (matchingGeographies.length === 0) {
           setError("No matching locations found for the selected filters")
@@ -198,12 +188,11 @@ export default function CropsFilter({ crop, setCrop, state, setState }: CropsFil
         const mockPrices: PriceData[] = []
 
         matchingGeographies.forEach((geo) => {
-          // Generate 2-3 markets per geography
           const numMarkets = Math.floor(Math.random() * 2) + 2
           
           for (let i = 0; i < numMarkets; i++) {
-            const basePrice = Math.floor(Math.random() * 3000) + 1500 // 1500-4500
-            const variation = Math.floor(Math.random() * 400) - 200 // -200 to +200
+            const basePrice = Math.floor(Math.random() * 3000) + 1500
+            const variation = Math.floor(Math.random() * 400) - 200
             
             mockPrices.push({
               date: today.toISOString().split('T')[0],
@@ -218,16 +207,12 @@ export default function CropsFilter({ crop, setCrop, state, setState }: CropsFil
           }
         })
 
-        console.log(`✅ Generated ${mockPrices.length} mock price entries`)
-        console.log(`📊 Summary: ${commodities.length} commodities, ${geographies.length} geographies, ${matchingGeographies.length} matching locations, ${mockPrices.length} prices`)
-
         if (mockPrices.length === 0) {
           setError(`No price data available for ${crop} in ${district ? district + ', ' : ''}${state || 'selected location'}.`)
         }
 
         setPriceData(mockPrices)
       } catch (err) {
-        console.error("Error loading price data:", err)
         setError("Failed to load price data")
       } finally {
         setLoading(false)
