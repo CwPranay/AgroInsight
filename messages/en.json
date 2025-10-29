@@ -18,7 +18,7 @@
     "nearbyMarkets": "Nearby Markets",
     "nearbyMarketsDescription": "View local mandi data",
     "weatherForecast": "Forecast",
-    "weatherForecastDescription": "Check 7-day rainfall & temperature",
+    "weatherForecastDescription": "Check 6-day rainfall & temperature",
     "soilInsights": "Soil Insights",
     "soilInsightsDescription": "Analyze soil quality",
     "irrigationTips": "Irrigation Tips",
@@ -45,7 +45,7 @@
     },
     "weather": {
       "title": "Weather Insights",
-      "description": "Get accurate 7-day forecasts with rainfall and temperature data for better planning."
+      "description": "Get accurate 6-day forecasts with rainfall and temperature data for better planning."
     },
     "soilHealth": {
       "title": "Soil Health",
@@ -70,7 +70,7 @@
       "title": "Today's Weather",
       "rainfall": "Rainfall",
       "humidity": "Humidity",
-      "forecast": "7-Day Forecast",
+      "forecast": "6-Day Forecast",
       "condition": "Partly Cloudy"
     },
     "trends": {

@@ -18,7 +18,7 @@
     "nearbyMarkets": "नजदीकी बाजार",
     "nearbyMarketsDescription": "स्थानीय मंडी डेटा देखें",
     "weatherForecast": "पूर्वानुमान",
-    "weatherForecastDescription": "7-दिन की वर्षा और तापमान जांचें",
+    "weatherForecastDescription": "6-दिन की वर्षा और तापमान जांचें",
     "soilInsights": "मिट्टी की जानकारी",
     "soilInsightsDescription": "मिट्टी की गुणवत्ता का विश्लेषण करें",
     "irrigationTips": "सिंचाई युक्तियाँ",
@@ -45,7 +45,7 @@
     },
     "weather": {
       "title": "मौसम की जानकारी",
-      "description": "बेहतर योजना के लिए वर्षा और तापमान डेटा के साथ सटीक 7-दिन का पूर्वानुमान प्राप्त करें।"
+      "description": "बेहतर योजना के लिए वर्षा और तापमान डेटा के साथ सटीक 6-दिन का पूर्वानुमान प्राप्त करें।"
     },
     "soilHealth": {
       "title": "मिट्टी का स्वास्थ्य",
@@ -70,7 +70,7 @@
       "title": "आज का मौसम",
       "rainfall": "वर्षा",
       "humidity": "आर्द्रता",
-      "forecast": "7-दिन का पूर्वानुमान",
+      "forecast": "6-दिन का पूर्वानुमान",
       "condition": "आंशिक रूप से बादल छाए हुए"
     },
     "trends": {

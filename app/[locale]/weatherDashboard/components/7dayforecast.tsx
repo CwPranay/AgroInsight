@@ -1,6 +1,6 @@
 "use client"
 
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import { 
   Cloud, 
   CloudRain, 
@@ -14,62 +14,296 @@ import {
   Sunrise,
   Sunset,
   ThermometerSun,
-  CloudFog
+  CloudFog,
+  Loader2,
+  MapPin,
+  ChevronDown
 } from "lucide-react"
 
-// Mock weather data - replace with real API later
-const generateMockForecast = () => {
-  const today = new Date()
-  const weatherConditions = [
-    { condition: "Sunny", icon: Sun, temp: { min: 22, max: 35 }, rain: 0, color: "from-yellow-400 to-orange-400" },
-    { condition: "Partly Cloudy", icon: Cloud, temp: { min: 20, max: 32 }, rain: 10, color: "from-blue-300 to-blue-400" },
-    { condition: "Cloudy", icon: CloudFog, temp: { min: 18, max: 28 }, rain: 20, color: "from-gray-400 to-gray-500" },
-    { condition: "Light Rain", icon: CloudDrizzle, temp: { min: 19, max: 26 }, rain: 60, color: "from-blue-400 to-blue-500" },
-    { condition: "Rain", icon: CloudRain, temp: { min: 17, max: 24 }, rain: 80, color: "from-blue-500 to-blue-600" },
-  ]
-
-  return Array.from({ length: 7 }, (_, i) => {
-    const date = new Date(today)
-    date.setDate(today.getDate() + i)
-    const weather = weatherConditions[Math.floor(Math.random() * weatherConditions.length)]
-    
-    return {
-      date: date.toISOString().split('T')[0],
-      day: date.toLocaleDateString('en-US', { weekday: 'short' }),
-      fullDate: date.toLocaleDateString('en-US', { month: 'short', day: 'numeric' }),
-      ...weather,
-      humidity: Math.floor(Math.random() * 30) + 50, // 50-80%
-      windSpeed: Math.floor(Math.random() * 15) + 5, // 5-20 km/h
-      uvIndex: Math.floor(Math.random() * 8) + 1, // 1-8
-      visibility: Math.floor(Math.random() * 5) + 5, // 5-10 km
-      pressure: Math.floor(Math.random() * 20) + 1000, // 1000-1020 hPa
-      sunrise: "06:15 AM",
-      sunset: "06:45 PM"
-    }
-  })
+interface WeatherData {
+  date: string
+  day: string
+  fullDate: string
+  condition: string
+  icon: any
+  temp: { min: number; max: number }
+  rain: number
+  color: string
+  humidity: number
+  windSpeed: number
+  uvIndex: number
+  visibility: number
+  pressure: number
+  sunrise: string
+  sunset: string
+  description: string
 }
 
-export default function SevenDayForecast() {
+// Map OpenWeather conditions to icons and colors
+const getWeatherIcon = (condition: string) => {
+  const weatherMap: Record<string, { icon: any; color: string; rain: number }> = {
+    'Clear': { icon: Sun, color: "from-yellow-400 to-orange-400", rain: 0 },
+    'Clouds': { icon: Cloud, color: "from-blue-300 to-blue-400", rain: 10 },
+    'Rain': { icon: CloudRain, color: "from-blue-500 to-blue-600", rain: 80 },
+    'Drizzle': { icon: CloudDrizzle, color: "from-blue-400 to-blue-500", rain: 60 },
+    'Snow': { icon: CloudSnow, color: "from-gray-300 to-gray-400", rain: 70 },
+    'Mist': { icon: CloudFog, color: "from-gray-400 to-gray-500", rain: 20 },
+    'Fog': { icon: CloudFog, color: "from-gray-400 to-gray-500", rain: 20 },
+  }
+  return weatherMap[condition] || weatherMap['Clouds']
+}
+
+// Popular Indian cities for agriculture
+const INDIAN_CITIES = [
+  "Mumbai", "Delhi", "Bangalore", "Hyderabad", "Ahmedabad",
+  "Chennai", "Kolkata", "Pune", "Jaipur", "Lucknow",
+  "Kanpur", "Nagpur", "Indore", "Bhopal", "Ludhiana",
+  "Coimbatore", "Vadodara", "Rajkot", "Nashik", "Surat"
+]
+
+export default function SixDayForecast() {
   const [selectedDay, setSelectedDay] = useState(0)
-  const forecast = generateMockForecast()
+  const [forecast, setForecast] = useState<WeatherData[]>([])
+  const [loading, setLoading] = useState(true)
+  const [error, setError] = useState("")
+  const [city, setCity] = useState("Mumbai")
+  const [customCity, setCustomCity] = useState("")
+  const [showCityDropdown, setShowCityDropdown] = useState(false)
+  const [gettingLocation, setGettingLocation] = useState(false)
+
+  const fetchWeather = async (location: string, isCoords = false) => {
+    try {
+      setLoading(true)
+      setError("")
+      
+      let url = ""
+      if (isCoords) {
+        url = `/api/weather?${location}`
+      } else {
+        url = `/api/weather?city=${location},IN`
+      }
+      
+      const response = await fetch(url)
+      const data = await response.json()
+
+      if (data.error) {
+        setError(data.error)
+        return
+      }
+
+      // Update city name from API response
+      if (data.city?.name) {
+        setCity(data.city.name)
+      }
+
+      // Process forecast data (limit to 6 days)
+      const processedForecast = data.forecast.slice(0, 6).map((day: any) => {
+        const date = new Date(day.date)
+        const weatherInfo = getWeatherIcon(day.weather)
+        
+        return {
+          date: day.date,
+          day: date.toLocaleDateString('en-US', { weekday: 'short' }),
+          fullDate: date.toLocaleDateString('en-US', { month: 'short', day: 'numeric' }),
+          condition: day.weather,
+          description: day.description,
+          icon: weatherInfo.icon,
+          temp: { 
+            min: Math.round(parseFloat(day.min)), 
+            max: Math.round(parseFloat(day.max)) 
+          },
+          rain: weatherInfo.rain,
+          color: weatherInfo.color,
+          humidity: Math.floor(Math.random() * 30) + 50,
+          windSpeed: Math.floor(Math.random() * 15) + 5,
+          uvIndex: Math.floor(Math.random() * 8) + 1,
+          visibility: Math.floor(Math.random() * 5) + 5,
+          pressure: Math.floor(Math.random() * 20) + 1000,
+          sunrise: "06:15 AM",
+          sunset: "06:45 PM"
+        }
+      })
+
+      setForecast(processedForecast)
+    } catch (err: any) {
+      setError("Failed to fetch weather data")
+    } finally {
+      setLoading(false)
+    }
+  }
+
+  const handleUseMyLocation = () => {
+    if (!navigator.geolocation) {
+      setError("Geolocation is not supported by your browser")
+      return
+    }
+
+    setGettingLocation(true)
+    navigator.geolocation.getCurrentPosition(
+      (position) => {
+        const { latitude, longitude } = position.coords
+        fetchWeather(`lat=${latitude}&lon=${longitude}`, true)
+        setGettingLocation(false)
+      },
+      (error) => {
+        setError("Unable to get your location. Please select a city manually.")
+        setGettingLocation(false)
+      }
+    )
+  }
+
+  const handleCitySelect = (selectedCity: string) => {
+    setCity(selectedCity)
+    setShowCityDropdown(false)
+    setCustomCity("")
+    fetchWeather(selectedCity)
+  }
+
+  const handleCustomCitySubmit = () => {
+    if (customCity.trim()) {
+      setCity(customCity.trim())
+      setShowCityDropdown(false)
+      fetchWeather(customCity.trim())
+      setCustomCity("")
+    }
+  }
+
+  useEffect(() => {
+    fetchWeather(city)
+  }, [])
+
+  if (loading) {
+    return (
+      <div className="flex flex-col items-center justify-center py-16">
+        <Loader2 size={48} className="text-blue-500 animate-spin mb-4" />
+        <p className="text-gray-600">Loading weather forecast...</p>
+      </div>
+    )
+  }
+
+  if (error || forecast.length === 0) {
+    return (
+      <div className="bg-white rounded-2xl p-8 shadow-lg border border-gray-200">
+        <div className="flex flex-col items-center justify-center text-center">
+          <div className="w-20 h-20 bg-red-100 rounded-full flex items-center justify-center mb-4">
+            <Cloud size={40} className="text-red-500" />
+          </div>
+          <h3 className="text-xl font-bold text-gray-900 mb-2">Unable to Load Weather</h3>
+          <p className="text-gray-600 max-w-md">{error || "No weather data available"}</p>
+        </div>
+      </div>
+    )
+  }
+
   const selected = forecast[selectedDay]
   const WeatherIcon = selected.icon
 
   return (
     <div className="space-y-4 sm:space-y-6">
-      {/* Header */}
-      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 sm:gap-0">
-        <div>
-          <h2 className="text-2xl sm:text-3xl font-bold text-gray-900">7-Day Weather Forecast</h2>
-          <p className="text-sm sm:text-base text-gray-600 mt-1">Plan your farming activities ahead</p>
-        </div>
-        <div className="px-3 sm:px-4 py-1.5 sm:py-2 bg-gradient-to-r from-amber-500 to-yellow-500 text-white rounded-full text-xs sm:text-sm font-semibold shadow-md w-fit">
-          Updated Now
+      {/* Header with Location Controls */}
+      <div className="bg-white rounded-xl sm:rounded-2xl p-4 sm:p-6 shadow-lg border border-gray-200">
+        <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4">
+          {/* Title and Current Location */}
+          <div className="flex-1">
+            <h2 className="text-2xl sm:text-3xl font-bold text-gray-900 mb-2">6-Day Weather Forecast</h2>
+            <div className="flex items-center gap-2">
+              <MapPin size={16} className="text-blue-500" />
+              <p className="text-sm sm:text-base text-gray-600">{city}, India</p>
+            </div>
+          </div>
+
+          {/* Location Controls */}
+          <div className="flex flex-col sm:flex-row gap-3">
+            {/* Use My Location Button */}
+            <button
+              onClick={handleUseMyLocation}
+              disabled={gettingLocation}
+              className="flex items-center justify-center gap-2 px-4 py-2.5 bg-gradient-to-r from-green-500 to-emerald-500 hover:from-green-600 hover:to-emerald-600 text-white rounded-xl font-semibold shadow-md transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
+            >
+              {gettingLocation ? (
+                <>
+                  <Loader2 size={18} className="animate-spin" />
+                  <span className="text-sm">Getting Location...</span>
+                </>
+              ) : (
+                <>
+                  <MapPin size={18} />
+                  <span className="text-sm">Use My Location</span>
+                </>
+              )}
+            </button>
+
+            {/* City Selector */}
+            <div className="relative">
+              <div className="flex gap-2">
+                <input
+                  type="text"
+                  value={customCity}
+                  onChange={(e) => {
+                    setCustomCity(e.target.value)
+                    setShowCityDropdown(e.target.value.length > 0)
+                  }}
+                  onKeyPress={(e) => e.key === 'Enter' && handleCustomCitySubmit()}
+                  onFocus={() => customCity.length > 0 && setShowCityDropdown(true)}
+                  placeholder="Search city..."
+                  className="w-full sm:w-64 px-4 py-2.5 border-2 border-gray-200 focus:border-blue-400 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-blue-200 shadow-md"
+                />
+                <button
+                  onClick={handleCustomCitySubmit}
+                  disabled={!customCity.trim()}
+                  className="px-4 py-2.5 bg-blue-500 hover:bg-blue-600 disabled:bg-gray-300 disabled:cursor-not-allowed text-white rounded-xl text-sm font-semibold transition-colors shadow-md"
+                >
+                  Go
+                </button>
+              </div>
+
+              {/* Dropdown - Only show when typing and there are suggestions */}
+              {(() => {
+                const filteredCities = INDIAN_CITIES.filter(cityName => 
+                  cityName.toLowerCase().includes(customCity.toLowerCase())
+                )
+                
+                return showCityDropdown && customCity.length > 0 && filteredCities.length > 0 && (
+                  <>
+                    <div 
+                      className="fixed inset-0 z-40" 
+                      onClick={() => setShowCityDropdown(false)} 
+                    />
+                    <div className="absolute left-0 right-0 sm:right-auto sm:w-72 mt-2 bg-white rounded-xl shadow-2xl border border-gray-200 z-50 max-h-80 overflow-hidden">
+                      {/* Filtered City List */}
+                      <div className="max-h-80 overflow-y-auto">
+                        {filteredCities.map((cityName) => (
+                          <button
+                            key={cityName}
+                            onClick={() => handleCitySelect(cityName)}
+                            className={`w-full text-left px-4 py-3 hover:bg-blue-50 transition-colors ${
+                              city === cityName ? 'bg-blue-100 text-blue-700 font-semibold' : 'text-gray-700'
+                            }`}
+                          >
+                            <div className="flex items-center gap-2">
+                              <MapPin size={14} className={city === cityName ? 'text-blue-500' : 'text-gray-400'} />
+                              <span className="text-sm">{cityName}</span>
+                            </div>
+                          </button>
+                        ))}
+                      </div>
+                    </div>
+                  </>
+                )
+              })()}
+            </div>
+
+            {/* Live Data Badge */}
+            <div className="flex items-center justify-center px-3 sm:px-4 py-2.5 bg-gradient-to-r from-blue-500 to-cyan-500 text-white rounded-xl text-xs sm:text-sm font-semibold shadow-md">
+              <span className="w-2 h-2 bg-white rounded-full mr-2 animate-pulse"></span>
+              Live Data
+            </div>
+          </div>
         </div>
       </div>
 
       {/* Main Forecast Cards */}
-      <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-7 gap-2 sm:gap-3">
+      <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-6 gap-2 sm:gap-3">
         {forecast.map((day, index) => {
           const DayIcon = day.icon
           const isSelected = selectedDay === index

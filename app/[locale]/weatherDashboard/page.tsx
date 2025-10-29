@@ -1,4 +1,4 @@
-import SevenDayForecast from "./components/7dayforecast"
+import SixDayForecast from "./components/7dayforecast"
 
 export default function WeatherDashboardPage() {
     return (
@@ -15,7 +15,7 @@ export default function WeatherDashboardPage() {
                             Weather Dashboard
                         </h1>
                         <p className="text-base sm:text-lg md:text-xl text-blue-50 max-w-2xl">
-                            Get accurate weather forecasts to plan your farming activities effectively
+                            Get accurate 6-day weather forecasts to plan your farming activities effectively
                         </p>
                     </div>
                 </div>
@@ -24,7 +24,7 @@ export default function WeatherDashboardPage() {
             {/* Main Content */}
             <main className="container mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12">
                 <section id="weather-forecast">
-                    <SevenDayForecast />
+                    <SixDayForecast />
                 </section>
             </main>
         </div>
