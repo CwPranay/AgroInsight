@@ -4,6 +4,7 @@ import { ReactNode } from 'react';
 import { Noto_Sans } from "next/font/google";
 import "../globals.css";
 import { AgroInsightNav } from './components/Navbar';
+import { ClickFeedback } from './components/ClickFeedback';
 
 const notoSans = Noto_Sans({
   subsets: ["latin", "devanagari"],
@@ -50,6 +51,7 @@ export default async function LocaleLayout({
     <html lang={locale} className={`${notoSans.variable} antialiased`}>
       <body className={`${notoSans.className} overflow-x-hidden`}>
         <NextIntlClientProvider locale={locale} messages={messages}>
+          <ClickFeedback />
           <AgroInsightNav />
           <div className="overflow-x-hidden w-full">
             {children}

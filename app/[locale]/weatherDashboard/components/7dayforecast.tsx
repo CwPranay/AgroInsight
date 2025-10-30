@@ -19,6 +19,7 @@ import {
   MapPin,
   ChevronDown
 } from "lucide-react"
+import { WeatherForecastSkeleton } from "@/app/[locale]/components/skeletons/WeatherForecastSkeleton"
 
 interface WeatherData {
   date: string
@@ -185,12 +186,7 @@ export default function SixDayForecast() {
   }, [])
 
   if (loading) {
-    return (
-      <div className="flex flex-col items-center justify-center py-16">
-        <Loader2 size={48} className="text-blue-500 animate-spin mb-4" />
-        <p className="text-gray-600">Loading weather forecast...</p>
-      </div>
-    )
+    return <WeatherForecastSkeleton />
   }
 
   if (error || forecast.length === 0) {

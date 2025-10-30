@@ -3,6 +3,7 @@
 import { useState, useMemo, useEffect } from "react"
 import { Search, X, ChevronDown, TrendingUp, Filter, Loader2 } from "lucide-react"
 import { useTranslations } from "next-intl"
+import { DashboardSkeleton } from "@/app/[locale]/components/skeletons/DashboardSkeleton"
 
 import { Command, CommandInput, CommandList, CommandItem, CommandEmpty } from "@/app/[locale]/components/ui/command"
 import { Popover, PopoverContent, PopoverTrigger } from "@/app/[locale]/components/ui/popover"
