@@ -57,6 +57,23 @@ const getWeatherIcon = (condition: string) => {
 
 
 export default function SixDayForecast() {
+  // Add custom scrollbar hiding styles
+  if (typeof document !== 'undefined') {
+    const style = document.createElement('style')
+    style.textContent = `
+      .scrollbar-hide::-webkit-scrollbar {
+        display: none;
+      }
+      .scrollbar-hide {
+        -ms-overflow-style: none;
+        scrollbar-width: none;
+      }
+    `
+    if (!document.getElementById('scrollbar-hide-style')) {
+      style.id = 'scrollbar-hide-style'
+      document.head.appendChild(style)
+    }
+  }
   const [selectedDay, setSelectedDay] = useState(0)
   const [forecast, setForecast] = useState<WeatherData[]>([])
   const [loading, setLoading] = useState(true)
@@ -264,7 +281,7 @@ export default function SixDayForecast() {
         </div>
       </div>
 
-      {/* Main Forecast Cards */}
+      {/* Forecast Cards - Responsive Grid */}
       <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-6 gap-2 sm:gap-3">
         {forecast.map((day, index) => {
           const DayIcon = day.icon
@@ -274,31 +291,42 @@ export default function SixDayForecast() {
           return (
             <button
               key={day.date}
-              onClick={() => setSelectedDay(index)}
+              onClick={() => {
+                setSelectedDay(index)
+                // Smooth scroll to details on mobile
+                if (window.innerWidth < 768) {
+                  setTimeout(() => {
+                    document.getElementById('weather-details')?.scrollIntoView({ 
+                      behavior: 'smooth', 
+                      block: 'start' 
+                    })
+                  }, 100)
+                }
+              }}
               className={`relative p-3 sm:p-4 rounded-xl sm:rounded-2xl transition-all duration-300 ${
                 isSelected
-                  ? "bg-gradient-to-br from-amber-500 to-yellow-500 text-white shadow-xl scale-105"
-                  : "bg-white hover:bg-amber-50 text-gray-900 shadow-md hover:shadow-lg"
+                  ? "bg-gradient-to-br from-blue-500 to-cyan-500 text-white shadow-xl ring-2 ring-blue-300"
+                  : "bg-white hover:bg-blue-50 text-gray-900 shadow-md hover:shadow-lg active:scale-95"
               }`}
             >
               {isToday && (
-                <div className="absolute -top-2 left-1/2 -translate-x-1/2 px-2 py-0.5 bg-green-500 text-white text-xs font-bold rounded-full whitespace-nowrap">
+                <div className="absolute -top-2 left-1/2 -translate-x-1/2 px-2 py-0.5 bg-green-500 text-white text-[10px] sm:text-xs font-bold rounded-full whitespace-nowrap shadow-md">
                   Today
                 </div>
               )}
               
-              <div className="text-center space-y-1.5 sm:space-y-2">
-                <div className={`text-xs sm:text-sm font-semibold ${isSelected ? "text-white" : "text-gray-600"}`}>
+              <div className="text-center space-y-1 sm:space-y-2">
+                <div className={`text-xs sm:text-sm font-bold ${isSelected ? "text-white" : "text-gray-700"}`}>
                   {day.day}
                 </div>
-                <div className={`text-[10px] sm:text-xs ${isSelected ? "text-amber-100" : "text-gray-500"}`}>
+                <div className={`text-[10px] sm:text-xs ${isSelected ? "text-blue-100" : "text-gray-500"}`}>
                   {day.fullDate}
                 </div>
                 
                 <div className="flex justify-center my-2 sm:my-3">
                   <DayIcon 
-                    size={window.innerWidth < 640 ? 24 : 32}
-                    className={isSelected ? "text-white" : "text-amber-500"}
+                    size={window.innerWidth < 640 ? 28 : 32}
+                    className={isSelected ? "text-white" : "text-blue-500"}
                   />
                 </div>
                 
@@ -306,14 +334,16 @@ export default function SixDayForecast() {
                   <div className={`text-xl sm:text-2xl font-bold ${isSelected ? "text-white" : "text-gray-900"}`}>
                     {day.temp.max}°
                   </div>
-                  <div className={`text-xs sm:text-sm ${isSelected ? "text-amber-100" : "text-gray-500"}`}>
+                  <div className={`text-xs sm:text-sm ${isSelected ? "text-blue-100" : "text-gray-500"}`}>
                     {day.temp.min}°
                   </div>
                 </div>
                 
-                <div className={`flex items-center justify-center gap-1 text-[10px] sm:text-xs ${isSelected ? "text-amber-100" : "text-blue-500"}`}>
+                <div className={`flex items-center justify-center gap-1 text-[10px] sm:text-xs pt-1 sm:pt-2 ${
+                  isSelected ? "text-blue-100" : "text-blue-600"
+                }`}>
                   <Droplets size={10} className="sm:w-3 sm:h-3" />
-                  <span>{day.rain}%</span>
+                  <span className="font-semibold">{day.rain}%</span>
                 </div>
               </div>
             </button>
@@ -322,7 +352,19 @@ export default function SixDayForecast() {
       </div>
 
       {/* Detailed View */}
-      <div className="bg-white rounded-xl sm:rounded-2xl p-4 sm:p-6 shadow-lg border border-gray-200">
+      <div id="weather-details" className="bg-white rounded-xl sm:rounded-2xl p-4 sm:p-6 shadow-lg border border-gray-200">
+        {/* Mobile: Selected Day Indicator */}
+        <div className="md:hidden mb-4 pb-4 border-b border-gray-200">
+          <div className="flex items-center justify-between">
+            <div className="flex items-center gap-2">
+              <div className="w-2 h-2 bg-blue-500 rounded-full animate-pulse"></div>
+              <span className="text-sm font-semibold text-gray-600">Showing details for:</span>
+            </div>
+            <div className="px-3 py-1 bg-blue-50 rounded-full">
+              <span className="text-sm font-bold text-blue-600">{selected.day}, {selected.fullDate}</span>
+            </div>
+          </div>
+        </div>
         <div className="grid md:grid-cols-2 gap-4 sm:gap-6">
           {/* Left: Main Weather Info */}
           <div className="space-y-4 sm:space-y-6">
