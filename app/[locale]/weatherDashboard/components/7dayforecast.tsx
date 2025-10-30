@@ -54,12 +54,7 @@ const getWeatherIcon = (condition: string) => {
 }
 
 // Popular Indian cities for agriculture
-const INDIAN_CITIES = [
-  "Mumbai", "Delhi", "Bangalore", "Hyderabad", "Ahmedabad",
-  "Chennai", "Kolkata", "Pune", "Jaipur", "Lucknow",
-  "Kanpur", "Nagpur", "Indore", "Bhopal", "Ludhiana",
-  "Coimbatore", "Vadodara", "Rajkot", "Nashik", "Surat"
-]
+
 
 export default function SixDayForecast() {
   const [selectedDay, setSelectedDay] = useState(0)
@@ -257,40 +252,7 @@ export default function SixDayForecast() {
                 </button>
               </div>
 
-              {/* Dropdown - Only show when typing and there are suggestions */}
-              {(() => {
-                const filteredCities = INDIAN_CITIES.filter(cityName => 
-                  cityName.toLowerCase().includes(customCity.toLowerCase())
-                )
-                
-                return showCityDropdown && customCity.length > 0 && filteredCities.length > 0 && (
-                  <>
-                    <div 
-                      className="fixed inset-0 z-40" 
-                      onClick={() => setShowCityDropdown(false)} 
-                    />
-                    <div className="absolute left-0 right-0 sm:right-auto sm:w-72 mt-2 bg-white rounded-xl shadow-2xl border border-gray-200 z-50 max-h-80 overflow-hidden">
-                      {/* Filtered City List */}
-                      <div className="max-h-80 overflow-y-auto">
-                        {filteredCities.map((cityName) => (
-                          <button
-                            key={cityName}
-                            onClick={() => handleCitySelect(cityName)}
-                            className={`w-full text-left px-4 py-3 hover:bg-blue-50 transition-colors ${
-                              city === cityName ? 'bg-blue-100 text-blue-700 font-semibold' : 'text-gray-700'
-                            }`}
-                          >
-                            <div className="flex items-center gap-2">
-                              <MapPin size={14} className={city === cityName ? 'text-blue-500' : 'text-gray-400'} />
-                              <span className="text-sm">{cityName}</span>
-                            </div>
-                          </button>
-                        ))}
-                      </div>
-                    </div>
-                  </>
-                )
-              })()}
+             
             </div>
 
             {/* Live Data Badge */}
