@@ -122,6 +122,88 @@
       "address": "Address"
     }
   },
+  "soilInsights": {
+    "hero": {
+      "badge": "Soil Intelligence",
+      "title": "Soil Insights",
+      "subtitle": "Analyze your soil composition and get personalized crop recommendations based on real soil data"
+    },
+    "welcome": {
+      "title": "Discover Your Soil Health",
+      "description": "Get detailed insights about your soil's pH, organic matter, and texture. We'll recommend the best crops for your land.",
+      "useLocation": "Use My Location",
+      "gettingLocation": "Getting Location..."
+    },
+    "location": "Analysis Location",
+    "loading": "Analyzing soil data...",
+    "tryAgain": "Try Again",
+    "refresh": "Analyze Again",
+    "errors": {
+      "title": "Unable to Analyze Soil",
+      "geolocationNotSupported": "Geolocation is not supported by your browser",
+      "locationFailed": "Unable to get your location. Please try again.",
+      "fetchFailed": "Failed to fetch soil data. Please try again."
+    },
+    "properties": {
+      "soilType": "Soil Type",
+      "pH": "pH Level",
+      "organicCarbon": "Organic Carbon",
+      "sand": "Sand",
+      "silt": "Silt",
+      "clay": "Clay",
+      "soilMoisture": "Soil Moisture",
+      "soilTemp": "Soil Temperature"
+    },
+    "moisture": {
+      "high": "High moisture - good for rice",
+      "moderate": "Moderate moisture",
+      "low": "Low moisture - irrigation needed"
+    },
+    "phLevels": {
+      "acidic": "Acidic",
+      "neutral": "Neutral",
+      "alkaline": "Alkaline"
+    },
+    "organicLevels": {
+      "low": "Low Fertility",
+      "medium": "Moderate Fertility",
+      "high": "High Fertility"
+    },
+    "summary": {
+      "title": "Soil Analysis Summary",
+      "acidic_low_sand": "Acidic sandy soil with low organic matter. Requires lime and compost addition.",
+      "acidic_low_loam": "Acidic loamy soil with low fertility. Add lime and organic fertilizers.",
+      "acidic_low_clay": "Acidic clay soil with low organic content. Improve drainage and add lime.",
+      "acidic_medium_sand": "Acidic sandy soil with moderate fertility. Good for acid-loving crops.",
+      "acidic_medium_loam": "Acidic loamy soil with moderate organic matter. Suitable for rice and tea.",
+      "acidic_medium_clay": "Acidic clay soil with moderate fertility. Good water retention for rice.",
+      "acidic_high_sand": "Acidic sandy soil rich in organic matter. Excellent for blueberries and potatoes.",
+      "acidic_high_loam": "Acidic loamy soil with high fertility. Ideal for tea and vegetables.",
+      "acidic_high_clay": "Acidic clay soil rich in organic matter. Perfect for rice cultivation.",
+      "neutral_low_sand": "Neutral sandy soil with low organic matter. Add compost for better fertility.",
+      "neutral_low_loam": "Neutral loamy soil with low fertility. Requires organic matter addition.",
+      "neutral_low_clay": "Neutral clay soil with low organic content. Improve with compost.",
+      "neutral_medium_sand": "Neutral sandy soil with moderate fertility. Good for groundnuts and vegetables.",
+      "neutral_medium_loam": "Neutral loamy soil with moderate organic matter. Ideal for most crops.",
+      "neutral_medium_clay": "Neutral clay soil with moderate fertility. Suitable for wheat and cotton.",
+      "neutral_high_sand": "Neutral sandy soil rich in organic matter. Excellent for vegetables and melons.",
+      "neutral_high_loam": "Neutral loamy soil with high fertility. Perfect for wheat, maize, and vegetables.",
+      "neutral_high_clay": "Neutral clay soil rich in organic matter. Ideal for wheat and sugarcane.",
+      "alkaline_low_sand": "Alkaline sandy soil with low organic matter. Add sulfur and compost.",
+      "alkaline_low_loam": "Alkaline loamy soil with low fertility. Requires acidification and organic matter.",
+      "alkaline_low_clay": "Alkaline clay soil with low organic content. Add sulfur and improve drainage.",
+      "alkaline_medium_sand": "Alkaline sandy soil with moderate fertility. Suitable for cotton and sorghum.",
+      "alkaline_medium_loam": "Alkaline loamy soil with moderate organic matter. Good for cotton and barley.",
+      "alkaline_medium_clay": "Alkaline clay soil with moderate fertility. Suitable for cotton cultivation.",
+      "alkaline_high_sand": "Alkaline sandy soil rich in organic matter. Good for cotton and sugarbeet.",
+      "alkaline_high_loam": "Alkaline loamy soil with high fertility. Ideal for cotton and sorghum.",
+      "alkaline_high_clay": "Alkaline clay soil rich in organic matter. Perfect for cotton and wheat."
+    },
+    "recommendations": {
+      "title": "Recommended Crops",
+      "note": "Recommendations based on soil pH and texture. Consider local climate and water availability."
+    }
+  },
   "weatherForecast": {
     "title": "Weather Forecast",
     "subtitle": "Get accurate 6-day weather forecasts to effectively plan your farming activities",
