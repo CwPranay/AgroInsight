@@ -20,6 +20,7 @@ import {
   ChevronDown
 } from "lucide-react"
 import { WeatherForecastSkeleton } from "@/app/[locale]/components/skeletons/WeatherForecastSkeleton"
+import { useTranslations } from "next-intl"
 
 interface WeatherData {
   date: string
@@ -58,6 +59,9 @@ const getWeatherIcon = (condition: string) => {
 
 
 export default function SixDayForecast() {
+  const t = useTranslations("weatherForecast")
+  const locale = typeof window !== 'undefined' ? (window.location.pathname.split('/')[1] || 'en') : 'en'
+  
   // Add custom scrollbar hiding styles
   if (typeof document !== 'undefined') {
     const style = document.createElement('style')
@@ -114,10 +118,13 @@ export default function SixDayForecast() {
         const date = new Date(day.date)
         const weatherInfo = getWeatherIcon(day.weather)
         
+        // Use locale for date formatting
+        const localeCode = locale === 'hi' ? 'hi-IN' : 'en-US'
+        
         return {
           date: day.date,
-          day: date.toLocaleDateString('en-US', { weekday: 'short' }),
-          fullDate: date.toLocaleDateString('en-US', { month: 'short', day: 'numeric' }),
+          day: date.toLocaleDateString(localeCode, { weekday: 'short' }),
+          fullDate: date.toLocaleDateString(localeCode, { month: 'short', day: 'numeric' }),
           condition: day.weather,
           description: day.description,
           icon: weatherInfo.icon,
@@ -213,7 +220,7 @@ export default function SixDayForecast() {
         <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4">
           {/* Title and Current Location */}
           <div className="flex-1">
-            <h2 className="text-2xl sm:text-3xl font-bold text-gray-900 mb-2">6-Day Weather Forecast</h2>
+            <h2 className="text-2xl sm:text-3xl font-bold text-gray-900 mb-2">{t("title")}</h2>
             <div className="flex items-center gap-2">
               <MapPin size={16} className="text-blue-500" />
               <p className="text-sm sm:text-base text-gray-600">{city}, India</p>
@@ -231,12 +238,12 @@ export default function SixDayForecast() {
               {gettingLocation ? (
                 <>
                   <Loader2 size={18} className="animate-spin" />
-                  <span className="text-sm">Getting Location...</span>
+                  <span className="text-sm">{t("gettingLocation")}</span>
                 </>
               ) : (
                 <>
                   <MapPin size={18} />
-                  <span className="text-sm">Use My Location</span>
+                  <span className="text-sm">{t("useMyLocation")}</span>
                 </>
               )}
             </button>
@@ -253,7 +260,7 @@ export default function SixDayForecast() {
                   }}
                   onKeyPress={(e) => e.key === 'Enter' && handleCustomCitySubmit()}
                   onFocus={() => customCity.length > 0 && setShowCityDropdown(true)}
-                  placeholder="Search city..."
+                  placeholder={t("searchCity")}
                   className="w-full sm:w-64 px-4 py-2.5 border-2 border-gray-200 focus:border-blue-400 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-blue-200 shadow-md"
                 />
                 <button
@@ -271,7 +278,7 @@ export default function SixDayForecast() {
             {/* Live Data Badge */}
             <div className="flex items-center justify-center px-3 sm:px-4 py-2.5 bg-gradient-to-r from-blue-500 to-cyan-500 text-white rounded-xl text-xs sm:text-sm font-semibold shadow-md">
               <span className="w-2 h-2 bg-white rounded-full mr-2 animate-pulse"></span>
-              Live Data
+              {t("liveData")}
             </div>
           </div>
         </div>
@@ -354,7 +361,7 @@ export default function SixDayForecast() {
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-2">
               <div className="w-2 h-2 bg-blue-500 rounded-full animate-pulse"></div>
-              <span className="text-sm font-semibold text-gray-600">Showing details for:</span>
+              <span className="text-sm font-semibold text-gray-600">{t("showingDetailsFor")}</span>
             </div>
             <div className="px-3 py-1 bg-blue-50 rounded-full">
               <span className="text-sm font-bold text-blue-600">{selected.day}, {selected.fullDate}</span>
@@ -382,14 +389,14 @@ export default function SixDayForecast() {
                   {selected.temp.max}°
                 </div>
                 <div className="text-gray-500 text-sm sm:text-lg">
-                  Feels like {selected.temp.max + 2}°
+                  {t("feelsLike")} {selected.temp.max + 2}°
                 </div>
               </div>
               <div className="pb-1 sm:pb-2">
                 <div className="text-xl sm:text-2xl text-gray-600">
                   {selected.temp.min}°
                 </div>
-                <div className="text-xs sm:text-sm text-gray-500">Min</div>
+                <div className="text-xs sm:text-sm text-gray-500">{t("min")}</div>
               </div>
             </div>
 
@@ -398,7 +405,7 @@ export default function SixDayForecast() {
               <div className="flex items-center justify-between mb-2">
                 <div className="flex items-center gap-2">
                   <Droplets className="text-blue-500" size={18} />
-                  <span className="text-sm sm:text-base font-semibold text-gray-900">Precipitation</span>
+                  <span className="text-sm sm:text-base font-semibold text-gray-900">{t("precipitation")}</span>
                 </div>
                 <span className="text-xl sm:text-2xl font-bold text-blue-600">{selected.rain}%</span>
               </div>
@@ -413,14 +420,14 @@ export default function SixDayForecast() {
 
           {/* Right: Additional Details */}
           <div className="space-y-3 sm:space-y-4">
-            <h4 className="text-base sm:text-lg font-semibold text-gray-900 mb-3 sm:mb-4">Weather Details</h4>
+            <h4 className="text-base sm:text-lg font-semibold text-gray-900 mb-3 sm:mb-4">{t("weatherDetails")}</h4>
             
             <div className="grid grid-cols-2 gap-2 sm:gap-4">
               {/* Humidity */}
               <div className="bg-gradient-to-br from-blue-50 to-cyan-50 rounded-lg sm:rounded-xl p-3 sm:p-4 border border-blue-200">
                 <div className="flex items-center gap-1.5 sm:gap-2 mb-1.5 sm:mb-2">
                   <Droplets className="text-blue-500" size={16} />
-                  <span className="text-xs sm:text-sm text-gray-600">Humidity</span>
+                  <span className="text-xs sm:text-sm text-gray-600">{t("humidity")}</span>
                 </div>
                 <div className="text-xl sm:text-2xl font-bold text-gray-900">{selected.humidity}%</div>
               </div>
@@ -429,7 +436,7 @@ export default function SixDayForecast() {
               <div className="bg-gradient-to-br from-green-50 to-emerald-50 rounded-lg sm:rounded-xl p-3 sm:p-4 border border-green-200">
                 <div className="flex items-center gap-1.5 sm:gap-2 mb-1.5 sm:mb-2">
                   <Wind className="text-green-500" size={16} />
-                  <span className="text-xs sm:text-sm text-gray-600">Wind Speed</span>
+                  <span className="text-xs sm:text-sm text-gray-600">{t("windSpeed")}</span>
                 </div>
                 <div className="text-xl sm:text-2xl font-bold text-gray-900">{selected.windSpeed} km/h</div>
               </div>
@@ -438,7 +445,7 @@ export default function SixDayForecast() {
               <div className="bg-gradient-to-br from-orange-50 to-amber-50 rounded-lg sm:rounded-xl p-3 sm:p-4 border border-orange-200">
                 <div className="flex items-center gap-1.5 sm:gap-2 mb-1.5 sm:mb-2">
                   <ThermometerSun className="text-orange-500" size={16} />
-                  <span className="text-xs sm:text-sm text-gray-600">UV Index</span>
+                  <span className="text-xs sm:text-sm text-gray-600">{t("uvIndex")}</span>
                 </div>
                 <div className="text-xl sm:text-2xl font-bold text-gray-900">{selected.uvIndex}</div>
               </div>
@@ -447,7 +454,7 @@ export default function SixDayForecast() {
               <div className="bg-gradient-to-br from-purple-50 to-pink-50 rounded-lg sm:rounded-xl p-3 sm:p-4 border border-purple-200">
                 <div className="flex items-center gap-1.5 sm:gap-2 mb-1.5 sm:mb-2">
                   <Eye className="text-purple-500" size={16} />
-                  <span className="text-xs sm:text-sm text-gray-600">Visibility</span>
+                  <span className="text-xs sm:text-sm text-gray-600">{t("visibility")}</span>
                 </div>
                 <div className="text-xl sm:text-2xl font-bold text-gray-900">{selected.visibility} km</div>
               </div>
@@ -456,7 +463,7 @@ export default function SixDayForecast() {
               <div className="bg-gradient-to-br from-gray-50 to-slate-50 rounded-lg sm:rounded-xl p-3 sm:p-4 border border-gray-200">
                 <div className="flex items-center gap-1.5 sm:gap-2 mb-1.5 sm:mb-2">
                   <Gauge className="text-gray-500" size={16} />
-                  <span className="text-xs sm:text-sm text-gray-600">Pressure</span>
+                  <span className="text-xs sm:text-sm text-gray-600">{t("pressure")}</span>
                 </div>
                 <div className="text-xl sm:text-2xl font-bold text-gray-900">{selected.pressure} hPa</div>
               </div>
@@ -465,12 +472,12 @@ export default function SixDayForecast() {
               <div className="bg-gradient-to-br from-yellow-50 to-orange-50 rounded-lg sm:rounded-xl p-3 sm:p-4 border border-yellow-200">
                 <div className="flex items-center gap-1.5 sm:gap-2 mb-1">
                   <Sunrise className="text-yellow-500" size={16} />
-                  <span className="text-xs sm:text-sm text-gray-600">Sunrise</span>
+                  <span className="text-xs sm:text-sm text-gray-600">{t("sunrise")}</span>
                 </div>
                 <div className="text-base sm:text-lg font-bold text-gray-900">{selected.sunrise}</div>
                 <div className="flex items-center gap-1.5 sm:gap-2 mt-2">
                   <Sunset className="text-orange-500" size={16} />
-                  <span className="text-xs sm:text-sm text-gray-600">Sunset</span>
+                  <span className="text-xs sm:text-sm text-gray-600">{t("sunset")}</span>
                 </div>
                 <div className="text-base sm:text-lg font-bold text-gray-900">{selected.sunset}</div>
               </div>
@@ -482,37 +489,37 @@ export default function SixDayForecast() {
         <div className="mt-4 sm:mt-6 pt-4 sm:pt-6 border-t border-gray-200">
           <h4 className="text-base sm:text-lg font-semibold text-gray-900 mb-3 flex items-center gap-2">
             <span className="text-xl sm:text-2xl">🌾</span>
-            Farming Recommendations
+            {t("farmingRecommendations")}
           </h4>
           <div className="grid sm:grid-cols-2 md:grid-cols-3 gap-3 sm:gap-4">
             {selected.rain > 60 ? (
               <>
                 <div className="bg-blue-50 rounded-lg p-3 sm:p-4 border border-blue-200">
-                  <div className="text-sm sm:text-base font-semibold text-blue-900 mb-1">⚠️ High Rain Expected</div>
-                  <p className="text-xs sm:text-sm text-blue-700">Postpone irrigation and spraying activities</p>
+                  <div className="text-sm sm:text-base font-semibold text-blue-900 mb-1">⚠️ {t("highRainExpected")}</div>
+                  <p className="text-xs sm:text-sm text-blue-700">{t("postponeActivities")}</p>
                 </div>
                 <div className="bg-green-50 rounded-lg p-3 sm:p-4 border border-green-200">
-                  <div className="text-sm sm:text-base font-semibold text-green-900 mb-1">✓ Good for Storage</div>
-                  <p className="text-xs sm:text-sm text-green-700">Ensure proper drainage in fields</p>
+                  <div className="text-sm sm:text-base font-semibold text-green-900 mb-1">✓ {t("goodForStorage")}</div>
+                  <p className="text-xs sm:text-sm text-green-700">{t("ensureDrainage")}</p>
                 </div>
                 <div className="bg-amber-50 rounded-lg p-3 sm:p-4 border border-amber-200">
-                  <div className="text-sm sm:text-base font-semibold text-amber-900 mb-1">💡 Tip</div>
-                  <p className="text-xs sm:text-sm text-amber-700">Cover harvested crops to prevent damage</p>
+                  <div className="text-sm sm:text-base font-semibold text-amber-900 mb-1">💡 {t("tip")}</div>
+                  <p className="text-xs sm:text-sm text-amber-700">{t("coverCrops")}</p>
                 </div>
               </>
             ) : (
               <>
                 <div className="bg-green-50 rounded-lg p-3 sm:p-4 border border-green-200">
-                  <div className="text-sm sm:text-base font-semibold text-green-900 mb-1">✓ Good for Planting</div>
-                  <p className="text-xs sm:text-sm text-green-700">Ideal conditions for sowing seeds</p>
+                  <div className="text-sm sm:text-base font-semibold text-green-900 mb-1">✓ {t("goodForPlanting")}</div>
+                  <p className="text-xs sm:text-sm text-green-700">{t("idealConditions")}</p>
                 </div>
                 <div className="bg-blue-50 rounded-lg p-3 sm:p-4 border border-blue-200">
-                  <div className="text-sm sm:text-base font-semibold text-blue-900 mb-1">💧 Irrigation Needed</div>
-                  <p className="text-xs sm:text-sm text-blue-700">Plan watering schedule for crops</p>
+                  <div className="text-sm sm:text-base font-semibold text-blue-900 mb-1">💧 {t("irrigationNeeded")}</div>
+                  <p className="text-xs sm:text-sm text-blue-700">{t("planWatering")}</p>
                 </div>
                 <div className="bg-amber-50 rounded-lg p-3 sm:p-4 border border-amber-200">
-                  <div className="text-sm sm:text-base font-semibold text-amber-900 mb-1">☀️ Sun Protection</div>
-                  <p className="text-xs sm:text-sm text-amber-700">High UV - protect sensitive crops</p>
+                  <div className="text-sm sm:text-base font-semibold text-amber-900 mb-1">☀️ {t("sunProtection")}</div>
+                  <p className="text-xs sm:text-sm text-amber-700">{t("protectCrops")}</p>
                 </div>
               </>
             )}

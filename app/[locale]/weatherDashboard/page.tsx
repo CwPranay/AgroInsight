@@ -1,6 +1,11 @@
+"use client"
+
+import { useTranslations } from "next-intl"
 import SixDayForecast from "./components/7dayforecast"
 
 export default function WeatherDashboardPage() {
+    const t = useTranslations("weatherForecast")
+    
     return (
         <div className="min-h-screen bg-gradient-to-br from-blue-50/30 via-white to-cyan-50/30">
             {/* Hero Section */}
@@ -12,10 +17,10 @@ export default function WeatherDashboardPage() {
                             <span className="text-xs sm:text-sm font-medium">Weather Intelligence</span>
                         </div>
                         <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold mb-3 sm:mb-4">
-                            Weather Dashboard
+                            {t("title")}
                         </h1>
                         <p className="text-base sm:text-lg md:text-xl text-blue-50 max-w-2xl">
-                            Get accurate 6-day weather forecasts to plan your farming activities effectively
+                            {t("subtitle")}
                         </p>
                     </div>
                 </div>

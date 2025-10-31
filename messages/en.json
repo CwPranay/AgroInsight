@@ -1,12 +1,12 @@
 {
   "Home": {
     "title": "Welcome to AgroInsight",
-    "description": "Helping farmers with crop insights and market prices."
+    "description": "Helping farmers with crop information and market prices."
   },
   "Navigation": {
     "appName": "AgroInsight",
-    "toggleMenu": "Toggle menu",
-    "closeMenu": "Close menu",
+    "toggleMenu": "Toggle Menu",
+    "closeMenu": "Close Menu",
     "home": "Home",
     "dashboard": "Dashboard",
     "weatherSoil": "Weather & Soil",
@@ -14,11 +14,11 @@
     "cropPrices": "Crop Prices",
     "cropPricesDescription": "Live and historical market rates",
     "marketTrends": "Market Trends",
-    "marketTrendsDescription": "Analyze crop demand & prices",
+    "marketTrendsDescription": "Analyze crop demand and prices",
     "nearbyMarkets": "Nearby Markets",
     "nearbyMarketsDescription": "View local mandi data",
-    "weatherForecast": "Forecast",
-    "weatherForecastDescription": "Check 6-day rainfall & temperature",
+    "weatherForecast": "Weather Forecast",
+    "weatherForecastDescription": "Check 6-day rainfall and temperature",
     "soilInsights": "Soil Insights",
     "soilInsightsDescription": "Analyze soil quality",
     "irrigationTips": "Irrigation Tips",
@@ -26,7 +26,7 @@
   },
   "hero": {
     "badge": "Empowering Farmers with Data",
-    "headline": "Smarter Decisions for Every Farmer",
+    "headline": "Smart Decisions for Every Farmer",
     "subtext": "Track crop prices, monitor weather, and get real-time soil insights — all in one dashboard.",
     "ctaPrimary": "View Dashboard",
     "ctaSecondary": "Check Weather",
@@ -37,33 +37,33 @@
     }
   },
   "features": {
-    "title": "Everything You Need in One Place",
-    "subtitle": "Comprehensive tools and insights to help you make informed farming decisions",
+    "title": "Everything in One Place",
+    "subtitle": "Comprehensive tools and insights to help make informed farming decisions",
     "cropPrices": {
       "title": "Crop Prices",
       "description": "Stay updated with real-time market rates and price trends for all major crops."
     },
     "weather": {
-      "title": "Weather Insights",
+      "title": "Weather Information",
       "description": "Get accurate 6-day forecasts with rainfall and temperature data for better planning."
     },
     "soilHealth": {
       "title": "Soil Health",
-      "description": "Monitor your soil's nutrients, pH levels, and moisture content for optimal yields."
+      "description": "Monitor your soil's nutrients, pH levels, and moisture content for optimal yield."
     },
     "markets": {
       "title": "Nearby Markets",
       "description": "Discover profitable selling locations and compare prices across local mandis."
     },
-    "learnMore": "Learn more"
+    "learnMore": "Learn More"
   },
   "liveData": {
     "title": "Live Market Intelligence",
-    "subtitle": "Real-time data to help you make the right decisions",
+    "subtitle": "Real-time data to help make the right decisions",
     "cropPrices": {
       "title": "Today's Crop Prices",
-      "updated": "Updated 5 min ago",
-      "perQuintal": "per quintal",
+      "updated": "Updated 5 minutes ago",
+      "perQuintal": "Per Quintal",
       "viewAll": "View All Prices"
     },
     "weather": {
@@ -78,15 +78,93 @@
       "days": ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"]
     }
   },
+  "about": {
+    "hero": {
+      "title": "About AgroInsight",
+      "subtitle": "Empowering farmers with data-driven agricultural intelligence"
+    },
+    "mission": {
+      "title": "Our Mission",
+      "description": "To revolutionize Indian agriculture by providing farmers with real-time market information, weather forecasts, and data-driven insights that help them make informed decisions and maximize their profits."
+    },
+    "vision": {
+      "title": "Our Vision",
+      "description": "A future where every farmer in India has access to cutting-edge technology and information, enabling sustainable farming practices and ensuring food security for generations to come."
+    },
+    "features": {
+      "title": "What We Provide",
+      "realTime": {
+        "title": "Real-time Market Prices",
+        "description": "Get live commodity prices from mandis across India"
+      },
+      "weather": {
+        "title": "Weather Forecast",
+        "description": "Accurate 6-day weather forecasts for better planning"
+      },
+      "trends": {
+        "title": "Market Trends",
+        "description": "Analyze price movements and make informed selling decisions"
+      },
+      "multilingual": {
+        "title": "Multilingual Support",
+        "description": "Available in English and Hindi for wider reach"
+      }
+    },
+    "team": {
+      "title": "Our Team",
+      "description": "Built by passionate developers and agriculture experts dedicated to farmer welfare"
+    },
+    "contact": {
+      "title": "Contact Us",
+      "description": "Have questions or suggestions? We'd love to hear from you!",
+      "email": "Email",
+      "phone": "Phone",
+      "address": "Address"
+    }
+  },
+  "weatherForecast": {
+    "title": "Weather Forecast",
+    "subtitle": "Get accurate 6-day weather forecasts to effectively plan your farming activities",
+    "useMyLocation": "Use My Location",
+    "gettingLocation": "Getting Location...",
+    "selectCity": "Select City",
+    "searchCity": "Search City...",
+    "liveData": "Live Data",
+    "showingDetailsFor": "Showing details for:",
+    "weatherDetails": "Weather Details",
+    "humidity": "Humidity",
+    "windSpeed": "Wind Speed",
+    "uvIndex": "UV Index",
+    "visibility": "Visibility",
+    "pressure": "Pressure",
+    "sunrise": "Sunrise",
+    "sunset": "Sunset",
+    "precipitation": "Precipitation",
+    "feelsLike": "Feels Like",
+    "min": "Min",
+    "farmingRecommendations": "Farming Recommendations",
+    "highRainExpected": "High Rain Expected",
+    "postponeActivities": "Postpone irrigation and spraying activities",
+    "goodForStorage": "Good for Storage",
+    "ensureDrainage": "Ensure proper drainage in fields",
+    "tip": "Tip",
+    "coverCrops": "Cover harvested crops to prevent damage",
+    "goodForPlanting": "Good for Planting",
+    "idealConditions": "Ideal conditions for seed sowing",
+    "irrigationNeeded": "Irrigation Needed",
+    "planWatering": "Schedule watering for crops",
+    "sunProtection": "Sun Protection",
+    "protectCrops": "High UV - protect sensitive crops"
+  },
   "value": {
     "title": "Why Choose AgroInsight?",
     "subtitle": "Built by farmers, for farmers — with the tools you need to succeed",
     "dataInsights": {
-      "title": "Data-Backed Insights",
+      "title": "Data-backed Insights",
       "description": "Make informed decisions with accurate, real-time agricultural data from trusted sources."
     },
     "realTime": {
-      "title": "Real-Time Updates",
+      "title": "Real-time Updates",
       "description": "Stay ahead with instant notifications on price changes, weather alerts, and market trends."
     },
     "multilingual": {
@@ -101,22 +179,22 @@
     }
   },
   "footerCTA": {
-    "headline": "Join AgroInsight and Make Data-Driven Farming Decisions Today",
-    "subtext": "Start your journey towards smarter farming with real-time insights and expert guidance",
+    "headline": "Join AgroInsight and make data-driven farming decisions today",
+    "subtext": "Start your journey toward smart farming with real-time insights and expert guidance",
     "cta": "Go to Dashboard",
     "trust": {
-      "free": "Free to use",
-      "noCard": "No credit card required",
-      "instant": "Instant access"
+      "free": "Free to Use",
+      "noCard": "No Credit Card Required",
+      "instant": "Instant Access"
     }
   },
   "dashboard": {
     "sections": {
       "welcome": "Welcome Back",
-      "dashboardTitle": "Your Farming Dashboard",
+      "dashboardTitle": "Your Agriculture Dashboard",
       "dashboardSubtitle": "Real-time market insights, price trends, and data-driven decisions at your fingertips.",
       "overview": "Dashboard Overview",
-      "overviewDesc": "General insights, highlights, and quick info for farmers.",
+      "overviewDesc": "General insights, highlights, and quick information for farmers.",
       "totalCrops": "Total Crops",
       "tracked": "Tracked Daily",
       "markets": "Markets",
@@ -129,28 +207,28 @@
       "marketTrends": "Market Trends",
       "marketTrendsDesc": "Analyze price movements and forecast future market conditions.",
       "nearbyMarkets": "Nearby Markets",
-      "nearbyMarketsDesc": "Discover local mandis and compare prices in your region.",
+      "nearbyMarketsDesc": "Explore local mandis and compare prices in your area.",
       "comingSoon": "Coming Soon",
       "comingSoonMessage": "We're working on bringing you detailed information about nearby markets and mandis. Stay tuned!"
     },
     "marketTrends": {
-      "noData": "Loading Trend Data",
-      "noDataMessage": "Please wait while we load the market trend data...",
+      "noData": "Trend data loading",
+      "noDataMessage": "Please wait while we load market trend data...",
       "sampleData": "Sample Data",
       "priceChange": "Price Change",
-      "change": "change",
-      "avgPrice": "Avg Price",
+      "change": "Change",
+      "avgPrice": "Average Price",
       "highest": "Highest",
       "lowest": "Lowest",
-      "peak": "peak",
-      "bottom": "bottom",
+      "peak": "Peak",
+      "bottom": "Bottom",
       "priceHistory": "Price History",
       "last7Days": "Last 7 Days",
-      "perQuintal": "per quintal",
+      "perQuintal": "Per Quintal",
       "marketPrice": "Market Price",
-      "dataPoints": "data points",
+      "dataPoints": "Data Points",
       "note": "Note",
-      "noteMessage": "Prices shown are indicative and may vary by market location and quality grade."
+      "noteMessage": "Prices shown are indicative and may vary based on market location and quality grade."
     },
     "filterBar": {
       "cropLabel": "Select Crop",
@@ -185,18 +263,18 @@
       "noFiltersMessage": "Please select a crop or state from the filters above to view market data.",
       "selectCropMessage": "Please select a crop to view market data. You can optionally filter by state and district.",
       "noDataTitle": "No Data Found",
-      "noDataMessage": "No market data available for the selected filters. Try selecting different state or district combinations.",
+      "noDataMessage": "No market data available for the selected filters. Try choosing different state or district combinations.",
       "currentSelection": "Current Selection",
       "tryDifferentFilters": "Try selecting a different state or district to see available market data.",
       "notice": "Notice",
       "nextStepTitle": "Next Step",
       "pleaseSelectState": "Please select a state to continue and view market prices.",
-      "selectStateNext": "Select a state from the filter above",
+      "selectStateNext": "Select a state from the filters above",
       "almostThere": "Almost There!",
       "pleaseSelectDistrict": "Please select a district to view market prices for your crop.",
-      "selectDistrictNext": "Select a district from the filter above",
-      "highestPrice": "HIGHEST PRICE",
-      "perQuintal": "per quintal",
+      "selectDistrictNext": "Select a district from the filters above",
+      "highestPrice": "Highest Price",
+      "perQuintal": "Per Quintal",
       "date": "Date",
       "trend": "Trend",
       "bestMarket": "Best Market",
