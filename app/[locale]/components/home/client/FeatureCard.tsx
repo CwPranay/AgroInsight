@@ -2,6 +2,7 @@
 
 import { motion } from "framer-motion"
 import { LucideIcon } from "lucide-react"
+import { useRouter } from "next/navigation"
 
 interface FeatureCardProps {
   icon: LucideIcon
@@ -9,10 +10,12 @@ interface FeatureCardProps {
   description: string
   color: string
   learnMore: string
-  index: number
+  index: number,
+  link:string
 }
 
-export function FeatureCard({ icon: Icon, title, description, color, learnMore, index }: FeatureCardProps) {
+export function FeatureCard({ icon: Icon, title, description, color, learnMore, index ,link}: FeatureCardProps) {
+  const router =useRouter()
   return (
     <motion.div
       initial={{ opacity: 0, y: 30 }}
@@ -37,7 +40,7 @@ export function FeatureCard({ icon: Icon, title, description, color, learnMore, 
 
       {/* Hover Arrow */}
       <div className="mt-4 flex items-center text-amber-600 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-        <span className="text-sm font-semibold">{learnMore}</span>
+        <span onClick={()=>router.push(link)}  className="text-sm cursor-pointer font-semibold">{learnMore}</span>
         <svg className="w-4 h-4 ml-1 group-hover:translate-x-1 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor">
           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
         </svg>

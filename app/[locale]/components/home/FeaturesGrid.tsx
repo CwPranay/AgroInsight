@@ -7,21 +7,25 @@ const features = [
     icon: BarChart3,
     key: "cropPrices",
     color: "from-blue-500 to-cyan-500",
+    link:"/dashboard?section=crop-prices"
   },
   {
     icon: CloudSun,
     key: "weather",
     color: "from-amber-500 to-orange-500",
+    link:"/weatherDashboard?section=weather-forecast"
   },
   {
     icon: Leaf,
     key: "soilHealth",
     color: "from-green-500 to-emerald-500",
+    link:"/soil-insights"
   },
   {
     icon: Sprout,
     key: "markets",
     color: "from-purple-500 to-pink-500",
+    link:"/home"
   },
 ]
 
@@ -52,6 +56,7 @@ export function FeaturesGrid() {
               color={feature.color}
               learnMore={t("learnMore")}
               index={index}
+              link={feature.link}
             />
           ))}
         </div>
