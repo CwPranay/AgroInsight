@@ -1,23 +1,32 @@
-import { ComingSoon } from "../components/ComingSoon"
-import { Droplets } from "lucide-react"
+"use client"
+
+import { IrrigationTips } from "./components/IrrigationTips"
 
 export default function IrrigationTipsPage() {
   return (
-    <ComingSoon
-      title="Irrigation Tips"
-      description="Smart irrigation recommendations based on weather and soil conditions"
-      icon={<Droplets size={48} className="text-white" />}
-      estimatedDate="January 2025"
-      features={[
-        "Water requirement calculator",
-        "Irrigation scheduling",
-        "Weather-based recommendations",
-        "Soil moisture tracking",
-        "Water conservation tips",
-        "Drip vs flood irrigation guide",
-        "Crop-specific watering needs",
-        "Cost optimization strategies"
-      ]}
-    />
+    <div className="min-h-screen bg-gradient-to-br from-green-50/30 via-white to-emerald-50/30 dark:from-gray-900 dark:via-gray-900 dark:to-gray-800">
+      {/* Hero Section */}
+      <header className="bg-gradient-to-r from-green-500 via-emerald-500 to-green-600 text-white mt-8">
+        <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-12 sm:py-16">
+          <div className="max-w-4xl">
+            <div className="inline-flex items-center gap-2 px-3 sm:px-4 py-1.5 sm:py-2 bg-white/20 backdrop-blur-sm rounded-full mb-3 sm:mb-4">
+              <span className="text-xl sm:text-2xl">💧</span>
+              <span className="text-xs sm:text-sm font-medium">Water Management</span>
+            </div>
+            <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold mb-3 sm:mb-4">
+              Irrigation Tips & Best Practices
+            </h1>
+            <p className="text-base sm:text-lg md:text-xl text-green-50 max-w-2xl">
+              Learn efficient watering techniques for different crops and seasons to maximize yield while conserving water.
+            </p>
+          </div>
+        </div>
+      </header>
+
+      {/* Main Content */}
+      <main className="container mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12">
+        <IrrigationTips />
+      </main>
+    </div>
   )
 }
