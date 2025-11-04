@@ -3,6 +3,7 @@
 import { useState } from "react"
 import { motion, AnimatePresence } from "framer-motion"
 import { Droplets, Sprout, Sun, Cloud, Leaf, MapPin, Loader2 } from "lucide-react"
+import { useTranslations } from "next-intl"
 import { Toast } from "./Toast"
 
 interface IrrigationTip {
@@ -204,7 +205,9 @@ const getSeasonColor = (season: string) => {
 }
 
 export function IrrigationTips() {
+    const t = useTranslations("irrigationTips")
     const currentSeason = getCurrentSeason()
+    const translatedSeason = t(`seasons.${currentSeason}`)
     const [selectedState, setSelectedState] = useState("All")
     const [selectedDistrict, setSelectedDistrict] = useState("All")
     const [selectedCity, setSelectedCity] = useState("All")
@@ -247,7 +250,7 @@ export function IrrigationTips() {
     // Get user location and reverse geocode to get state/district/city
     const handleUseMyLocation = async () => {
         if (!navigator.geolocation) {
-            showToast("Geolocation is not supported by your browser", "error")
+            showToast(t("toast.geolocationNotSupported"), "error")
             return
         }
 
@@ -320,33 +323,33 @@ export function IrrigationTips() {
                         }
                     } else {
                         // If no match found, show the detected location but don't filter
-                        showToast(`Location detected: ${city}, ${district}, ${state}. No irrigation tips available for this location yet. Showing all tips for ${currentSeason} season.`, "info")
+                        showToast(`${t("location.yourLocation")}: ${city}, ${district}, ${state}. ${t("toast.noTipsForLocation")} ${translatedSeason} ${t("filters.season")}.`, "info")
                     }
 
                     setGettingLocation(false)
-                    showToast("Location detected successfully!", "success")
+                    showToast(t("toast.locationSuccess"), "success")
                 } catch (error) {
                     console.error('Reverse geocoding error:', error)
-                    showToast("Unable to determine your location details. Please select manually.", "error")
+                    showToast(t("toast.locationError"), "error")
                     setGettingLocation(false)
                 }
             },
             (error) => {
                 console.error('Geolocation error:', error)
-                let errorMessage = "Unable to get your location. "
+                let errorMessage = ""
 
                 switch (error.code) {
                     case error.PERMISSION_DENIED:
-                        errorMessage += "Please allow location access in your browser settings."
+                        errorMessage = t("toast.permissionDenied")
                         break
                     case error.POSITION_UNAVAILABLE:
-                        errorMessage += "Location information is unavailable."
+                        errorMessage = t("toast.positionUnavailable")
                         break
                     case error.TIMEOUT:
-                        errorMessage += "Location request timed out."
+                        errorMessage = t("toast.timeout")
                         break
                     default:
-                        errorMessage += "Please select manually."
+                        errorMessage = t("toast.genericError")
                 }
 
                 showToast(errorMessage, "error")
@@ -389,14 +392,23 @@ export function IrrigationTips() {
                         <span className="text-4xl">💧</span>
                     </h2>
                     <p className="text-base sm:text-lg text-gray-600 dark:text-gray-300">
-                        Location-based irrigation insights for the current season.
+                        {hasActiveFilters
+                            ? "Location-based irrigation insights for the current season."
+                            : "Select your location to get personalized irrigation tips for the current season."
+                        }
                     </p>
 
-                    {/* Current Season Badge */}
-                    <div className={`mt-4 inline-flex items-center gap-2 px-4 py-2 bg-gradient-to-r ${getSeasonColor(currentSeason)} text-white rounded-full shadow-lg`}>
-                        {getSeasonIcon(currentSeason)}
-                        <span className="font-semibold">Current Season: {currentSeason}</span>
-                    </div>
+                    {/* Current Season Badge - Only show after location is selected */}
+                    {hasActiveFilters && (
+                        <motion.div
+                            initial={{ opacity: 0, scale: 0.9 }}
+                            animate={{ opacity: 1, scale: 1 }}
+                            className={`mt-4 inline-flex items-center gap-2 px-4 py-2 bg-gradient-to-r ${getSeasonColor(currentSeason)} text-white rounded-full shadow-lg`}
+                        >
+                            {getSeasonIcon(currentSeason)}
+                            <span className="font-semibold">Current Season: {currentSeason}</span>
+                        </motion.div>
+                    )}
                 </div>
 
                 {/* Filter Section */}
@@ -406,7 +418,7 @@ export function IrrigationTips() {
                         <div className="flex items-center gap-3">
                             <MapPin className="w-5 h-5 text-green-600 dark:text-green-400" />
                             <span className="text-sm font-semibold text-gray-700 dark:text-gray-200">
-                                Quick Location Access:
+                                {t("location.quickAccess")}
                             </span>
                         </div>
                         <button
@@ -417,12 +429,12 @@ export function IrrigationTips() {
                             {gettingLocation ? (
                                 <>
                                     <Loader2 className="w-4 h-4 animate-spin" />
-                                    <span>Getting Location...</span>
+                                    <span>{t("location.gettingLocation")}</span>
                                 </>
                             ) : (
                                 <>
                                     <MapPin className="w-4 h-4" />
-                                    <span>Use My Location</span>
+                                    <span>{t("location.useMyLocation")}</span>
                                 </>
                             )}
                         </button>
@@ -434,7 +446,7 @@ export function IrrigationTips() {
                             <div className="flex items-center gap-2 text-green-700 dark:text-green-400">
                                 <MapPin className="w-4 h-4" />
                                 <span className="text-sm font-semibold">
-                                    Your Location: {userLocation.city}, {userLocation.district}, {userLocation.state}
+                                    {t("location.yourLocation")}: {userLocation.city}, {userLocation.district}, {userLocation.state}
                                 </span>
                             </div>
                         </div>
@@ -445,7 +457,7 @@ export function IrrigationTips() {
                         {/* State Filter */}
                         <div className="space-y-2">
                             <label className="text-xs font-semibold text-gray-600 dark:text-gray-300 uppercase tracking-wide">
-                                State
+                                {t("filters.state")}
                             </label>
                             <select
                                 value={selectedState}
@@ -463,7 +475,7 @@ export function IrrigationTips() {
                         {/* District Filter */}
                         <div className="space-y-2">
                             <label className="text-xs font-semibold text-gray-600 dark:text-gray-300 uppercase tracking-wide">
-                                District
+                                {t("filters.district")}
                             </label>
                             <select
                                 value={selectedDistrict}
@@ -482,7 +494,7 @@ export function IrrigationTips() {
                         {/* City Filter */}
                         <div className="space-y-2">
                             <label className="text-xs font-semibold text-gray-600 dark:text-gray-300 uppercase tracking-wide">
-                                City
+                                {t("filters.city")}
                             </label>
                             <select
                                 value={selectedCity}
@@ -502,10 +514,16 @@ export function IrrigationTips() {
                     {/* Filter Summary */}
                     <div className="flex flex-col sm:flex-row items-center justify-between gap-4 pt-4 border-t border-gray-200 dark:border-gray-700">
                         <div className="text-sm text-gray-600 dark:text-gray-300">
-                            <span className="font-semibold text-green-600 dark:text-green-400">{filteredTips.length}</span> tips available for <span className="font-semibold">{currentSeason}</span> season
-                            {hasActiveFilters && (
-                                <span className="ml-2 text-xs text-gray-500">
-                                    (location filtered)
+                            {hasActiveFilters ? (
+                                <>
+                                    <span className="font-semibold text-green-600 dark:text-green-400">{filteredTips.length}</span> {t("filters.tipsAvailable")} <span className="font-semibold">{translatedSeason}</span> {t("filters.season")}
+                                    <span className="ml-2 text-xs text-gray-500">
+                                        ({t("filters.locationFiltered")})
+                                    </span>
+                                </>
+                            ) : (
+                                <span className="text-gray-500 dark:text-gray-400">
+                                    👆 {t("filters.selectLocation")}
                                 </span>
                             )}
                         </div>
@@ -515,83 +533,122 @@ export function IrrigationTips() {
                                 onClick={clearFilters}
                                 className="text-sm text-red-600 dark:text-red-400 hover:text-red-700 dark:hover:text-red-300 font-semibold transition-colors"
                             >
-                                Clear Location Filters
+                                {t("filters.clearFilters")}
                             </button>
                         )}
                     </div>
                 </div>
 
-                {/* Tips Grid */}
-                <AnimatePresence mode="wait">
-                    <motion.div
-                        key={`${currentSeason}-${selectedState}-${selectedDistrict}-${selectedCity}`}
-                        layout
-                        className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"
-                    >
-                        {filteredTips.map((tip, index) => (
-                            <motion.div
-                                key={tip.id}
-                                layout
-                                initial={{ opacity: 0, y: 20 }}
-                                animate={{ opacity: 1, y: 0 }}
-                                exit={{ opacity: 0, y: -20 }}
-                                transition={{ duration: 0.3, delay: index * 0.05 }}
-                                whileHover={{
-                                    y: -8,
-                                    boxShadow: "0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04)"
-                                }}
-                                className="bg-white dark:bg-gray-800 rounded-2xl p-6 shadow-lg border border-gray-200 dark:border-gray-700 hover:border-green-300 dark:hover:border-green-600 transition-all duration-300 cursor-pointer"
-                            >
-                                {/* Card Header */}
-                                <div className="flex items-start justify-between mb-4">
-                                    <div className="flex items-center gap-3">
-                                        <div className="text-4xl">{tip.icon}</div>
-                                        <div>
-                                            <h3 className="text-lg font-bold text-gray-900 dark:text-white">
-                                                {tip.crop}
-                                            </h3>
-                                            <div className={`inline-flex items-center gap-1.5 px-2.5 py-1 bg-gradient-to-r ${getSeasonColor(tip.season)} text-white text-xs font-semibold rounded-full mt-1`}>
-                                                {getSeasonIcon(tip.season)}
-                                                <span>{tip.season}</span>
+                {/* Tips Grid - Only show when location is selected */}
+                {hasActiveFilters ? (
+                    <AnimatePresence mode="wait">
+                        <motion.div
+                            key={`${currentSeason}-${selectedState}-${selectedDistrict}-${selectedCity}`}
+                            layout
+                            className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"
+                        >
+                            {filteredTips.map((tip, index) => (
+                                <motion.div
+                                    key={tip.id}
+                                    layout
+                                    initial={{ opacity: 0, y: 20 }}
+                                    animate={{ opacity: 1, y: 0 }}
+                                    exit={{ opacity: 0, y: -20 }}
+                                    transition={{ duration: 0.3, delay: index * 0.05 }}
+                                    whileHover={{
+                                        y: -8,
+                                        boxShadow: "0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04)"
+                                    }}
+                                    className="bg-white dark:bg-gray-800 rounded-2xl p-6 shadow-lg border border-gray-200 dark:border-gray-700 hover:border-green-300 dark:hover:border-green-600 transition-all duration-300 cursor-pointer"
+                                >
+                                    {/* Card Header */}
+                                    <div className="flex items-start justify-between mb-4">
+                                        <div className="flex items-center gap-3">
+                                            <div className="text-4xl">{tip.icon}</div>
+                                            <div>
+                                                <h3 className="text-lg font-bold text-gray-900 dark:text-white">
+                                                    {tip.crop}
+                                                </h3>
+                                                <div className={`inline-flex items-center gap-1.5 px-2.5 py-1 bg-gradient-to-r ${getSeasonColor(tip.season)} text-white text-xs font-semibold rounded-full mt-1`}>
+                                                    {getSeasonIcon(tip.season)}
+                                                    <span>{tip.season}</span>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
-                                </div>
 
-                                {/* Location Badge */}
-                                <div className="flex items-center gap-1.5 text-xs text-gray-500 dark:text-gray-400 mb-3">
-                                    <MapPin className="w-3 h-3" />
-                                    <span>{tip.city}, {tip.district}</span>
-                                </div>
+                                    {/* Location Badge */}
+                                    <div className="flex items-center gap-1.5 text-xs text-gray-500 dark:text-gray-400 mb-3">
+                                        <MapPin className="w-3 h-3" />
+                                        <span>{tip.city}, {tip.district}</span>
+                                    </div>
 
-                                {/* Card Content */}
-                                <div className="space-y-3">
-                                    <h4 className="text-base font-semibold text-green-700 dark:text-green-400 flex items-center gap-2">
-                                        <Droplets className="w-4 h-4" />
-                                        {tip.title}
+                                    {/* Card Content */}
+                                    <div className="space-y-3">
+                                        <h4 className="text-base font-semibold text-green-700 dark:text-green-400 flex items-center gap-2">
+                                            <Droplets className="w-4 h-4" />
+                                            {tip.title}
+                                        </h4>
+                                        <p className="text-sm text-gray-600 dark:text-gray-300 leading-relaxed">
+                                            {tip.description}
+                                        </p>
+                                    </div>
+
+                                    {/* Card Footer */}
+                                    <div className="mt-4 pt-4 border-t border-gray-200 dark:border-gray-700">
+                                        <div className="flex items-center justify-between text-xs text-gray-500 dark:text-gray-400">
+                                            <span className="flex items-center gap-1">
+                                                <span className="w-2 h-2 bg-green-500 rounded-full animate-pulse"></span>
+                                                Active tip
+                                            </span>
+                                            <span>💡 Best practice</span>
+                                        </div>
+                                    </div>
+                                </motion.div>
+                            ))}
+                        </motion.div>
+                    </AnimatePresence>
+                ) : (
+                    /* Welcome State - Before location selection */
+                    <motion.div
+                        initial={{ opacity: 0, y: 20 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        className="bg-gradient-to-br from-green-50 to-emerald-50 dark:from-gray-800 dark:to-gray-700 rounded-2xl p-12 text-center border-2 border-dashed border-green-300 dark:border-green-700"
+                    >
+                        <div className="max-w-2xl mx-auto space-y-6">
+                            <div className="text-6xl mb-4">📍</div>
+                            <h3 className="text-2xl font-bold text-gray-900 dark:text-white">
+                                {t("welcome.title")}
+                            </h3>
+                            <p className="text-gray-600 dark:text-gray-300 text-lg">
+                                {t("welcome.description")}
+                            </p>
+                            <div className="grid sm:grid-cols-2 gap-4 mt-6">
+                                <div className="bg-white dark:bg-gray-800 rounded-xl p-6 shadow-md">
+                                    <div className="text-3xl mb-3">🗺️</div>
+                                    <h4 className="font-semibold text-gray-900 dark:text-white mb-2">
+                                        {t("welcome.useLocationTitle")}
                                     </h4>
-                                    <p className="text-sm text-gray-600 dark:text-gray-300 leading-relaxed">
-                                        {tip.description}
+                                    <p className="text-sm text-gray-600 dark:text-gray-300">
+                                        {t("welcome.useLocationDesc")}
                                     </p>
                                 </div>
-
-                                {/* Card Footer */}
-                                <div className="mt-4 pt-4 border-t border-gray-200 dark:border-gray-700">
-                                    <div className="flex items-center justify-between text-xs text-gray-500 dark:text-gray-400">
-                                        <span className="flex items-center gap-1">
-                                            <span className="w-2 h-2 bg-green-500 rounded-full animate-pulse"></span>
-                                            Active tip
-                                        </span>
-                                        <span>💡 Best practice</span>
-                                    </div>
+                                <div className="bg-white dark:bg-gray-800 rounded-xl p-6 shadow-md">
+                                    <div className="text-3xl mb-3">📝</div>
+                                    <h4 className="font-semibold text-gray-900 dark:text-white mb-2">
+                                        {t("welcome.selectManualTitle")}
+                                    </h4>
+                                    <p className="text-sm text-gray-600 dark:text-gray-300">
+                                        {t("welcome.selectManualDesc")}
+                                    </p>
                                 </div>
-                            </motion.div>
-                        ))}
+                            </div>
+                        </div>
                     </motion.div>
-                </AnimatePresence>
+                )}
 
-                {/* Empty State */}
-                {filteredTips.length === 0 && (
+                {/* Empty State - After location selection but no tips found */}
+                {hasActiveFilters && filteredTips.length === 0 && (
                     <motion.div
                         initial={{ opacity: 0 }}
                         animate={{ opacity: 1 }}
@@ -599,19 +656,17 @@ export function IrrigationTips() {
                     >
                         <div className="text-6xl mb-4">🌾</div>
                         <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-2">
-                            No tips found for {currentSeason} season
+                            {t("empty.title")} {translatedSeason} {t("filters.season")}
                         </h3>
                         <p className="text-gray-600 dark:text-gray-300 mb-4">
-                            Try adjusting your location filters or clear them to see all tips
+                            {t("empty.description")}
                         </p>
-                        {hasActiveFilters && (
-                            <button
-                                onClick={clearFilters}
-                                className="px-6 py-2 bg-green-500 hover:bg-green-600 text-white rounded-xl font-semibold transition-colors"
-                            >
-                                Clear Filters
-                            </button>
-                        )}
+                        <button
+                            onClick={clearFilters}
+                            className="px-6 py-2 bg-green-500 hover:bg-green-600 text-white rounded-xl font-semibold transition-colors"
+                        >
+                            {t("empty.clearButton")}
+                        </button>
                     </motion.div>
                 )}
             </div>

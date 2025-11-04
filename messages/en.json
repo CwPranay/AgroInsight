@@ -204,6 +204,68 @@
       "note": "Recommendations based on soil pH and texture. Consider local climate and water availability."
     }
   },
+  "irrigationTips": {
+    "hero": {
+      "badge": "Water Management",
+      "title": "Irrigation Tips & Best Practices",
+      "subtitle": "Learn efficient watering techniques for different crops and seasons to maximize yield while conserving water."
+    },
+    "title": "Smart Irrigation Tips",
+    "subtitle": {
+      "default": "Select your location to get personalized irrigation tips for the current season.",
+      "filtered": "Location-based irrigation insights for the current season."
+    },
+    "currentSeason": "Current Season",
+    "location": {
+      "quickAccess": "Quick Location Access:",
+      "useMyLocation": "Use My Location",
+      "gettingLocation": "Getting Location...",
+      "yourLocation": "Your Location"
+    },
+    "filters": {
+      "state": "State",
+      "district": "District",
+      "city": "City",
+      "selectLocation": "Select a location above to see personalized tips",
+      "tipsAvailable": "tips available for",
+      "season": "season",
+      "locationFiltered": "location filtered",
+      "clearFilters": "Clear Location Filters"
+    },
+    "welcome": {
+      "title": "Get Started with Location-Based Tips",
+      "description": "To see irrigation tips relevant to your area and the current season, please:",
+      "useLocationTitle": "Use My Location",
+      "useLocationDesc": "Click the button above to automatically detect your location",
+      "selectManualTitle": "Select Manually",
+      "selectManualDesc": "Choose your State, District, and City from the dropdowns"
+    },
+    "empty": {
+      "title": "No tips found for",
+      "description": "Try adjusting your location filters or clear them to see all tips",
+      "clearButton": "Clear Filters"
+    },
+    "card": {
+      "activeTip": "Active tip",
+      "bestPractice": "Best practice"
+    },
+    "toast": {
+      "geolocationNotSupported": "Geolocation is not supported by your browser",
+      "locationSuccess": "Location detected successfully!",
+      "locationError": "Unable to determine your location details. Please select manually.",
+      "noTipsForLocation": "No irrigation tips available for this location yet. Showing all tips for",
+      "permissionDenied": "Unable to get your location. Please allow location access in your browser settings.",
+      "positionUnavailable": "Unable to get your location. Location information is unavailable.",
+      "timeout": "Unable to get your location. Location request timed out.",
+      "genericError": "Unable to get your location. Please select manually."
+    },
+    "seasons": {
+      "Kharif": "Kharif",
+      "Rabi": "Rabi",
+      "Summer": "Summer",
+      "Winter": "Winter"
+    }
+  },
   "weatherForecast": {
     "title": "Weather Forecast",
     "subtitle": "Get accurate 6-day weather forecasts to effectively plan your farming activities",
