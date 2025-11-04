@@ -56,7 +56,7 @@ const getWeatherIcon = (condition: string) => {
   return weatherMap[condition] || weatherMap['Clouds']
 }
 
-// Popular Indian cities for agriculture
+
 
 
 export default function SixDayForecast() {

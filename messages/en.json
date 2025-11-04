@@ -264,6 +264,25 @@
       "Rabi": "Rabi",
       "Summer": "Summer",
       "Winter": "Winter"
+    },
+    "searchCity": "Search by City",
+    "searchPlaceholder": "Type city name (e.g., Pune, Mumbai, Delhi)",
+    "searchButton": "Search",
+    "searchHint": "Get weather-based irrigation tips for any city in India",
+    "tipsCount": "weather-based tips for",
+    "basedOnWeather": "Based on real-time weather data",
+    "selectLocationPrompt": "Select your location to get started",
+    "clearLocation": "Clear Location",
+    "loadingTips": "Fetching weather-based irrigation tips...",
+    "weatherBased": "Weather-based",
+    "liveData": "Live data",
+    "emptyState": {
+      "title": "Select Your Location",
+      "description": "Get personalized irrigation tips based on real-time weather"
+    },
+    "noTips": {
+      "title": "No tips available for",
+      "description": "Try selecting a different location or check back later"
     }
   },
   "weatherForecast": {
