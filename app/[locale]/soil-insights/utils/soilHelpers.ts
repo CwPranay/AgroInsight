@@ -14,6 +14,7 @@ export interface SoilData {
   dataSource?: string
   fallback?: boolean
   cached?: boolean
+  cacheTimestamp?: number
 }
 
 export function getPhCategory(pH: number): 'acidic' | 'neutral' | 'alkaline' {

@@ -1,9 +1,10 @@
 "use client"
 
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import { motion, AnimatePresence } from "framer-motion"
 import { Droplets, Sprout, Sun, Cloud, Leaf, MapPin, Loader2 } from "lucide-react"
 import { useTranslations } from "next-intl"
+import { useLocation } from "@/app/[locale]/contexts/LocationContext"
 import { Toast } from "./Toast"
 
 interface IrrigationTip {
@@ -206,6 +207,7 @@ const getSeasonColor = (season: string) => {
 
 export function IrrigationTips() {
     const t = useTranslations("irrigationTips")
+    const { location: savedLocation, setLocation: saveLocation } = useLocation()
     const currentSeason = getCurrentSeason()
     const translatedSeason = t(`seasons.${currentSeason}`)
     const [selectedState, setSelectedState] = useState("All")
@@ -291,6 +293,15 @@ export function IrrigationTips() {
 
                     setUserLocation(location)
 
+                    // Save location to context for other pages
+                    saveLocation({
+                        latitude,
+                        longitude,
+                        city,
+                        district,
+                        state
+                    })
+
                     // Try to match with available states in our data
                     const matchedState = states.find(s =>
                         s.toLowerCase().includes(state.toLowerCase()) ||
@@ -372,6 +383,20 @@ export function IrrigationTips() {
     }
 
     const hasActiveFilters = selectedState !== "All" || selectedDistrict !== "All" || selectedCity !== "All"
+
+    // Load saved location on mount
+    useEffect(() => {
+        if (savedLocation && savedLocation.state && selectedState === "All") {
+            // Try to auto-select based on saved location
+            const matchedState = states.find(s =>
+                s.toLowerCase() === savedLocation.state?.toLowerCase()
+            )
+            if (matchedState && matchedState !== "All") {
+                setSelectedState(matchedState)
+                showToast(t("toast.locationSuccess"), "success")
+            }
+        }
+    }, [])
 
     return (
         <>

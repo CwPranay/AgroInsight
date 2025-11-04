@@ -115,7 +115,8 @@ export async function GET(req: NextRequest) {
     if (cachedData) {
         return NextResponse.json({
             ...cachedData,
-            cached: true
+            cached: true,
+            cacheTimestamp: cache.get(getCacheKey(latitude, longitude))?.timestamp
         })
     }
 
@@ -189,7 +190,8 @@ export async function GET(req: NextRequest) {
             surfaceTemperature: parseFloat(temperature.toFixed(1)),
             soilTemperature: parseFloat(temperature.toFixed(1)),
             dataSource: "open-meteo",
-            fallback: moistureFallback
+            fallback: moistureFallback,
+            cached: false
         }
 
         // Cache the result

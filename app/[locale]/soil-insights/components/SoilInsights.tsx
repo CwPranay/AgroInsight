@@ -1,8 +1,9 @@
 "use client"
 
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import { useTranslations } from "next-intl"
 import { MapPin, Loader2, Droplets, Leaf, TestTube, Mountain, AlertCircle } from "lucide-react"
+import { useLocation } from "@/app/[locale]/contexts/LocationContext"
 import { 
   SoilData, 
   getPhCategory, 
@@ -15,13 +16,14 @@ import {
 
 export function SoilInsights() {
   const t = useTranslations("soilInsights")
+  const { location: savedLocation, setLocation: saveLocation } = useLocation()
   const [loading, setLoading] = useState(false)
   const [gettingLocation, setGettingLocation] = useState(false)
   const [error, setError] = useState("")
   const [soilData, setSoilData] = useState<SoilData | null>(null)
   const [coordinates, setCoordinates] = useState({ lat: 0, lng: 0 })
 
-  const fetchSoilData = async (lat: number, lng: number) => {
+  const fetchSoilData = async (lat: number, lng: number, skipLocationUpdate = false) => {
     try {
       setLoading(true)
       setError("")
@@ -36,14 +38,38 @@ export function SoilInsights() {
       
       setSoilData(data)
       setCoordinates({ lat, lng })
+      
+      // Only update location if not skipping (to preserve city/state names from reverse geocoding)
+      if (!skipLocationUpdate) {
+        // Update saved location with coordinates (keep existing city/state if available)
+        if (savedLocation?.city || savedLocation?.state) {
+          saveLocation({
+            ...savedLocation,
+            latitude: lat,
+            longitude: lng
+          })
+        } else {
+          saveLocation({
+            latitude: lat,
+            longitude: lng
+          })
+        }
+      }
     } catch (err: any) {
       setError(t("errors.fetchFailed"))
     } finally {
       setLoading(false)
     }
   }
+  
+  // Load saved location on mount
+  useEffect(() => {
+    if (savedLocation && !soilData) {
+      fetchSoilData(savedLocation.latitude, savedLocation.longitude)
+    }
+  }, [])
 
-  const handleUseMyLocation = () => {
+  const handleUseMyLocation = async () => {
     if (!navigator.geolocation) {
       setError(t("errors.geolocationNotSupported"))
       return
@@ -51,9 +77,48 @@ export function SoilInsights() {
 
     setGettingLocation(true)
     navigator.geolocation.getCurrentPosition(
-      (position) => {
+      async (position) => {
         const { latitude, longitude } = position.coords
-        fetchSoilData(latitude, longitude)
+        
+        try {
+          // Reverse geocode to get city/state name FIRST
+          const geoResponse = await fetch(
+            `https://nominatim.openstreetmap.org/reverse?format=json&lat=${latitude}&lon=${longitude}&addressdetails=1`,
+            {
+              headers: {
+                'User-Agent': 'AgroInsight/1.0'
+              }
+            }
+          )
+          
+          if (geoResponse.ok) {
+            const geoData = await geoResponse.json()
+            const address = geoData.address
+            const cityName = address.city || address.town || address.village || address.state || "Unknown"
+            const stateName = address.state || ""
+            const districtName = address.county || address.state_district || ""
+            
+            // Save location with names to context BEFORE fetching soil data
+            saveLocation({
+              latitude,
+              longitude,
+              city: cityName,
+              state: stateName,
+              district: districtName
+            })
+            
+            // Fetch soil data but skip location update to preserve names
+            await fetchSoilData(latitude, longitude, true)
+          } else {
+            // If geocoding fails, fetch soil data normally
+            await fetchSoilData(latitude, longitude)
+          }
+        } catch (err) {
+          console.error("Reverse geocoding failed:", err)
+          // If geocoding fails, fetch soil data normally
+          await fetchSoilData(latitude, longitude)
+        }
+        
         setGettingLocation(false)
       },
       (error) => {
@@ -136,7 +201,12 @@ export function SoilInsights() {
           <span className="font-semibold">{t("location")}</span>
         </div>
         <span className="text-sm">
-          {coordinates.lat.toFixed(4)}°, {coordinates.lng.toFixed(4)}°
+          {savedLocation?.city 
+            ? savedLocation.state 
+              ? `${savedLocation.city}, ${savedLocation.state}`
+              : savedLocation.city
+            : `${coordinates.lat.toFixed(4)}°, ${coordinates.lng.toFixed(4)}°`
+          }
         </span>
       </div>
 
@@ -144,12 +214,18 @@ export function SoilInsights() {
       {soilData.dataSource && (
         <div className="flex items-center justify-between bg-blue-50 border border-blue-200 rounded-lg px-4 py-2 text-sm">
           <span className="text-blue-700">
-            {soilData.cached && '💾 '}
-            {soilData.dataSource === 'open-meteo' && '🌍 Live Data from Open-Meteo'}
-            {soilData.dataSource === 'agromonitoring' && '🛰️ Live Data from AgroMonitoring'}
+            {soilData.cached ? '💾 Cached Data from ' : '🌍 Live Data from '}
+            {soilData.dataSource === 'open-meteo' && 'Open-Meteo'}
+            {soilData.dataSource === 'agromonitoring' && 'AgroMonitoring'}
             {soilData.dataSource === 'fallback' && '📊 Sample Data'}
           </span>
-          {soilData.cached && <span className="text-blue-600 text-xs">Cached</span>}
+          {soilData.cached && (
+            <span className="text-blue-600 text-xs">
+              {soilData.cacheTimestamp && 
+                new Date(soilData.cacheTimestamp).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
+              }
+            </span>
+          )}
         </div>
       )}
 

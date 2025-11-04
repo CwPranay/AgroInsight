@@ -21,6 +21,7 @@ import {
 } from "lucide-react"
 import { WeatherForecastSkeleton } from "@/app/[locale]/components/skeletons/WeatherForecastSkeleton"
 import { useTranslations } from "next-intl"
+import { useLocation } from "@/app/[locale]/contexts/LocationContext"
 
 interface WeatherData {
   date: string
@@ -61,6 +62,7 @@ const getWeatherIcon = (condition: string) => {
 export default function SixDayForecast() {
   const t = useTranslations("weatherForecast")
   const locale = typeof window !== 'undefined' ? (window.location.pathname.split('/')[1] || 'en') : 'en'
+  const { location: savedLocation, setLocation: saveLocation } = useLocation()
   
   // Add custom scrollbar hiding styles
   if (typeof document !== 'undefined') {
@@ -111,6 +113,14 @@ export default function SixDayForecast() {
       // Update city name from API response
       if (data.city?.name) {
         setCity(data.city.name)
+        
+        // Update saved location with city name
+        if (savedLocation) {
+          saveLocation({
+            ...savedLocation,
+            city: data.city.name
+          })
+        }
       }
 
       // Process forecast data (limit to 6 days)
@@ -152,7 +162,7 @@ export default function SixDayForecast() {
     }
   }
 
-  const handleUseMyLocation = () => {
+  const handleUseMyLocation = async () => {
     if (!navigator.geolocation) {
       setError("Geolocation is not supported by your browser")
       return
@@ -160,8 +170,49 @@ export default function SixDayForecast() {
 
     setGettingLocation(true)
     navigator.geolocation.getCurrentPosition(
-      (position) => {
+      async (position) => {
         const { latitude, longitude } = position.coords
+        
+        try {
+          // Reverse geocode to get city name
+          const geoResponse = await fetch(
+            `https://nominatim.openstreetmap.org/reverse?format=json&lat=${latitude}&lon=${longitude}&addressdetails=1`,
+            {
+              headers: {
+                'User-Agent': 'AgroInsight/1.0'
+              }
+            }
+          )
+          
+          if (geoResponse.ok) {
+            const geoData = await geoResponse.json()
+            const address = geoData.address
+            const cityName = address.city || address.town || address.village || address.state || "Unknown"
+            const stateName = address.state || ""
+            
+            // Save location to context for other pages
+            saveLocation({
+              latitude,
+              longitude,
+              city: cityName,
+              state: stateName
+            })
+          } else {
+            // Save without city name
+            saveLocation({
+              latitude,
+              longitude
+            })
+          }
+        } catch (err) {
+          console.error("Reverse geocoding failed:", err)
+          // Save without city name
+          saveLocation({
+            latitude,
+            longitude
+          })
+        }
+        
         fetchWeather(`lat=${latitude}&lon=${longitude}`, true)
         setGettingLocation(false)
       },
@@ -171,6 +222,13 @@ export default function SixDayForecast() {
       }
     )
   }
+  
+  // Load saved location on mount
+  useEffect(() => {
+    if (savedLocation && !city) {
+      fetchWeather(`lat=${savedLocation.latitude}&lon=${savedLocation.longitude}`, true)
+    }
+  }, [])
 
   const handleCitySelect = (selectedCity: string) => {
     setCity(selectedCity)
