@@ -16,6 +16,8 @@ interface CropsFilterProps {
   setCrop: (crop: string) => void
   state: string | undefined
   setState: (state: string) => void
+  district: string | undefined
+  setDistrict: (district: string) => void
 }
 
 interface Commodity {
@@ -46,7 +48,7 @@ interface PriceData {
   commodity_name: string
 }
 
-export default function CropsFilter({ crop, setCrop, state, setState }: CropsFilterProps) {
+export default function CropsFilter({ crop, setCrop, state, setState, district, setDistrict }: CropsFilterProps) {
   const t = useTranslations("dashboard.filterBar")
   const [currentPage, setCurrentPage] = useState(1)
 
@@ -59,7 +61,7 @@ export default function CropsFilter({ crop, setCrop, state, setState }: CropsFil
   const [sortOpen, setSortOpen] = useState(false)
   const [priceSort, setPriceSort] = useState<"none" | "high-to-low" | "low-to-high">("none")
 
-  const [district, setDistrict] = useState("")
+  
   const [commodities, setCommodities] = useState<Commodity[]>([])
   const [geographies, setGeographies] = useState<Geography[]>([])
   const [priceData, setPriceData] = useState<PriceData[]>([])
@@ -152,7 +154,7 @@ export default function CropsFilter({ crop, setCrop, state, setState }: CropsFil
         // Find commodity with case-insensitive and partial match
         const commodityObj = commodities.find(
           c => c.commodity_name.toLowerCase().includes(crop.toLowerCase()) ||
-               crop.toLowerCase().includes(c.commodity_name.toLowerCase())
+            crop.toLowerCase().includes(c.commodity_name.toLowerCase())
         )
 
         if (!commodityObj) {
@@ -190,11 +192,11 @@ export default function CropsFilter({ crop, setCrop, state, setState }: CropsFil
 
         matchingGeographies.forEach((geo) => {
           const numMarkets = Math.floor(Math.random() * 2) + 2
-          
+
           for (let i = 0; i < numMarkets; i++) {
             const basePrice = Math.floor(Math.random() * 3000) + 1500
             const variation = Math.floor(Math.random() * 400) - 200
-            
+
             mockPrices.push({
               date: today.toISOString().split('T')[0],
               modal_price: basePrice + variation,
@@ -269,7 +271,7 @@ export default function CropsFilter({ crop, setCrop, state, setState }: CropsFil
   const cropsToShow = useMemo(() => {
     // Show data based on what filters are selected
     if (!crop) return []
-    
+
     let filtered = [...priceData]
 
     // Filter by state if selected

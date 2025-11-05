@@ -14,12 +14,13 @@ export default function DashboardPage() {
   const t = useTranslations("dashboard.sections");
   const [selectedCrop, setSelectedCrop] = useState("");
   const [selectedState, setSelectedState] = useState("");
+  const [selectedDistrict, setSelectedDistrict] = useState("");
 
   const searchParams = useSearchParams();
   
   const filteredTrends = useMemo(() => {
     // Only filter if crop or state is selected
-    if (!selectedCrop && !selectedState) {
+    if (!selectedCrop && !selectedState && !selectedDistrict) {
       return []
     }
     return cropTrends.filter((item) => {
@@ -107,6 +108,8 @@ export default function DashboardPage() {
             state={selectedState || undefined}
             setCrop={setSelectedCrop}
             setState={setSelectedState}
+            district={selectedDistrict || undefined}
+            setDistrict={setSelectedDistrict}
           />
         </section>
 
