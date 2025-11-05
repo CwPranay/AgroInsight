@@ -4,23 +4,28 @@ import { useState } from "react";
 
 interface CropsFilterProps {
     state: string | undefined
-    setState: React.Dispatch<React.SetStateAction<string>>
+
+    district: string | undefined
+
 }
 
 
 
-export default function nearbyMarket({ state, setState }: CropsFilterProps) {
+export default function NearbyMarket({ state, district }: CropsFilterProps) {
     const [selectedState, setSelectedState] = useState("")
     const [selectedDistrict, setSelectedDistrict] = useState("")
-
+    if (!state && !district) {
+        return (
+            <div className="text-gray-500 italic text-sm">
+                Select a state or district above to view nearby markets.
+            </div>
+        );
+    }
     const filteredMarkets = mockMarkets.filter((market) => {
-        const stateMatch =
-            selectedState === "All" || market.state_name === selectedState;
-        const districtMatch =
-            selectedDistrict === "All" || market.district_name === selectedDistrict;
+        const stateMatch = state ? market.state_name === state : true;
+        const districtMatch = district ? market.district_name === district : true;
         return stateMatch && districtMatch;
     });
-
 
     return (
         <div >

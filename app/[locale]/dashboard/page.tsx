@@ -17,7 +17,7 @@ export default function DashboardPage() {
   const [selectedDistrict, setSelectedDistrict] = useState("");
 
   const searchParams = useSearchParams();
-  
+
   const filteredTrends = useMemo(() => {
     // Only filter if crop or state is selected
     if (!selectedCrop && !selectedState && !selectedDistrict) {
@@ -68,7 +68,7 @@ export default function DashboardPage() {
         <meta name="twitter:description" content="Track live agricultural commodity prices and market trends across India" />
         <link rel="canonical" href="https://agroinsight.com/dashboard" />
       </Head>
-      
+
       <main className="min-h-screen bg-gradient-to-br from-amber-50/30 via-white to-yellow-50/30">
         {/* Hero Section */}
         <header className="bg-gradient-to-r mt-8 from-amber-500 via-yellow-500 to-orange-500 text-white">
@@ -89,78 +89,80 @@ export default function DashboardPage() {
         </header>
 
         <div className="container mx-auto px-4 py-12 space-y-16">
-        {/* Overview Section */}
-       
+          {/* Overview Section */}
 
-        {/* Crop Prices Section */}
-        <section id="crop-prices" className="scroll-mt-20">
-          <div className="mb-6">
-            <div className="flex items-center gap-3 mb-2">
-              <div className="w-10 h-10 bg-gradient-to-br from-green-500 to-emerald-500 rounded-lg flex items-center justify-center">
-                <TrendingUp size={20} className="text-white" />
+
+          {/* Crop Prices Section */}
+          <section id="crop-prices" className="scroll-mt-20">
+            <div className="mb-6">
+              <div className="flex items-center gap-3 mb-2">
+                <div className="w-10 h-10 bg-gradient-to-br from-green-500 to-emerald-500 rounded-lg flex items-center justify-center">
+                  <TrendingUp size={20} className="text-white" />
+                </div>
+                <h2 className="text-3xl font-bold text-gray-900">{t("cropPrices")}</h2>
               </div>
-              <h2 className="text-3xl font-bold text-gray-900">{t("cropPrices")}</h2>
+              <p className="text-gray-600 ml-13">{t("cropPricesDesc")}</p>
             </div>
-            <p className="text-gray-600 ml-13">{t("cropPricesDesc")}</p>
-          </div>
-          <CropsPrice
-            crop={selectedCrop || undefined}
-            state={selectedState || undefined}
-            setCrop={setSelectedCrop}
-            setState={setSelectedState}
-            district={selectedDistrict || undefined}
-            setDistrict={setSelectedDistrict}
+            <CropsPrice
+              crop={selectedCrop || undefined}
+              state={selectedState || undefined}
+              setCrop={setSelectedCrop}
+              setState={setSelectedState}
+              district={selectedDistrict || undefined}
+              setDistrict={setSelectedDistrict}
+            />
+          </section>
+
+          {/* Market Trends Section */}
+          <section id="market-trends" className="scroll-mt-20">
+            <div className="mb-6">
+              <div className="flex items-center gap-3 mb-2">
+                <div className="w-10 h-10 bg-gradient-to-br from-amber-500 to-orange-500 rounded-lg flex items-center justify-center">
+                  <BarChart3 size={20} className="text-white" />
+                </div>
+                <h2 className="text-3xl font-bold text-gray-900">{t("marketTrends")}</h2>
+              </div>
+              <p className="text-gray-600 ml-13">{t("marketTrendsDesc")}</p>
+            </div>
+            <MarketTrends data={filteredTrends} />
+          </section>
+
+          {/* Nearby Markets Section */}
+          <section id="nearby-markets" className="scroll-mt-20">
+            <div className="mb-6">
+              <NearbyMarket
+                state={selectedState || undefined}
+
+                district={selectedDistrict || undefined}
+              />
+            </div>
+          </section>
+
+          {/* Structured Data for SEO */}
+          <script
+            type="application/ld+json"
+            dangerouslySetInnerHTML={{
+              __html: JSON.stringify({
+                "@context": "https://schema.org",
+                "@type": "WebApplication",
+                "name": "AgroInsight Dashboard",
+                "description": "Real-time agricultural commodity prices and market trends across India",
+                "applicationCategory": "BusinessApplication",
+                "operatingSystem": "Web",
+                "offers": {
+                  "@type": "Offer",
+                  "price": "0",
+                  "priceCurrency": "INR"
+                },
+                "aggregateRating": {
+                  "@type": "AggregateRating",
+                  "ratingValue": "4.8",
+                  "ratingCount": "1250"
+                }
+              })
+            }}
           />
-        </section>
-
-        {/* Market Trends Section */}
-        <section id="market-trends" className="scroll-mt-20">
-          <div className="mb-6">
-            <div className="flex items-center gap-3 mb-2">
-              <div className="w-10 h-10 bg-gradient-to-br from-amber-500 to-orange-500 rounded-lg flex items-center justify-center">
-                <BarChart3 size={20} className="text-white" />
-              </div>
-              <h2 className="text-3xl font-bold text-gray-900">{t("marketTrends")}</h2>
-            </div>
-            <p className="text-gray-600 ml-13">{t("marketTrendsDesc")}</p>
-          </div>
-          <MarketTrends data={filteredTrends} />
-        </section>
-
-        {/* Nearby Markets Section */}
-        <section id="nearby-markets" className="scroll-mt-20">
-          <div className="mb-6">
-           <NearbyMarket
-           state={selectedState || undefined}
-           setState={selectedState}/>
-          </div>
-        </section>
-        
-        {/* Structured Data for SEO */}
-        <script
-          type="application/ld+json"
-          dangerouslySetInnerHTML={{
-            __html: JSON.stringify({
-              "@context": "https://schema.org",
-              "@type": "WebApplication",
-              "name": "AgroInsight Dashboard",
-              "description": "Real-time agricultural commodity prices and market trends across India",
-              "applicationCategory": "BusinessApplication",
-              "operatingSystem": "Web",
-              "offers": {
-                "@type": "Offer",
-                "price": "0",
-                "priceCurrency": "INR"
-              },
-              "aggregateRating": {
-                "@type": "AggregateRating",
-                "ratingValue": "4.8",
-                "ratingCount": "1250"
-              }
-            })
-          }}
-        />
-      </div>
+        </div>
       </main>
     </>
   );
