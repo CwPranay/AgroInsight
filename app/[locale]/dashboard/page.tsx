@@ -6,6 +6,7 @@ import { useTranslations } from "next-intl";
 import Head from "next/head";
 import CropsPrice from "./components/cropsFilter";
 import MarketTrends from "./components/marketTrends";
+import NearbyMarket from "./components/nearByMarket";
 import { cropTrends } from "@/mockData/trend";
 import { BarChart3, TrendingUp, MapPin, Sparkles } from "lucide-react";
 
@@ -126,25 +127,9 @@ export default function DashboardPage() {
         {/* Nearby Markets Section */}
         <section id="nearby-markets" className="scroll-mt-20">
           <div className="mb-6">
-            <div className="flex items-center gap-3 mb-2">
-              <div className="w-10 h-10 bg-gradient-to-br from-blue-500 to-cyan-500 rounded-lg flex items-center justify-center">
-                <MapPin size={20} className="text-white" />
-              </div>
-              <h2 className="text-3xl font-bold text-gray-900">{t("nearbyMarkets")}</h2>
-            </div>
-            <p className="text-gray-600 ml-13">{t("nearbyMarketsDesc")}</p>
-          </div>
-          
-          <div className="bg-white rounded-2xl p-12 shadow-lg border border-gray-200">
-            <div className="flex flex-col items-center justify-center text-center">
-              <div className="w-20 h-20 bg-gradient-to-br from-blue-100 to-cyan-100 rounded-full flex items-center justify-center mb-4">
-                <MapPin size={40} className="text-blue-500" />
-              </div>
-              <h3 className="text-2xl font-bold text-gray-900 mb-2">{t("comingSoon")}</h3>
-              <p className="text-gray-600 max-w-md">
-                {t("comingSoonMessage")}
-              </p>
-            </div>
+           <NearbyMarket
+           state={selectedState || undefined}
+           setState={selectedState}/>
           </div>
         </section>
         
