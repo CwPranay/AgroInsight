@@ -3,60 +3,200 @@
     "market_id": 1001,
     "market_name": "Pune APMC Market",
     "state_name": "Maharashtra",
-    "district_name": "Pune"
+    "district_name": "Pune",
+    "distance": 2.5,
+    "type": "APMC"
   },
   {
     "market_id": 1002,
     "market_name": "Vashi Agricultural Market",
     "state_name": "Maharashtra",
-    "district_name": "Mumbai"
+    "district_name": "Mumbai",
+    "distance": 45.3,
+    "type": "APMC"
   },
   {
     "market_id": 1003,
     "market_name": "Nagpur Krishi Upaj Mandi",
     "state_name": "Maharashtra",
-    "district_name": "Nagpur"
+    "district_name": "Nagpur",
+    "distance": 215.7,
+    "type": "Mandi"
+  },
+  {
+    "market_id": 1004,
+    "market_name": "Nashik Agricultural Market",
+    "state_name": "Maharashtra",
+    "district_name": "Nashik",
+    "distance": 165.2,
+    "type": "APMC"
+  },
+  {
+    "market_id": 1005,
+    "market_name": "Kolhapur Mandi",
+    "state_name": "Maharashtra",
+    "district_name": "Kolhapur",
+    "distance": 230.8,
+    "type": "Mandi"
   },
   {
     "market_id": 2001,
     "market_name": "Ahmedabad Grain Market",
     "state_name": "Gujarat",
-    "district_name": "Ahmedabad"
+    "district_name": "Ahmedabad",
+    "distance": 525.4,
+    "type": "Grain Market"
   },
   {
     "market_id": 2002,
     "market_name": "Surat Vegetable Market",
     "state_name": "Gujarat",
-    "district_name": "Surat"
+    "district_name": "Surat",
+    "distance": 285.6,
+    "type": "Vegetable Market"
   },
   {
     "market_id": 2003,
     "market_name": "Rajkot Mandi",
     "state_name": "Gujarat",
-    "district_name": "Rajkot"
+    "district_name": "Rajkot",
+    "distance": 645.3,
+    "type": "Mandi"
+  },
+  {
+    "market_id": 2004,
+    "market_name": "Vadodara Agricultural Market",
+    "state_name": "Gujarat",
+    "district_name": "Vadodara",
+    "distance": 425.7,
+    "type": "APMC"
   },
   {
     "market_id": 3001,
     "market_name": "Indore Krishi Upaj Mandi",
     "state_name": "Madhya Pradesh",
-    "district_name": "Indore"
+    "district_name": "Indore",
+    "distance": 585.2,
+    "type": "Mandi"
   },
   {
     "market_id": 3002,
     "market_name": "Bhopal Agricultural Market",
     "state_name": "Madhya Pradesh",
-    "district_name": "Bhopal"
+    "district_name": "Bhopal",
+    "distance": 745.8,
+    "type": "APMC"
+  },
+  {
+    "market_id": 3003,
+    "market_name": "Ujjain Krishi Mandi",
+    "state_name": "Madhya Pradesh",
+    "district_name": "Ujjain",
+    "distance": 625.4,
+    "type": "Mandi"
   },
   {
     "market_id": 4001,
     "market_name": "Bangalore APMC Yeshwanthpur",
     "state_name": "Karnataka",
-    "district_name": "Bangalore"
+    "district_name": "Bangalore",
+    "distance": 845.6,
+    "type": "APMC"
+  },
+  {
+    "market_id": 4002,
+    "market_name": "Mysore Agricultural Market",
+    "state_name": "Karnataka",
+    "district_name": "Mysore",
+    "distance": 985.3,
+    "type": "APMC"
+  },
+  {
+    "market_id": 4003,
+    "market_name": "Hubli Mandi",
+    "state_name": "Karnataka",
+    "district_name": "Hubli",
+    "distance": 1125.7,
+    "type": "Mandi"
   },
   {
     "market_id": 5001,
     "market_name": "Ludhiana Grain Market",
     "state_name": "Punjab",
-    "district_name": "Ludhiana"
+    "district_name": "Ludhiana",
+    "distance": 1485.2,
+    "type": "Grain Market"
+  },
+  {
+    "market_id": 5002,
+    "market_name": "Amritsar Agricultural Market",
+    "state_name": "Punjab",
+    "district_name": "Amritsar",
+    "distance": 1625.8,
+    "type": "APMC"
+  },
+  {
+    "market_id": 5003,
+    "market_name": "Jalandhar Mandi",
+    "state_name": "Punjab",
+    "district_name": "Jalandhar",
+    "distance": 1545.4,
+    "type": "Mandi"
+  },
+  {
+    "market_id": 6001,
+    "market_name": "Delhi Azadpur Mandi",
+    "state_name": "Delhi",
+    "district_name": "North Delhi",
+    "distance": 1425.6,
+    "type": "Mandi"
+  },
+  {
+    "market_id": 6002,
+    "market_name": "Ghazipur Vegetable Market",
+    "state_name": "Delhi",
+    "district_name": "East Delhi",
+    "distance": 1445.3,
+    "type": "Vegetable Market"
+  },
+  {
+    "market_id": 7001,
+    "market_name": "Jaipur Krishi Upaj Mandi",
+    "state_name": "Rajasthan",
+    "district_name": "Jaipur",
+    "distance": 1185.7,
+    "type": "Mandi"
+  },
+  {
+    "market_id": 7002,
+    "market_name": "Jodhpur Agricultural Market",
+    "state_name": "Rajasthan",
+    "district_name": "Jodhpur",
+    "distance": 1425.2,
+    "type": "APMC"
+  },
+  {
+    "market_id": 8001,
+    "market_name": "Lucknow Mandi",
+    "state_name": "Uttar Pradesh",
+    "district_name": "Lucknow",
+    "distance": 1325.8,
+    "type": "Mandi"
+  },
+  {
+    "market_id": 8002,
+    "market_name": "Agra Agricultural Market",
+    "state_name": "Uttar Pradesh",
+    "district_name": "Agra",
+    "distance": 1245.4,
+    "type": "APMC"
+  },
+  {
+    "market_id": 8003,
+    "market_name": "Kanpur Grain Market",
+    "state_name": "Uttar Pradesh",
+    "district_name": "Kanpur",
+    "distance": 1385.6,
+    "type": "Grain Market"
   }
 ]

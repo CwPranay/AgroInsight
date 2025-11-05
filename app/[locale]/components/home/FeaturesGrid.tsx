@@ -25,7 +25,7 @@ const features = [
     icon: Sprout,
     key: "markets",
     color: "from-purple-500 to-pink-500",
-    link:"/home"
+    link:"/dashboard?section=nearby-markets"
   },
 ]
 

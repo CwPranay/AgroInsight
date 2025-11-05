@@ -88,18 +88,18 @@ export default function MarketTrends({ data }: MarketTrendsProps) {
   }
 
   return (
-    <div className="bg-white rounded-2xl p-6 shadow-lg border border-gray-200">
+    <div className="bg-white rounded-2xl p-4 sm:p-6 shadow-lg border border-gray-200">
       {/* Header Section */}
-      <div className="mb-6">
-        <div className="flex items-start justify-between mb-4">
-          <div>
-            <h3 className="text-2xl font-bold text-gray-900 mb-1">{displayData.crop}</h3>
-            <p className="text-gray-600">
+      <div className="mb-4 sm:mb-6">
+        <div className="flex flex-col sm:flex-row items-start justify-between gap-3 mb-4">
+          <div className="flex-1">
+            <h3 className="text-xl sm:text-2xl font-bold text-gray-900 mb-1">{displayData.crop}</h3>
+            <p className="text-sm sm:text-base text-gray-600">
               {displayData.market}, {displayData.state}
             </p>
           </div>
           {data.length === 0 && (
-            <div className="px-3 py-1 bg-blue-50 border border-blue-200 rounded-full">
+            <div className="px-3 py-1 bg-blue-50 border border-blue-200 rounded-full flex-shrink-0">
               <span className="text-xs font-medium text-blue-700">{t("sampleData")}</span>
             </div>
           )}
@@ -107,69 +107,69 @@ export default function MarketTrends({ data }: MarketTrendsProps) {
 
         {/* Price Statistics Cards */}
         {priceStats && (
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
+          <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4 mb-4 sm:mb-6">
             {/* Current Price Change */}
-            <div className="bg-gradient-to-br from-amber-50 to-orange-50 rounded-xl p-4 border border-amber-200">
-              <div className="flex items-center gap-2 mb-2">
+            <div className="bg-gradient-to-br from-amber-50 to-orange-50 rounded-xl p-3 sm:p-4 border border-amber-200">
+              <div className="flex items-center gap-1.5 sm:gap-2 mb-2">
                 {priceStats.isPositive ? (
-                  <TrendingUp size={18} className="text-green-600" />
+                  <TrendingUp size={16} className="text-green-600 flex-shrink-0" />
                 ) : (
-                  <TrendingDown size={18} className="text-red-600" />
+                  <TrendingDown size={16} className="text-red-600 flex-shrink-0" />
                 )}
-                <span className="text-xs font-medium text-gray-600">{t("priceChange")}</span>
+                <span className="text-xs font-medium text-gray-600 truncate">{t("priceChange")}</span>
               </div>
-              <p className={`text-2xl font-bold ${priceStats.isPositive ? 'text-green-600' : 'text-red-600'}`}>
+              <p className={`text-xl sm:text-2xl font-bold ${priceStats.isPositive ? 'text-green-600' : 'text-red-600'}`}>
                 {priceStats.isPositive ? '+' : ''}{priceStats.priceChangePercent}%
               </p>
-              <p className="text-xs text-gray-500 mt-1">
+              <p className="text-xs text-gray-500 mt-1 truncate">
                 ₹{Math.abs(priceStats.priceChange)} {t("change")}
               </p>
             </div>
 
             {/* Average Price */}
-            <div className="bg-gradient-to-br from-blue-50 to-cyan-50 rounded-xl p-4 border border-blue-200">
-              <div className="flex items-center gap-2 mb-2">
-                <Activity size={18} className="text-blue-600" />
-                <span className="text-xs font-medium text-gray-600">{t("avgPrice")}</span>
+            <div className="bg-gradient-to-br from-blue-50 to-cyan-50 rounded-xl p-3 sm:p-4 border border-blue-200">
+              <div className="flex items-center gap-1.5 sm:gap-2 mb-2">
+                <Activity size={16} className="text-blue-600 flex-shrink-0" />
+                <span className="text-xs font-medium text-gray-600 truncate">{t("avgPrice")}</span>
               </div>
-              <p className="text-2xl font-bold text-blue-600">₹{priceStats.avgPrice}</p>
-              <p className="text-xs text-gray-500 mt-1">{t("perQuintal")}</p>
+              <p className="text-xl sm:text-2xl font-bold text-blue-600">₹{priceStats.avgPrice}</p>
+              <p className="text-xs text-gray-500 mt-1 truncate">{t("perQuintal")}</p>
             </div>
 
             {/* Highest Price */}
-            <div className="bg-gradient-to-br from-green-50 to-emerald-50 rounded-xl p-4 border border-green-200">
-              <div className="flex items-center gap-2 mb-2">
-                <TrendingUp size={18} className="text-green-600" />
-                <span className="text-xs font-medium text-gray-600">{t("highest")}</span>
+            <div className="bg-gradient-to-br from-green-50 to-emerald-50 rounded-xl p-3 sm:p-4 border border-green-200">
+              <div className="flex items-center gap-1.5 sm:gap-2 mb-2">
+                <TrendingUp size={16} className="text-green-600 flex-shrink-0" />
+                <span className="text-xs font-medium text-gray-600 truncate">{t("highest")}</span>
               </div>
-              <p className="text-2xl font-bold text-green-600">₹{priceStats.maxPrice}</p>
-              <p className="text-xs text-gray-500 mt-1">{t("peak")}</p>
+              <p className="text-xl sm:text-2xl font-bold text-green-600">₹{priceStats.maxPrice}</p>
+              <p className="text-xs text-gray-500 mt-1 truncate">{t("peak")}</p>
             </div>
 
             {/* Lowest Price */}
-            <div className="bg-gradient-to-br from-purple-50 to-pink-50 rounded-xl p-4 border border-purple-200">
-              <div className="flex items-center gap-2 mb-2">
-                <TrendingDown size={18} className="text-purple-600" />
-                <span className="text-xs font-medium text-gray-600">{t("lowest")}</span>
+            <div className="bg-gradient-to-br from-purple-50 to-pink-50 rounded-xl p-3 sm:p-4 border border-purple-200">
+              <div className="flex items-center gap-1.5 sm:gap-2 mb-2">
+                <TrendingDown size={16} className="text-purple-600 flex-shrink-0" />
+                <span className="text-xs font-medium text-gray-600 truncate">{t("lowest")}</span>
               </div>
-              <p className="text-2xl font-bold text-purple-600">₹{priceStats.minPrice}</p>
-              <p className="text-xs text-gray-500 mt-1">{t("bottom")}</p>
+              <p className="text-xl sm:text-2xl font-bold text-purple-600">₹{priceStats.minPrice}</p>
+              <p className="text-xs text-gray-500 mt-1 truncate">{t("bottom")}</p>
             </div>
           </div>
         )}
       </div>
 
       {/* Chart Section */}
-      <div className="bg-gradient-to-br from-gray-50 to-white rounded-xl p-6 border border-gray-200">
-        <div className="flex items-center justify-between mb-4">
-          <h4 className="text-lg font-semibold text-gray-900">{t("priceHistory")}</h4>
-          <div className="flex items-center gap-2 text-sm text-gray-600">
-            <Calendar size={16} />
+      <div className="bg-gradient-to-br from-gray-50 to-white rounded-xl p-4 sm:p-6 border border-gray-200">
+        <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2 mb-4">
+          <h4 className="text-base sm:text-lg font-semibold text-gray-900">{t("priceHistory")}</h4>
+          <div className="flex items-center gap-2 text-xs sm:text-sm text-gray-600">
+            <Calendar size={14} className="sm:w-4 sm:h-4" />
             <span>{t("last7Days")}</span>
           </div>
         </div>
 
-        <ResponsiveContainer width="100%" height={350}>
+        <ResponsiveContainer width="100%" height={300} className="sm:h-[350px]">
           <LineChart data={displayData.trend} margin={{ top: 5, right: 30, left: 20, bottom: 5 }}>
             <defs>
               <linearGradient id="colorPrice" x1="0" y1="0" x2="0" y2="1">
@@ -207,13 +207,13 @@ export default function MarketTrends({ data }: MarketTrendsProps) {
 
         {/* Chart Legend */}
         <div className="mt-4 pt-4 border-t border-gray-200">
-          <div className="flex items-center justify-center gap-6 text-sm">
+          <div className="flex flex-col sm:flex-row items-center justify-center gap-3 sm:gap-6 text-xs sm:text-sm">
             <div className="flex items-center gap-2">
-              <div className="w-3 h-3 bg-amber-500 rounded-full"></div>
+              <div className="w-3 h-3 bg-amber-500 rounded-full flex-shrink-0"></div>
               <span className="text-gray-600">{t("marketPrice")}</span>
             </div>
             <div className="flex items-center gap-2">
-              <Calendar size={14} className="text-gray-400" />
+              <Calendar size={14} className="text-gray-400 flex-shrink-0" />
               <span className="text-gray-600">{displayData.trend.length} {t("dataPoints")}</span>
             </div>
           </div>
@@ -221,8 +221,8 @@ export default function MarketTrends({ data }: MarketTrendsProps) {
       </div>
 
       {/* Info Footer */}
-      <div className="mt-4 p-4 bg-blue-50 rounded-lg border border-blue-200">
-        <p className="text-sm text-blue-800">
+      <div className="mt-4 p-3 sm:p-4 bg-blue-50 rounded-lg border border-blue-200">
+        <p className="text-xs sm:text-sm text-blue-800">
           <span className="font-semibold">{t("note")}:</span> {t("noteMessage")}
         </p>
       </div>
